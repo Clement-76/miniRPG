@@ -8,7 +8,7 @@ class UserManager extends Manager {
      * @param $userFeatures
      * @throws \Exception
      */
-    public function setUser($userFeatures) {
+    public function createUser($userFeatures) {
         $db = $this->connectDb();
 
         try {
