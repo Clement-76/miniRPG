@@ -25,6 +25,7 @@ class User {
     private $_lastBattle;
     private $_adventureBeginning;
     private $_currentAdventureId;
+    private $_inventory;
 
     /**
      * User constructor.
@@ -235,6 +236,13 @@ class User {
     }
 
     /**
+     * @param Stuff[] $inventory collection of Stuff objects
+     */
+    public function setInventory($inventory) {
+        $this->_inventory = $inventory;
+    }
+
+    /**
      * @return int
      */
     public function getId() {
@@ -385,5 +393,12 @@ class User {
      */
     public function getCurrentAdventureId() {
         return $this->_currentAdventureId;
+    }
+
+    /**
+     * @return Stuff[]
+     */
+    public function getInventory() {
+        return $this->_inventory;
     }
 }

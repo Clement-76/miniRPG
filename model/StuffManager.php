@@ -43,6 +43,7 @@ class StuffManager extends Manager {
         $db = $this->connectDb();
         $q = $db->prepare('SELECT * FROM stuff WHERE id = ?');
         $q->execute([$stuffId]);
+        
         $stuffFeatures = $q->fetch();
 
         return $stuffFeatures;
