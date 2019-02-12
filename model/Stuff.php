@@ -3,11 +3,13 @@
 namespace ClementPatigny\Model;
 
 class Stuff {
+    private $_id;
     private $_name;
     private $_type;
-    private $required_lvl;
+    private $_required_lvl;
     private $_stat;
     private $_rarity;
+    private $_equipped;
 
     /**
      * Stuff constructor.
@@ -24,6 +26,13 @@ class Stuff {
                 $this->$setter($value);
             }
         }
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id) {
+        $this->_id = (int) $id;
     }
 
     /**
@@ -48,7 +57,7 @@ class Stuff {
      * @param int $required_lvl
      */
     public function setRequiredLvl($required_lvl) {
-        $this->required_lvl = (int) $required_lvl;
+        $this->_required_lvl = (int) $required_lvl;
     }
 
     /**
@@ -66,37 +75,62 @@ class Stuff {
     }
 
     /**
-     * @return mixed
+     * @param int $equipped
+     */
+    public function setEquipped($equipped) {
+        if ($equipped == 1) {
+            $this->_equipped = true;
+        } else {
+            $this->_equipped = false;
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getId() {
+        return $this->_id;
+    }
+
+    /**
+     * @return string
      */
     public function getName() {
         return $this->_name;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getType() {
         return $this->_type;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getRequiredLvl() {
-        return $this->required_lvl;
+        return $this->_required_lvl;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getStat() {
         return $this->_stat;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getRarity() {
         return $this->_rarity;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getEquipped() {
+        return $this->_equipped;
     }
 }
