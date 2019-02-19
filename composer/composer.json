@@ -1,0 +1,17 @@
+{
+    "name": "clement_patigny/minirpg",
+    "require": {
+        "twig/twig": "^1.37"
+    },
+    "autoload": {
+        "psr-4": {
+            "ClementPatigny\\": "../"
+        }
+    },
+    "authors": [
+        {
+            "name": "Clement-76",
+            "email": "clement.patigny@gmail.com"
+        }
+    ]
+}

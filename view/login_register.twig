@@ -1,0 +1,50 @@
+{% extends "template.twig" %}
+
+{% block content %}
+    <div class="forms">
+        {# login form #}
+        <form action="" method="post">
+            <div>
+                <label for="login">Pseudo/email</label><br>
+                <input type="text" id="login" name="login_connect">
+            </div>
+            <div>
+                <label for="password">Mot de passe</label><br>
+                <input type="text" id="password" name="password_connect">
+            </div>
+            <div>
+                <input type="submit" value="Se connecter">
+            </div>
+        </form>
+
+        <br><br><br>
+
+        {# register form #}
+        <form action="" method="post">
+            <div class="input-pair">
+                <div>
+                    <label for="email">Email</label><br>
+                    <input id="email" type="email" name="email" value="{{ email }}" required>
+                    {% if errors['email'] %}<span class="info error">Veuillez entrer un email valide</span>{% endif %}
+                </div>
+                <div>
+                    <label for="pseudo">Pseudo</label><br>
+                    <input id="pseudo" type="text" name="pseudo" value="{{ pseudo }}"><br>
+                    {% if errors['pseudo_not_available'] %}<span class="info error">Le pseudo {{ pseudo }} n'est pas disponible</span>{% endif %}
+                    <span class="info error">25 caractères maximum, chiffres, lettres, (_-.) autorisés</span>
+                </div>
+            </div>
+            <div>
+                <div class="eye-container">
+                    <label for="password">Mot de passe</label><br>
+                    <input class="full-width" id="password" type="password" name="password" required>
+                    <img class="eye" src="assets/images/invisible_eye_icon.svg" alt="eye icon">
+                </div>
+                <span class="info {% if errors['password'] %} error {% endif %}">7 caractères minimum, 1 chiffre, 1 majuscule</span>
+            </div>
+            <div>
+                <input class="right" type="submit" value="S'inscrire">
+            </div>
+        </form>
+    </div>
+{% endblock %}
