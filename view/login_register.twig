@@ -1,5 +1,10 @@
 {% extends "template.twig" %}
 
+{% block links %}
+    <link rel="stylesheet" href="assets/css/fonts.css">
+    <link rel="stylesheet" href="assets/css/icons.css">
+{% endblock %}
+
 {% block content %}
     <div class="forms">
         {# login form #}
@@ -10,7 +15,7 @@
             </div>
             <div>
                 <label for="password">Mot de passe</label><br>
-                <input type="text" id="password" name="password_connect">
+                <input type="text" class="password" name="password_connect">
             </div>
             <div>
                 <input type="submit" value="Se connecter">
@@ -21,29 +26,32 @@
 
         {# register form #}
         <form action="" method="post">
-            <div class="input-pair">
-                <div>
-                    <label for="email">Email</label><br>
-                    <input id="email" type="email" name="email" value="{{ email }}" required>
-                    {% if errors['email'] %}<span class="info error">Veuillez entrer un email valide</span>{% endif %}
-                </div>
-                <div>
-                    <label for="pseudo">Pseudo</label><br>
-                    <input id="pseudo" type="text" name="pseudo" value="{{ pseudo }}"><br>
-                    {% if errors['pseudo_not_available'] %}<span class="info error">Le pseudo {{ pseudo }} n'est pas disponible</span>{% endif %}
-                    <span class="info error">25 caractères maximum, chiffres, lettres, (_-.) autorisés</span>
-                </div>
+            <div>
+                <label for="email">Email</label><br>
+                <input id="email" type="email" name="email" value="{{ email }}" required>
+                {% if errors['email_not_available'] %}<span class="error">L'email {{ email }} n'est pas disponible</span>{% endif %}
+                {% if errors['email'] %}<span class="error">Veuillez entrer un email valide</span>{% endif %}
+            </div>
+            <div>
+                <label for="pseudo">Pseudo</label><br>
+                <input id="pseudo" type="text" name="pseudo" value="{{ pseudo }}"><br>
+                {% if errors['pseudo_not_available'] %}<span class="error">Le pseudo {{ pseudo }} n'est pas disponible</span>{% endif %}
+                {% if errors['pseudo'] %}<span class="error">25 caractères maximum, chiffres, lettres, (_-.) autorisés</span>{% endif %}
             </div>
             <div>
                 <div class="eye-container">
                     <label for="password">Mot de passe</label><br>
-                    <input class="full-width" id="password" type="password" name="password" required>
-                    <img class="eye" src="assets/images/invisible_eye_icon.svg" alt="eye icon">
+                    <input class="full-width" class="password" type="password" name="password" required>
+                    <i class="icon icon-invisible"></i>{# fixer en bas a droite en absolute #}
                 </div>
-                <span class="info {% if errors['password'] %} error {% endif %}">7 caractères minimum, 1 chiffre, 1 majuscule</span>
+                {% if errors['password'] %}<span class="error">8 caractères minimum, doit contenir des chiffres et des lettres</span>{% endif %}
             </div>
             <div>
-                <input class="right" type="submit" value="S'inscrire">
+                <input type="checkbox" name="terms" id="terms" required>
+                <label class="{% if errors['terms'] %} error {% endif %}"  for="terms">En m'inscrivant, j'accepte que mes données soient utilisées afin de confirmer mon compte par email. J'accepte également les conditions générales d'utilisation ainsi que la politique d'utilisation des cookies.</label>
+            </div>
+            <div>
+                <input type="submit" value="S'inscrire">
             </div>
         </form>
     </div>
