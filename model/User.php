@@ -25,6 +25,7 @@ class User {
     private $_lastBattle;
     private $_adventureBeginning;
     private $_currentAdventureId;
+    private $_inventory;
 
     /**
      * User constructor.
@@ -217,14 +218,14 @@ class User {
      * @param string $lastBattle
      */
     public function setLastBattle($lastBattle) {
-        $this->_lastBattle = $lastBattle;
+        $this->_lastBattle = new \DateTime($lastBattle);
     }
 
     /**
      * @param string $adventureBeginning the date when the adventure started
      */
     public function setAdventureBeginning($adventureBeginning) {
-        $this->_adventureBeginning = $adventureBeginning;
+        $this->_adventureBeginning = new \DateTime($adventureBeginning);
     }
 
     /**
@@ -232,6 +233,13 @@ class User {
      */
     public function setCurrentAdventureId($currentAdventureId) {
         $this->_currentAdventureId = (int) $currentAdventureId;
+    }
+
+    /**
+     * @param Stuff[] $inventory collection of Stuff objects
+     */
+    public function setInventory($inventory) {
+        $this->_inventory = $inventory;
     }
 
     /**
@@ -270,14 +278,14 @@ class User {
     }
 
     /**
-     * @return int
+     * @return bool
      */
     public function getConfirmationKey() {
         return $this->_confirmationKey;
     }
 
     /**
-     * @return int
+     * @return bool
      */
     public function getConfirmedEmail() {
         return $this->_confirmedEmail;
@@ -291,21 +299,21 @@ class User {
     }
 
     /**
-     * @return int
+     * @return bool
      */
     public function getBanned() {
         return $this->_banned;
     }
 
     /**
-     * @return string
+     * @return object DateTime
      */
     public function getRegistrationDate() {
         return $this->_registrationDate;
     }
 
     /**
-     * @return int
+     * @return bool
      */
     public function getTutorial() {
         return $this->_tutorial;
@@ -368,14 +376,14 @@ class User {
     }
 
     /**
-     * @return string
+     * @return object DateTime
      */
     public function getLastBattle() {
         return $this->_lastBattle;
     }
 
     /**
-     * @return string
+     * @return object DateTime
      */
     public function getAdventureBeginning() {
         return $this->_adventureBeginning;
@@ -385,5 +393,12 @@ class User {
      */
     public function getCurrentAdventureId() {
         return $this->_currentAdventureId;
+    }
+
+    /**
+     * @return Stuff[]
+     */
+    public function getInventory() {
+        return $this->_inventory;
     }
 }
