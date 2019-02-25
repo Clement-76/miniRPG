@@ -1,0 +1,89 @@
+.forms {
+    box-sizing: border-box;
+
+    .form {
+        display: none;
+
+        > .error {
+            color: $error;
+            border: 1px solid $error;
+            padding: 8px 5px;
+            margin-bottom: 20px;
+        }
+
+        span.error {
+            color: $error;
+            font-size: 0.8em;
+        }
+
+        > div:not(:first-child) {
+            margin-top: 25px;
+        }
+
+        .login {
+            min-height: 380px;
+
+            div:not(:first-child) {
+                margin-top: 35px;
+            }
+
+            [type="submit"] {
+                margin-top: 5px;
+            }
+        }
+
+        &.active {
+            display: block;
+        }
+
+        .terms {
+            margin-top: 15px;
+        }
+
+        input {
+            box-sizing: border-box;
+            border: 2px solid $borders;
+            padding: 5px;
+            font-size: 1.1em;
+            font-family: $fonts;
+
+            &[type="submit"] {
+                background-color: $dark-moderate-blue;
+                color: $light-grey;
+                padding: 7px 0;
+            }
+
+            &:not([type="checkbox"]) {
+                width: 100%;
+            }
+
+            &[type="checkbox"] + label {
+                font-size: 0.8em;
+                vertical-align: top;
+            }
+
+            &[type="checkbox"] {
+                margin: 0;
+            }
+        }
+
+        .eye-container {
+            position: relative;
+
+            input {
+                padding: 5px 45px 5px 5px;
+            }
+
+            .icon {
+                position: absolute;
+                padding: 12px;
+                cursor: pointer;
+                bottom: 17.5px;
+                right: 0;
+                transform: translateY(50%);
+                color: $body-bg;
+                font-size: 21px;
+            }
+        }
+    }
+}

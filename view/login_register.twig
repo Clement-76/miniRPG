@@ -3,63 +3,84 @@
 {% block links %}
     <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/icons.css">
+    <link rel="stylesheet" href="assets/css/login-register.css">
 {% endblock %}
 
 {% block content %}
-    <div class="forms">
-        {# login form #}
+    <header>
+        <div class="top"></div>
+        <h1>miniRPG</h1>
+        <i class="far fa-question-circle"></i>
+        <p>Rejoins-nous maintenant, crée ton personnage et fais le évoluer afin de devenir le plus puissant de tous !</p>
+    </header>
 
-        <div id="login-form" class="{% if activeForm == "login" %} active{% endif %}">
-            {% if loginErrors %}
-                <p class="error">Identifiant ou mot de passe incorrect</p>
-            {% endif %}
+    <div class="window extra-small">
+        <h2 class="window-title">Rejoins-nous</h2>
 
-            <form action="index.php?action=users.login" method="post">
+        <div class="btn-group">
+            <button class="{% if activeForm == "login" %} active{% endif %}">Connexion</button>
+            <button class="{% if activeForm == "register" %} active{% endif %}">Inscription</button>
+        </div>
+
+        <div class="forms content group">
+            {# login form #}
+            <div id="login-form" class="form{% if activeForm == "login" %} active{% endif %}">
+                {% if loginErrors %}
+                    <p class="error">Identifiant ou mot de passe incorrect</p>
+                {% endif %}
+
+                <form class="login" action="index.php?action=users.login" method="post">
+                    <div>
+                        <label for="login">Pseudo/email</label><br>
+                        <input type="text" id="login" name="login_connect">
+                    </div>
+                    <div>
+                        <label for="password">Mot de passe</label><br>
+                        <input type="password" class="password" name="password_connect">
+                    </div>
+                    <div>
+                        <input type="submit" value="Se connecter">
+                    </div>
+                </form>
+            </div>
+
+            {# register form #}
+            <form action="index.php?action=users.register" method="post" class="form{% if activeForm == "register" %} active{% endif %}">
                 <div>
-                    <label for="login">Pseudo/email</label><br>
-                    <input type="text" id="login" name="login_connect">
+                    <label for="email">Email</label><br>
+                    <input id="email" type="email" name="email" value="{{ email }}" required>
+                    {% if registerErrors['email_not_available'] %}<span class="error">L'email {{ email }} n'est pas disponible</span>{% endif %}
+                    {% if registerErrors['email'] %}<span class="error">Veuillez entrer un email valide</span>{% endif %}
                 </div>
                 <div>
-                    <label for="password">Mot de passe</label><br>
-                    <input type="password" class="password" name="password_connect">
+                    <label for="pseudo">Pseudo</label><br>
+                    <input id="pseudo" type="text" name="pseudo" value="{{ pseudo }}"><br>
+                    {% if registerErrors['pseudo_not_available'] %}<span class="error">Le pseudo {{ pseudo }} n'est pas disponible</span>{% endif %}
+                    {% if registerErrors['pseudo'] %}<span class="error">25 caractères maximum, chiffres, lettres, (_-.) autorisés</span>{% endif %}
                 </div>
                 <div>
-                    <input type="submit" value="Se connecter">
+                    <div class="eye-container">
+                        <label for="password">Mot de passe</label><br>
+                        <input class="password" type="password" name="password" required>
+                        <i class="icon icon-invisible"></i>{# fixer en bas a droite en absolute #}
+                    </div>
+                    {% if registerErrors['password'] %}<span class="error">Doit contenir 8 caractères minimum, des chiffres et des lettres</span>{% endif %}
+                </div>
+                <div class="terms">
+                    <input type="checkbox" name="terms" id="terms" required>
+                    <label class="{% if registerErrors['terms'] %} error {% endif %}"  for="terms">En m'inscrivant, j'accepte que mes données soient utilisées afin de confirmer mon compte par email. J'accepte également les conditions générales d'utilisation ainsi que la politique d'utilisation des cookies.</label>
+                </div>
+                <div>
+                    <input type="submit" value="S'inscrire">
                 </div>
             </form>
         </div>
-
-        <br><br><br>
-
-        {# register form #}
-        <form action="index.php?action=users.register" method="post" class="{% if activeForm == "register" %} active{% endif %}">
-            <div>
-                <label for="email">Email</label><br>
-                <input id="email" type="email" name="email" value="{{ email }}" required>
-                {% if registerErrors['email_not_available'] %}<span class="error">L'email {{ email }} n'est pas disponible</span>{% endif %}
-                {% if registerErrors['email'] %}<span class="error">Veuillez entrer un email valide</span>{% endif %}
-            </div>
-            <div>
-                <label for="pseudo">Pseudo</label><br>
-                <input id="pseudo" type="text" name="pseudo" value="{{ pseudo }}"><br>
-                {% if registerErrors['pseudo_not_available'] %}<span class="error">Le pseudo {{ pseudo }} n'est pas disponible</span>{% endif %}
-                {% if registerErrors['pseudo'] %}<span class="error">25 caractères maximum, chiffres, lettres, (_-.) autorisés</span>{% endif %}
-            </div>
-            <div>
-                <div class="eye-container">
-                    <label for="password">Mot de passe</label><br>
-                    <input class="full-width" class="password" type="password" name="password" required>
-                    <i class="icon icon-invisible"></i>{# fixer en bas a droite en absolute #}
-                </div>
-                {% if registerErrors['password'] %}<span class="error">Doit contenir 8 caractères minimum, des chiffres et des lettres</span>{% endif %}
-            </div>
-            <div>
-                <input type="checkbox" name="terms" id="terms" required>
-                <label class="{% if registerErrors['terms'] %} error {% endif %}"  for="terms">En m'inscrivant, j'accepte que mes données soient utilisées afin de confirmer mon compte par email. J'accepte également les conditions générales d'utilisation ainsi que la politique d'utilisation des cookies.</label>
-            </div>
-            <div>
-                <input type="submit" value="S'inscrire">
-            </div>
-        </form>
     </div>
+
+    <p class="copyright">Copyright © 2019 Tous droits réservés</p>
+{% endblock %}
+
+{% block scripts %}
+    <script src="assets/js/toggleWindow.js"></script>
+    <script src="assets/js/passwordVisibilty.js"></script>
 {% endblock %}

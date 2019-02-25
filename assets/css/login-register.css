@@ -1,0 +1,160 @@
+.forms {
+  box-sizing: border-box; 
+}
+  .forms .form {
+    display: none; 
+}
+    .forms .form > .error {
+      color: #b10b28;
+      border: 1px solid #b10b28;
+      padding: 8px 5px;
+      margin-bottom: 20px; 
+}
+    .forms .form span.error {
+      color: #b10b28;
+      font-size: 0.8em; 
+}
+    .forms .form > div:not(:first-child) {
+      margin-top: 25px; 
+}
+    .forms .form .login {
+      min-height: 380px; 
+}
+      .forms .form .login div:not(:first-child) {
+        margin-top: 35px; 
+}
+      .forms .form .login [type="submit"] {
+        margin-top: 5px; 
+}
+    .forms .form.active {
+      display: block; 
+}
+    .forms .form .terms {
+      margin-top: 15px; 
+}
+    .forms .form input {
+      box-sizing: border-box;
+      border: 2px solid #000;
+      padding: 5px;
+      font-size: 1.1em;
+      font-family: "Varela Round", sans-serif; 
+}
+      .forms .form input[type="submit"] {
+        background-color: #316278;
+        color: #e0e0e0;
+        padding: 7px 0; 
+}
+      .forms .form input:not([type="checkbox"]) {
+        width: 100%; 
+}
+      .forms .form input[type="checkbox"] + label {
+        font-size: 0.8em;
+        vertical-align: top; 
+}
+      .forms .form input[type="checkbox"] {
+        margin: 0; 
+}
+    .forms .form .eye-container {
+      position: relative; 
+}
+      .forms .form .eye-container input {
+        padding: 5px 45px 5px 5px; 
+}
+      .forms .form .eye-container .icon {
+        position: absolute;
+        padding: 12px;
+        cursor: pointer;
+        bottom: 17.5px;
+        right: 0;
+        transform: translateY(50%);
+        color: #212121;
+        font-size: 21px; 
+}
+
+.window {
+  background-color: #2b2b2b;
+  border: 2px solid #000;
+  box-sizing: border-box; 
+}
+  .window .window-title {
+    margin: 0;
+    font-weight: 400;
+    font-size: 1.1em;
+    padding: 5px 15px;
+    text-align: center;
+    background-color: #316278;
+    border-bottom: 2px solid #000; 
+}
+  .window .btn-group {
+    display: flex; 
+}
+    .window .btn-group button {
+      flex-basis: 50%;
+      background-color: #e0e0e0;
+      border: solid #000;
+      padding: 5px 15px;
+      font-size: 1.1em;
+      background-color: transparent;
+      font-family: "Varela Round", sans-serif;
+      color: #e0e0e0;
+      cursor: pointer;
+      outline: none; 
+}
+      .window .btn-group button.active {
+        background-color: #f5f5f5;
+        color: #212121;
+        cursor: default; 
+}
+      .window .btn-group button:first-child {
+        border-width: 0 1px 2px 0; 
+}
+      .window .btn-group button:last-child {
+        border-width: 0 0 2px 1px; 
+}
+  .window .content {
+    padding: 20px 40px; 
+}
+  .window.extra-small {
+    width: 33%; 
+}
+
+body {
+  font-family: "Varela Round", sans-serif;
+  background-color: #212121;
+  color: #e0e0e0;
+  margin: 0; 
+}
+  body header .top {
+    height: 6px;
+    width: 100%;
+    background-color: #24769c; 
+}
+  body header h1 {
+    text-align: center;
+    font-size: 1.4em;
+    margin-bottom: 35px; 
+}
+  body header .fa-question-circle {
+    position: absolute;
+    top: 18px;
+    right: 15px;
+    font-size: 1.8em;
+    cursor: pointer; 
+}
+  body header p {
+    text-align: center;
+    width: 45%;
+    margin: 0 auto 30px auto; 
+}
+  body .window {
+    margin: 0 auto; 
+}
+  body .copyright {
+    text-align: center;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%); 
+}
+
+/*# sourceMappingURL=login-register.css.map */

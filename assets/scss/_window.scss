@@ -1,0 +1,70 @@
+.window {
+    background-color: $windows-bg;
+    border: 2px solid $borders;
+    box-sizing: border-box;
+
+    .window-title {
+        margin: 0;
+        font-weight: 400;
+        font-size: 1.1em;
+        padding: 5px 15px;
+        text-align: center;
+        background-color: $dark-moderate-blue;
+        border-bottom: 2px solid $borders;
+    }
+
+    .btn-group {
+        display: flex;
+
+        button {
+            flex-basis: 50%;
+            background-color: $light-grey;
+            border: solid $borders;
+            padding: 5px 15px;
+            font-size: 1.1em;
+            background-color: transparent;
+            font-family: $fonts;
+            color: $light-grey;
+            cursor: pointer;
+            outline: none;
+
+            &.active {
+                background-color: $very-light-grey;
+                color: $body-bg;
+                cursor: default;
+            }
+
+            &:first-child {
+                border-width: 0 1px 2px 0;
+            }
+
+            &:last-child {
+                border-width: 0 0 2px 1px;
+            }
+        }
+    }
+
+    .content {
+        padding: 20px 40px;
+    }
+
+    &.extra-small {
+        width: 33%;
+    }
+
+    &.small {
+
+    }
+
+    &.medium {
+
+    }
+
+    &.large {
+
+    }
+
+    &.extra-large {
+
+    }
+}
