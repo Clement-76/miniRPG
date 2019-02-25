@@ -6,6 +6,52 @@ use ClementPatigny\Model\UserManager;
 
 class UsersController extends AppController {
     /**
+     * displays the form to login and if the form
+     * has been submitted checks the data and login the user
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function login() {
+        if (!isset($_SESSION['user'])) {
+            $loginErrors = false;
+
+            if (isset($_POST['login_connect']) && isset($_POST['password_connect'])) {
+                if (preg_match('#^[a-z\d]+([.\-_]{1}[a-z\d]+)*@[a-z\d]+\.[a-z]+$#', $_POST['login_connect'])) {
+                    $loginType = 'email';
+                } else {
+                    $loginType = 'pseudo';
+                }
+
+                try {
+                    $userManager = new UserManager();
+                    $user = $userManager->getUser($_POST['login_connect'], $loginType);
+                } catch (\Exception $e) {
+                    throw new \Exception($e->getMessage());
+                }
+
+                if (password_verify($_POST['password_connect'], $user['password'])) {
+                    $_SESSION['user'] = $user['userObj'];
+                    die("connecté");
+                    header('Location: index.php?action=');
+                    exit();
+                } else {
+                    $loginErrors = true;
+                }
+            }
+
+            $pageTitle = "Connexion / Inscription";
+            $activeForm = "login";
+
+            echo $this->twig->render('login_register.twig', compact('loginErrors', 'pageTitle', 'activeForm'));
+        } else {
+            header('Location: index.php?action=');
+            exit();
+        }
+    }
+
+    /**
      * displays the form to register and if the form
      * has been submitted checks the data and creates a new user
      *
@@ -15,10 +61,9 @@ class UsersController extends AppController {
      */
     public function register() {
         if (!isset($_SESSION['user'])) {
-            $errors['errors'] = false;
+            $registerErrors['errors'] = false;
 
             if (isset($_POST['email']) && isset($_POST['pseudo']) && isset($_POST['password'])) {
-
                 try {
                     $userManager = new UserManager();
                     $email = $userManager->getEmail($_POST['email']);
@@ -27,13 +72,13 @@ class UsersController extends AppController {
                 }
 
                 if (!preg_match('#^[a-z\d]+([.\-_]{1}[a-z\d]+)*@[a-z\d]+\.[a-z]+$#', $_POST['email'])) {
-                    $errors['email'] = true;
-                    $errors['errors'] = true;
+                    $registerErrors['email'] = true;
+                    $registerErrors['errors'] = true;
                 }
 
                 if ($_POST['email'] == $email) {
-                    $errors['email_not_available'] = true;
-                    $errors['errors'] = true;
+                    $registerErrors['email_not_available'] = true;
+                    $registerErrors['errors'] = true;
                 }
 
                 try {
@@ -43,29 +88,29 @@ class UsersController extends AppController {
                 }
 
                 if ($_POST['pseudo'] == $pseudo) {
-                    $errors['pseudo_not_available'] = true;
-                    $errors['errors'] = true;
+                    $registerErrors['pseudo_not_available'] = true;
+                    $registerErrors['errors'] = true;
                 }
 
                 if (!preg_match('#^[a-zA-Z\d\_\-.]{0,25}$#', $_POST['pseudo'])) {
-                    $errors['pseudo'] = true;
-                    $errors['errors'] = true;
+                    $registerErrors['pseudo'] = true;
+                    $registerErrors['errors'] = true;
                 }
 
                 $lowercase = preg_match('#[a-z]#', $_POST['password']);
                 $number = preg_match('#\d#', $_POST['password']);
 
                 if (!$lowercase || !$number || strlen($_POST['password']) < 8) {
-                    $errors['password'] = true;
-                    $errors['errors'] = true;
+                    $registerErrors['password'] = true;
+                    $registerErrors['errors'] = true;
                 }
 
                 if (!isset($_POST['terms'])) {
-                    $errors['password'] = true;
-                    $errors['terms'] = true;
+                    $registerErrors['password'] = true;
+                    $registerErrors['terms'] = true;
                 }
 
-                if (!$errors['errors']) {
+                if (!$registerErrors['errors']) {
                     $confirmKey = "";
                     for ($i = 0; $i < 16; $i++) {
                         $confirmKey .= mt_rand(0, 9);
@@ -89,14 +134,15 @@ class UsersController extends AppController {
                 }
             }
 
-            $pageTitle = "Connexion / Inscription";
+            $pageTitle = "Inscription / Connexion";
+            $activeForm = "register";
 
-            if (!$errors['errors']) {
-                echo $this->twig->render('login_register.twig', compact('errors', 'pageTitle'));
+            if (!$registerErrors['errors']) {
+                echo $this->twig->render('login_register.twig', compact('registerErrors', 'pageTitle', 'activeForm'));
             } else {
                 $email = $_POST['email'];
                 $pseudo = $_POST['pseudo'];
-                echo $this->twig->render('login_register.twig', compact('errors', 'pageTitle', 'email', 'pseudo'));
+                echo $this->twig->render('login_register.twig', compact('registerErrors', 'pageTitle', 'activeForm', 'email', 'pseudo'));
             }
         } else {
             header('Location: index.php?action=');
