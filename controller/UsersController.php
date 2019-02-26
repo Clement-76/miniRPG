@@ -33,8 +33,7 @@ class UsersController extends AppController {
 
                 if (password_verify($_POST['password_connect'], $user['password'])) {
                     $_SESSION['user'] = $user['userObj'];
-                    die("connecté");
-                    header('Location: index.php?action=');
+                    header('Location: index.php?action=home.displayHome');
                     exit();
                 } else {
                     $loginErrors = true;
@@ -46,7 +45,7 @@ class UsersController extends AppController {
 
             echo $this->twig->render('login_register.twig', compact('loginErrors', 'pageTitle', 'activeForm'));
         } else {
-            header('Location: index.php?action=');
+            header('Location: index.php?action=home.displayHome');
             exit();
         }
     }
@@ -145,7 +144,7 @@ class UsersController extends AppController {
                 echo $this->twig->render('login_register.twig', compact('registerErrors', 'pageTitle', 'activeForm', 'email', 'pseudo'));
             }
         } else {
-            header('Location: index.php?action=');
+            header('Location: index.php?action=home.displayHome');
             exit();
         }
     }

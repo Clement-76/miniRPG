@@ -1,4 +1,5 @@
-[class^="icon-"], [class*=" icon-"] {
+[class^="icon-"],
+[class*=" icon-"] {
     /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'icomoon' !important;
     speak: none;
@@ -11,6 +12,14 @@
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-swords:before {
+    content: "\e906";
+}
+
+.icon-treasure:before {
+    content: "\e907";
 }
 
 .icon-invisible:before {

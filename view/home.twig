@@ -1,0 +1,38 @@
+{% extends "template.twig" %}
+
+{% block links %}
+    <link rel="stylesheet" href="assets/css/fonts.css">
+    <link rel="stylesheet" href="assets/css/icons.css">
+{% endblock %}
+
+{% block content %}
+    <header>
+        <div class="top"></div>
+        <div class="money">
+            <span><i class="fas fa-dollar-sign"></i> {{ session.getDollar() }}</span>
+            <span><i class="fas fa-tenge"></i> {{ session.getT() }}</span>
+        </div>
+        <div class="user">
+            <p class="pseudo">{{ session.getPseudo() }}</p>
+            <p class="lvl">lvl {{ session.getLvl() }}</p>
+        </div>
+        <div class="options">
+            <i class="far fa-question-circle"></i>
+            <a href="index.php?action=users.logout"><i class="fas fa-power-off"></i></a>
+        </div>
+
+        <footer class="menu">
+            <i class="fas fa-comment-alt"></i>
+            <i class="fas fa-dna"></i>
+            <i class="fas fa-map-signs"></i>
+            <i class="icon-swords"></i>
+            <i class="icon-treasure"></i>
+            <i class="fab fa-fort-awesome"></i>
+            {# <i class="fas fa-crown"></i> #} {# if the user is an admin #}
+        </footer>
+    </header>
+{% endblock %}
+
+{% block scripts %}
+    <script src="assets/js/toggleWindow.js"></script>
+{% endblock %}
