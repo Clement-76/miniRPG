@@ -51,6 +51,16 @@ class UsersController extends AppController {
     }
 
     /**
+     * logout the user by destroying session variables
+     */
+    public function logout() {
+        $_SESSION = [];
+        session_destroy();
+
+        header('Location: index.php');
+    }
+
+    /**
      * displays the form to register and if the form
      * has been submitted checks the data and creates a new user
      *
