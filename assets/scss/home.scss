@@ -11,11 +11,15 @@ html {
         color: $light-grey;
         font-family: $fonts;
         font-weight: 400;
+        
+        .xp-bar {
+            background-color: #1b4255;
 
-        .top {
-            height: 6px;
-            background-color: $xp-bar;
-            width: 50%;
+            .progress {
+                height: 6px;
+                background-color: $xp-bar;
+                width: 50%;
+            }
         }
 
         header {
@@ -23,7 +27,8 @@ html {
             padding: 15px 15px 0 15px;
 
             .money {
-                font-size: 1.5em;
+                font-size: 1.6em;
+                font-weight: 700;
 
                 span:first-child {
                     margin-right: 30px;
@@ -49,7 +54,7 @@ html {
 
                 a {
                     color: $light-grey;
-                    margin-left: 5px;
+                    margin-left: 8px;
                 }
             }
         }

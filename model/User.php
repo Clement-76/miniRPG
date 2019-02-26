@@ -20,6 +20,7 @@ class User {
     private $_dollar;
     private $_T;
     private $_xp;
+    private $_xpPercentage;
     private $_lvl;
     private $_remainingBattles;
     private $_lastBattle;
@@ -48,7 +49,7 @@ class User {
      * @param int $id
      */
     public function setId($id) {
-        $this->_id = (int) $id;
+        $this->_id = (int)$id;
     }
 
     /**
@@ -91,7 +92,7 @@ class User {
      * @param int $confirmationKey
      */
     public function setConfirmationKey($confirmationKey) {
-        $this->_confirmationKey = (int) $confirmationKey;
+        $this->_confirmationKey = (int)$confirmationKey;
     }
 
     /**
@@ -109,7 +110,7 @@ class User {
      * @param int $warnings
      */
     public function setWarnings($warnings) {
-        $this->_warnings = (int) $warnings;
+        $this->_warnings = (int)$warnings;
     }
 
     /**
@@ -145,50 +146,50 @@ class User {
      * @param int $life
      */
     public function setLife($life) {
-        $this->_life = (int) $life;
+        $this->_life = (int)$life;
     }
 
     /**
      * @param int $attack
      */
     public function setAttack($attack) {
-        $this->_attack = (int) $attack;
+        $this->_attack = (int)$attack;
     }
 
     /**
      * @param int $defense
      */
     public function setDefense($defense) {
-        $this->_defense = (int) $defense;
+        $this->_defense = (int)$defense;
     }
 
     /**
      * @param int $dollar
      */
     public function setDollar($dollar) {
-        $this->_dollar = (int) $dollar;
+        $this->_dollar = (int)$dollar;
     }
 
     /**
      * @param int $T
      */
     public function setT($T) {
-        $this->_T = (int) $T;
+        $this->_T = (int)$T;
     }
 
     /**
      * @param int $xp
      */
     public function setXp($xp) {
-        $this->_xp = (int) $xp;
+        $this->_xp = (int)$xp;
         $this->setLvl($this->_xp);
     }
 
     /**
      * @param int $actualXp
      */
-    public  function setLvl($actualXp) {
-        $actualLvl = 1;
+    public function setLvl($actualXp) {
+        $actualLvl;
         $xpTotal = 0;
 
         for ($lvl = 2; $lvl <= 100; $lvl++) {
@@ -204,14 +205,32 @@ class User {
             }
         }
 
+        $missingXp = $xpTotal - $actualXp;
+
+        if ($actualXp > $xpTotal) {
+            $actualLvl = 100;
+            $missingXp = 0;
+        } else if ($xpTotal == $actualXp) {
+            $missingXp += 100 * pow($actualLvl + 2, 2);
+        }
+
+        $xpPercentage = $actualXp / $xpTotal * 100;
+        $this->setXpPercentage($xpPercentage);
         $this->_lvl = $actualLvl;
+    }
+
+    /**
+     * @param int $xpPercentage
+     */
+    public function setXpPercentage($xpPercentage) {
+        $this->_xpPercentage = (int) $xpPercentage;
     }
 
     /**
      * @param int $remainingBattles
      */
     public function setRemainingBattles($remainingBattles) {
-        $this->_remainingBattles = (int) $remainingBattles;
+        $this->_remainingBattles = (int)$remainingBattles;
     }
 
     /**
@@ -232,7 +251,7 @@ class User {
      * @param int $currentAdventureId
      */
     public function setCurrentAdventureId($currentAdventureId) {
-        $this->_currentAdventureId = (int) $currentAdventureId;
+        $this->_currentAdventureId = (int)$currentAdventureId;
     }
 
     /**
@@ -371,6 +390,13 @@ class User {
     /**
      * @return int
      */
+    public function getXpPercentage() {
+        return $this->_xpPercentage;
+    }
+
+    /**
+     * @return int
+     */
     public function getRemainingBattles() {
         return $this->_remainingBattles;
     }
@@ -388,6 +414,7 @@ class User {
     public function getAdventureBeginning() {
         return $this->_adventureBeginning;
     }
+
     /**
      * @return int
      */

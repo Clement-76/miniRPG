@@ -7,7 +7,9 @@
 {% endblock %}
 
 {% block content %}
-    <div class="top"></div>
+    <div class="xp-bar">
+        <div class="progress" style="width: {{ session.getXpPercentage() }}%"></div>
+    </div>
 
     <header>
         <div class="money">

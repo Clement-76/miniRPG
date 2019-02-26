@@ -56,17 +56,21 @@ html {
     font-family: "Varela Round", sans-serif;
     font-weight: 400; 
 }
-    html body .top {
-      height: 6px;
-      background-color: #24769c;
-      width: 50%; 
+    html body .xp-bar {
+      background-color: #1b4255; 
+}
+      html body .xp-bar .progress {
+        height: 6px;
+        background-color: #24769c;
+        width: 50%; 
 }
     html body header {
       display: flex;
       padding: 15px 15px 0 15px; 
 }
       html body header .money {
-        font-size: 1.5em; 
+        font-size: 1.6em;
+        font-weight: 700; 
 }
         html body header .money span:first-child {
           margin-right: 30px; 
@@ -87,7 +91,7 @@ html {
 }
         html body header .options a {
           color: #e0e0e0;
-          margin-left: 5px; 
+          margin-left: 8px; 
 }
     html body .menu {
       display: flex;
