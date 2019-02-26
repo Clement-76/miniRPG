@@ -1,0 +1,106 @@
+.window {
+  background-color: #2b2b2b;
+  border: 2px solid #000;
+  box-sizing: border-box; 
+}
+  .window .window-title {
+    margin: 0;
+    font-weight: 400;
+    font-size: 1.1em;
+    padding: 5px 15px;
+    text-align: center;
+    background-color: #316278;
+    border-bottom: 2px solid #000; 
+}
+  .window .btn-group {
+    display: flex; 
+}
+    .window .btn-group button {
+      flex-basis: 50%;
+      background-color: #e0e0e0;
+      border: solid #000;
+      padding: 5px 15px;
+      font-size: 1.1em;
+      background-color: transparent;
+      font-family: "Varela Round", sans-serif;
+      color: #e0e0e0;
+      cursor: pointer;
+      outline: none; 
+}
+      .window .btn-group button.active {
+        background-color: #f5f5f5;
+        color: #212121;
+        cursor: default; 
+}
+      .window .btn-group button:first-child {
+        border-width: 0 1px 2px 0; 
+}
+      .window .btn-group button:last-child {
+        border-width: 0 0 2px 1px; 
+}
+  .window .content {
+    padding: 20px 40px; 
+}
+  .window.extra-small {
+    width: 33%; 
+}
+
+html {
+  height: 100%; 
+}
+  html body {
+    height: 100%;
+    margin: 0;
+    background-color: #212121;
+    color: #e0e0e0;
+    font-family: "Varela Round", sans-serif;
+    font-weight: 400; 
+}
+    html body .top {
+      height: 6px;
+      background-color: #24769c;
+      width: 50%; 
+}
+    html body header {
+      display: flex;
+      padding: 15px 15px 0 15px; 
+}
+      html body header .money {
+        font-size: 1.5em; 
+}
+        html body header .money span:first-child {
+          margin-right: 30px; 
+}
+      html body header .user {
+        margin: 0 auto;
+        text-align: center; 
+}
+        html body header .user .pseudo {
+          font-size: 1.3em;
+          margin: 0; 
+}
+        html body header .user .lvl {
+          margin-top: 2px; 
+}
+      html body header .options {
+        font-size: 1.8em; 
+}
+        html body header .options a {
+          color: #e0e0e0;
+          margin-left: 5px; 
+}
+    html body .menu {
+      display: flex;
+      justify-content: center;
+      border-top: 2px solid #e0e0e0;
+      position: absolute;
+      bottom: 0;
+      width: 100%; 
+}
+      html body .menu i {
+        margin: 15px;
+        font-size: 3em;
+        cursor: pointer; 
+}
+
+/*# sourceMappingURL=home.css.map */

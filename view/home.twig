@@ -3,11 +3,13 @@
 {% block links %}
     <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/icons.css">
+    <link rel="stylesheet" href="assets/css/home.css">
 {% endblock %}
 
 {% block content %}
+    <div class="top"></div>
+
     <header>
-        <div class="top"></div>
         <div class="money">
             <span><i class="fas fa-dollar-sign"></i> {{ session.getDollar() }}</span>
             <span><i class="fas fa-tenge"></i> {{ session.getT() }}</span>
@@ -20,17 +22,19 @@
             <i class="far fa-question-circle"></i>
             <a href="index.php?action=users.logout"><i class="fas fa-power-off"></i></a>
         </div>
-
-        <footer class="menu">
-            <i class="fas fa-comment-alt"></i>
-            <i class="fas fa-dna"></i>
-            <i class="fas fa-map-signs"></i>
-            <i class="icon-swords"></i>
-            <i class="icon-treasure"></i>
-            <i class="fab fa-fort-awesome"></i>
-            {# <i class="fas fa-crown"></i> #} {# if the user is an admin #}
-        </footer>
     </header>
+
+    <div class="content"></div>
+
+    <footer class="menu">
+        <i class="fas fa-comment-alt"></i>
+        <i class="fas fa-dna"></i>
+        <i class="fas fa-map-signs"></i>
+        <i class="icon-swords"></i>
+        <i class="icon-treasure"></i>
+        <i class="fab fa-fort-awesome"></i>
+        {# <i class="fas fa-crown"></i> #} {# if the user is an admin #}
+    </footer>
 {% endblock %}
 
 {% block scripts %}

@@ -1,0 +1,76 @@
+@import "variables";
+@import "window";
+
+html {
+    height: 100%;
+
+    body {
+        height: 100%;
+        margin: 0;
+        background-color: $body-bg;
+        color: $light-grey;
+        font-family: $fonts;
+        font-weight: 400;
+
+        .top {
+            height: 6px;
+            background-color: $xp-bar;
+            width: 50%;
+        }
+
+        header {
+            display: flex;
+            padding: 15px 15px 0 15px;
+
+            .money {
+                font-size: 1.5em;
+
+                span:first-child {
+                    margin-right: 30px;
+                }
+            }
+
+            .user {
+                margin: 0 auto;
+                text-align: center;
+
+                .pseudo {
+                    font-size: 1.3em;
+                    margin: 0;
+                }
+
+                .lvl {
+                    margin-top: 2px;
+                }
+            }
+
+            .options {
+                font-size: 1.8em;
+
+                a {
+                    color: $light-grey;
+                    margin-left: 5px;
+                }
+            }
+        }
+
+        .content {
+
+        }
+
+        .menu {
+            display: flex;
+            justify-content: center;
+            border-top: 2px solid $light-grey;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+
+            i {
+                margin: 15px;
+                font-size: 3em;
+                cursor: pointer;
+            }
+        }
+    }
+}
