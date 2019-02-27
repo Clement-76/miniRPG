@@ -8,7 +8,7 @@ class ChatManager extends Manager {
      * @return chatMessage[] array of chatMessage objects
      * @throws \Exception
      */
-    public function getChatMessage() {
+    public function getChatMessages() {
         $db = $this->connectDb();
 
         try {
@@ -16,8 +16,8 @@ class ChatManager extends Manager {
                 'SELECT messages.id,
              messages.content,
              messages.creation_date,
-             users.pseudo,
-             users.id 
+             users.pseudo AS author,
+             users.id AS author_id
              FROM minirpg_chat_messages AS messages
              INNER JOIN minirpg_users AS users
              ON messages.user_id = users.id'
@@ -29,15 +29,12 @@ class ChatManager extends Manager {
         $messages = [];
 
         while ($message = $q->fetch()) {
-            var_dump($message);
-            die();
-
             $messageFeatures = [
-                'id' => $message['content'],
-                'content' => $message['title'],
-                'author' => $message['id'],
-                'authorId' => $message['creation_date'],
-                'creationDate' => $message['category'],
+                'id' => $message['id'],
+                'content' => $message['content'],
+                'author' => $message['author'],
+                'authorId' => $message['author_id'],
+                'creationDate' => $message['creation_date'],
             ];
 
             $messages[] = new chatMessage($messageFeatures);
