@@ -24,4 +24,31 @@ class ChatController extends AppController {
             echo json_encode(['error', 'You\'re not connected !']);
         }
     }
+
+    /**
+     * check the message and if there are no errors
+     * instantiate the ChatManager to insert the message
+     * @throws \Exception
+     */
+    public function createMessage() {
+        if (isset($_SESSION['user'])) {
+            if (isset($_POST['message']) && !empty($_POST['message'])) {
+                try {
+                    $chatManager = new ChatManager();
+                    $newMessage = $chatManager->insertMessage([
+                        'authorId' => $_SESSION['user']->getId(),
+                        'content' => $_POST['message'],
+                    ]);
+                } catch (\Exception $e) {
+                    throw new \Exception($e->getMessage());
+                }
+
+                echo json_encode(['success', $newMessage]);
+            } else {
+                echo json_encode(['error', 'No message received']);
+            }
+        } else {
+            echo json_encode(['error', 'You\'re not connected !']);
+        }
+    }
 }

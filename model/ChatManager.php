@@ -42,4 +42,37 @@ class ChatManager extends Manager {
 
         return $messages;
     }
+
+    /**
+     * insert a new message into the db and return the message
+     * @param $message
+     * @return chatMessage
+     * @throws \Exception
+     */
+    public function insertMessage($message) {
+        $db = $this->connectDb();
+
+        try {
+            $q = $db->prepare(
+                'INSERT INTO minirpg_chat_messages(content, user_id) 
+                 VALUES(:content, :authorId)'
+            );
+
+            $q->bindValue(':content', $message['content'], \PDO::PARAM_STR);
+            $q->bindValue(':authorId', $message['authorId'], \PDO::PARAM_INT);
+            $q->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        $messageFeatures = [
+            'id' => $db->lastInsertId(),
+            'content' => $message['content'],
+            'author' => $_SESSION['user']->getPseudo(),
+            'authorId' => $message['authorId'],
+            'creationDate' => time()
+        ];
+
+        return new chatMessage($messageFeatures);
+    }
 }
