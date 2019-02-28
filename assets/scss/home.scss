@@ -1,5 +1,8 @@
 @import "variables";
+@import "scrollbar";
 @import "window";
+@import "mixins/placeholder";
+@import "chat";
 
 html {
     height: 100%;

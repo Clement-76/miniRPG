@@ -1,5 +1,6 @@
 .forms {
-  box-sizing: border-box; 
+  box-sizing: border-box;
+  padding: 20px 40px; 
 }
   .forms .form {
     display: none; 
@@ -110,9 +111,6 @@
 }
       .window .btn-group button:last-child {
         border-width: 0 0 2px 1px; 
-}
-  .window .content {
-    padding: 20px 40px; 
 }
   .window.extra-small {
     width: 33%; 

@@ -1,0 +1,5 @@
+@mixin placeholder {
+    &::placeholder {@content}
+    &::-ms-input-placeholder {@content}
+    &::-webkit-input-placeholder {@content}
+}

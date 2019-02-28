@@ -2,7 +2,7 @@
 
 namespace ClementPatigny\Model;
 
-class chatMessage {
+class chatMessage implements \JsonSerializable {
 
     private $_id;
     private $_content;
@@ -25,6 +25,16 @@ class chatMessage {
                 $this->$setter($value);
             }
         }
+    }
+
+    public function jsonSerialize() {
+        return [
+            'id' => $this->getId(),
+            'content' => $this->getContent(),
+            'author' => $this->getAuthor(),
+            'authorId' => $this->getAuthorId(),
+            'creationDate' => $this->getCreationDate()
+        ];
     }
 
     /**
@@ -96,6 +106,4 @@ class chatMessage {
     public function setCreationDate(string $creationDate) {
         $this->_creationDate = new \DateTime($creationDate);
     }
-
-
 }

@@ -26,19 +26,23 @@
         </div>
     </header>
 
-    <div class="content"></div>
+    <div class="content">
+        {% include 'chat.twig' %}
+    </div>
 
-    <footer class="menu">
-        <i class="fas fa-comment-alt"></i>
-        <i class="fas fa-dna"></i>
-        <i class="fas fa-map-signs"></i>
-        <i class="icon-swords"></i>
-        <i class="icon-treasure"></i>
-        <i class="fab fa-fort-awesome"></i>
-        {# <i class="fas fa-crown"></i> #} {# if the user is an admin #}
-    </footer>
+    {#<footer class="menu">#}
+        {#<i id="chat" class="item fas fa-comment-alt"></i>#}
+        {#<i class="item fas fa-dna"></i>#}
+        {#<i class="item fas fa-map-signs"></i>#}
+        {#<i class="item icon-swords"></i>#}
+        {#<i class="item icon-treasure"></i>#}
+        {#<i class="item fab fa-fort-awesome"></i>#}
+        {# <i class="fas fa-crown"></i> #}{# #}{# if the user is an admin #}
+    {#</footer>#}
 {% endblock %}
 
 {% block scripts %}
     <script src="assets/js/toggleWindow.js"></script>
+    <script src="assets/js/Chat.js"></script>
+    <script src="assets/js/main.js"></script>
 {% endblock %}
