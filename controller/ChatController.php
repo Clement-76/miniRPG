@@ -12,16 +12,45 @@ class ChatController extends AppController {
      */
     public function getJSONChatMessages() {
         if (isset($_SESSION['user'])) {
-            try {
-                $chatManager = new ChatManager();
-                $messages = $chatManager->getChatMessages();
-            } catch (\Exception $e) {
-                throw new \Exception($e->getMessage());
-            }
 
-            echo json_encode(['success', $messages]);
+            if (isset($_POST['lastIdRetrieved'])) {
+                try {
+                    $chatManager = new ChatManager();
+                    $messages = $chatManager->getChatMessages($_POST['lastIdRetrieved']);
+                } catch (\Exception $e) {
+                    throw new \Exception($e->getMessage());
+                }
+
+                // if there are new messages
+                if (!empty($messages)) {
+                    // the id of the last element retrieved
+                    $lastIdRetrieved = $messages[0]->getId();
+
+                    // reverse the messages to have them from the oldest to the newest
+                    $messages = array_reverse($messages);
+
+                    echo json_encode([
+                        'status' => 'success',
+                        'messages' => $messages,
+                        'lastIdRetrieved' => $lastIdRetrieved
+                    ]);
+                } else {
+                    echo json_encode([
+                        'status' => 'success',
+                        'messages' => 'nothing',
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'lastIdRetrieved is missing'
+                ]);
+            }
         } else {
-            echo json_encode(['error', 'You\'re not connected !']);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected !'
+            ]);
         }
     }
 
@@ -43,12 +72,21 @@ class ChatController extends AppController {
                     throw new \Exception($e->getMessage());
                 }
 
-                echo json_encode(['success', $newMessage]);
+                echo json_encode([
+                    'status' => 'success',
+                    'newMessage' => $newMessage
+                ]);
             } else {
-                echo json_encode(['error', 'No message received']);
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'No message received'
+                ]);
             }
         } else {
-            echo json_encode(['error', 'You\'re not connected !']);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected !'
+            ]);
         }
     }
 }

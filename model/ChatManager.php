@@ -5,23 +5,48 @@ namespace ClementPatigny\Model;
 class ChatManager extends Manager {
 
     /**
+     * @param int $lastIdRetrieved = 0 if nothing has been retrieved
      * @return chatMessage[] array of chatMessage objects
      * @throws \Exception
      */
-    public function getChatMessages() {
+    public function getChatMessages($lastIdRetrieved) {
         $db = $this->connectDb();
 
         try {
-            $q = $db->query(
-                'SELECT messages.id,
-             messages.content,
-             messages.creation_date,
-             users.pseudo AS author,
-             users.id AS author_id
-             FROM minirpg_chat_messages AS messages
-             INNER JOIN minirpg_users AS users
-             ON messages.user_id = users.id'
-            );
+            // get the last messages in the db
+            if ($lastIdRetrieved == 0) {
+                $q = $db->query(
+                    'SELECT messages.id,
+                    messages.content,
+                    messages.creation_date,
+                    users.pseudo AS author,
+                    users.id AS author_id
+                    FROM minirpg_chat_messages AS messages
+                    INNER JOIN minirpg_users AS users
+                    ON messages.user_id = users.id
+                    ORDER BY messages.id DESC
+                    LIMIT 0, 20'
+                );
+            } else {
+                $q = $db->prepare(
+                    'SELECT messages.id,
+                    messages.content,
+                    messages.creation_date,
+                    users.pseudo AS author,
+                    users.id AS author_id
+                    FROM minirpg_chat_messages AS messages
+                    INNER JOIN minirpg_users AS users
+                    ON messages.user_id = users.id
+                    WHERE messages.id > :lastIdRetrieved
+                    AND users.id != :authorId
+                    ORDER BY messages.id DESC
+                    LIMIT 0, 20'
+                );
+
+                $q->bindValue(':lastIdRetrieved', $lastIdRetrieved, \PDO::PARAM_INT);
+                $q->bindValue(':authorId', $_SESSION['user']->getId(), \PDO::PARAM_INT);
+                $q->execute();
+            }
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }

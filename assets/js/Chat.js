@@ -1,18 +1,22 @@
 class Chat {
+
     /**
      * @param formId
      * @param messagesAreaId the area where there are all the messages
      * @param textareaId
+     * @param ajaxPollingSeconds the number of seconds between each ajax request to get messages
      */
-    constructor(formId, messagesAreaId, textareaId) {
+    constructor(formId, messagesAreaId, textareaId, ajaxPollingSeconds) {
         this.messages = $('#' + messagesAreaId);
         this.textareaId = textareaId;
+        this.ajaxPollingSeconds = ajaxPollingSeconds * 1000;
+        this.lastIdRetrieved = 0;
         this.getMessages();
         this.textareaHeight();
 
         setInterval(() => {
             this.getMessages();
-        }, 5000);
+        }, this.ajaxPollingSeconds);
 
         $('#' + formId).on("submit", this.sendMessage.bind(this));
     }
@@ -21,12 +25,12 @@ class Chat {
      * auto resizes the textarea when the user writes inside
      */
     textareaHeight() {
-        $('#' + this.textareaId).one('focus', function() {
+        $('#' + this.textareaId).one('focus', function () {
             // 'this' refers to the element, not the object
             this.baseScrollHeight = this.scrollHeight;
         });
 
-        $('#' + this.textareaId).on('input', function() {
+        $('#' + this.textareaId).on('input', function () {
             this.rows = 1; // base number of "rows" on the textarea
             let fontSize = parseInt($(this).css("font-size"));
             let rows = Math.floor((this.scrollHeight - this.baseScrollHeight) / fontSize);
@@ -38,19 +42,20 @@ class Chat {
      * gets all messages with ajax request
      */
     getMessages() {
-        $.get("index.php?action=chat.getJSONChatMessages", (data) => {
-            data = JSON.parse(data);
+        $.post("index.php?action=chat.getJSONChatMessages", {lastIdRetrieved: this.lastIdRetrieved}, (data) => {
+            if (data.status === "success") {
+                // if there are new messages
+                if (data.messages !== 'nothing') {
+                    data.messages.forEach((message) => {
+                        this.displayMessage(message);
+                    });
 
-            if (data[0] === "success") {
-                let messages = data[1];
-
-                messages.forEach((message) => {
-                    this.displayMessage(message);
-                });
+                    this.lastIdRetrieved = data['lastIdRetrieved'];
+                }
             } else {
-                throw new Error(data[1]);
+                throw new Error(data.message);
             }
-        });
+        }, "json");
     }
 
     /**
@@ -65,12 +70,11 @@ class Chat {
 
         if (!emptyRegex.test(message)) {
             $.post("index.php?action=chat.createMessage", {message: message}, (data) => {
-                if (data[0] === 'success') {
+                if (data.status === 'success') {
                     $('#' + this.textareaId).val("");
-                    let newMessage = data[1];
-                    this.displayMessage(newMessage);
+                    this.displayMessage(data.newMessage);
                 } else {
-                    console.error(data[1]);
+                    console.error(data.message);
                     alert('Une erreur est survenue, veuillez réessayer');
                 }
             }, "json");
