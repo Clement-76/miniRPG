@@ -54,12 +54,19 @@ class ChatManager extends Manager {
         $messages = [];
 
         while ($message = $q->fetch()) {
+            if ($message['author_id'] == $_SESSION['user']->getId()) {
+                $owner = true;
+            } else {
+                $owner = false;
+            }
+
             $messageFeatures = [
                 'id' => $message['id'],
                 'content' => $message['content'],
                 'author' => $message['author'],
                 'authorId' => $message['author_id'],
                 'creationDate' => $message['creation_date'],
+                'isOwner' => $owner
             ];
 
             $messages[] = new chatMessage($messageFeatures);
@@ -90,12 +97,19 @@ class ChatManager extends Manager {
             throw new \Exception($e->getMessage());
         }
 
+        if ($message['authorId'] == $_SESSION['user']->getId()) {
+            $owner = true;
+        } else {
+            $owner = false;
+        }
+
         $messageFeatures = [
             'id' => $db->lastInsertId(),
             'content' => $message['content'],
             'author' => $_SESSION['user']->getPseudo(),
             'authorId' => $message['authorId'],
-            'creationDate' => time()
+            'creationDate' => time(),
+            'isOwner' => $owner
         ];
 
         return new chatMessage($messageFeatures);

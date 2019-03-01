@@ -9,6 +9,7 @@ class chatMessage implements \JsonSerializable {
     private $_author;
     private $_authorId;
     private $_creationDate;
+    private $_isOwner;
 
     /**
      * chatMessage constructor.
@@ -33,7 +34,8 @@ class chatMessage implements \JsonSerializable {
             'content' => $this->getContent(),
             'author' => $this->getAuthor(),
             'authorId' => $this->getAuthorId(),
-            'creationDate' => $this->getCreationDate()
+            'creationDate' => $this->getCreationDate(),
+            'isOwner' => $this->getIsOwner()
         ];
     }
 
@@ -105,5 +107,19 @@ class chatMessage implements \JsonSerializable {
      */
     public function setCreationDate(string $creationDate) {
         $this->_creationDate = new \DateTime($creationDate);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsOwner(): bool {
+        return $this->_isOwner;
+    }
+
+    /**
+     * @param bool $isOwner
+     */
+    public function setIsOwner(bool $isOwner) {
+        $this->_isOwner = $isOwner;
     }
 }

@@ -59,14 +59,25 @@ class ChatController extends AppController {
      * instantiate the ChatManager to insert the message
      * @throws \Exception
      */
-    public function createMessage() {
+    public function addMessage() {
         if (isset($_SESSION['user'])) {
             if (isset($_POST['message']) && !empty($_POST['message'])) {
+                $newMessage = htmlspecialchars($_POST['message']);
+                // replaces multiple line breaks by one line break
+                $newMessage = preg_replace("#(\n|\r)+#", "\n", $newMessage);
+                $newMessage = preg_replace("#(.+)(\n)*#", "<p>$1</p>", $newMessage);
+
+                // bold markdown
+                $newMessage = preg_replace("#\*(.+)\*#", "<i>$1</i>", $newMessage);
+
+                // underline markdown
+                $newMessage = preg_replace("#_(.+)_#", "<span class='underline'>$1</span>", $newMessage);
+
                 try {
                     $chatManager = new ChatManager();
                     $newMessage = $chatManager->insertMessage([
                         'authorId' => $_SESSION['user']->getId(),
-                        'content' => $_POST['message'],
+                        'content' => $newMessage,
                     ]);
                 } catch (\Exception $e) {
                     throw new \Exception($e->getMessage());

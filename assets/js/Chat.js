@@ -14,6 +14,8 @@ class Chat {
         this.getMessages();
         this.textareaHeight();
 
+        $('#' + this.textareaId).on("keypress", this.enterDetection.bind(this));
+
         setInterval(() => {
             this.getMessages();
         }, this.ajaxPollingSeconds);
@@ -39,6 +41,18 @@ class Chat {
     }
 
     /**
+     * send a new message if the enter key is pressed but not the shift key
+     * @param e the event object
+     */
+    enterDetection(e) {
+        if (e.keyCode === 13) {
+            if (!e.shiftKey) {
+                this.sendMessage(e);
+            }
+        }
+    }
+
+    /**
      * gets all messages with ajax request
      */
     getMessages() {
@@ -48,9 +62,9 @@ class Chat {
                 if (data.messages !== 'nothing') {
                     data.messages.forEach((message) => {
                         this.displayMessage(message);
-                    });
 
-                    this.lastIdRetrieved = data['lastIdRetrieved'];
+                    });
+                    this.lastIdRetrieved = data.lastIdRetrieved;
                 }
             } else {
                 throw new Error(data.message);
@@ -69,17 +83,19 @@ class Chat {
         let message = $('#' + this.textareaId).val();
 
         if (!emptyRegex.test(message)) {
-            $.post("index.php?action=chat.createMessage", {message: message}, (data) => {
+            $.post("index.php?action=chat.addMessage", {message: message}, (data) => {
                 if (data.status === 'success') {
                     $('#' + this.textareaId).val("");
+                    $('#' + this.textareaId).attr('rows', '1');
+                    $('#' + this.textareaId).focus();
+
+                    this.lastIdRetrieved = data.newMessage.id;
                     this.displayMessage(data.newMessage);
                 } else {
                     console.error(data.message);
                     alert('Une erreur est survenue, veuillez réessayer');
                 }
             }, "json");
-        } else {
-            $('#' + this.textareaId)[0].setCustomValidity("Veuillez entrer un message");
         }
     }
 
@@ -88,12 +104,16 @@ class Chat {
      * @param message
      */
     displayMessage(message) {
-        let $message = $(`<div class="message"></div>`);
-        $message.append(`<p>${message.author}</p>`);
-        $message.append(`<span>${message.content}</span>`);
+        let $message;
 
-        // add that if the pseudo === the player.pseudo
-        // add the class "me" else add "other"
+        if (message.isOwner) {
+            $message = $(`<div class="message me"></div>`);
+        } else {
+            $message = $(`<div class="message other"></div>`);
+        }
+
+        $message.append(`<span class="pseudo">${message.author}</span>`);
+        $message.append(`<div class="content">${message.content}</div>`);
 
         // if the user is at the bottom of the messages div
         if (this.messages.scrollTop() + this.messages.innerHeight() === this.messages.prop('scrollHeight')) {

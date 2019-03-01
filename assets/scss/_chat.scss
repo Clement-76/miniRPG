@@ -6,12 +6,39 @@
         padding: 20px 15px 0 15px;
 
         .message {
-            &.me {
+            width: 65%;
+            margin-bottom: 12px;
+            box-sizing: border-box;
 
+            &.me {
+                margin-left: auto;
+
+                .content {
+                    background-color: $dark-moderate-blue;
+                }
             }
 
-            &.other {
+            &.other .content {
+                background-color: $body-bg;
+            }
 
+            .pseudo {
+                font-size: 0.75em;
+                color: #bdbdbd;
+            }
+
+            .content {
+                padding: 6px 10px;
+                font-size: 0.9em;
+                border-radius: 3px;
+
+                p {
+                    margin: 0;
+                }
+
+                .underline {
+                    text-decoration: underline;
+                }
             }
         }
     }

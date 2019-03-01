@@ -1,6 +1,7 @@
 {% extends "template.twig" %}
 
 {% block links %}
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/icons.css">
     <link rel="stylesheet" href="assets/css/home.css">
@@ -30,15 +31,15 @@
         {% include 'chat.twig' %}
     </div>
 
-    {#<footer class="menu">#}
-        {#<i id="chat" class="item fas fa-comment-alt"></i>#}
-        {#<i class="item fas fa-dna"></i>#}
-        {#<i class="item fas fa-map-signs"></i>#}
-        {#<i class="item icon-swords"></i>#}
-        {#<i class="item icon-treasure"></i>#}
-        {#<i class="item fab fa-fort-awesome"></i>#}
-        {# <i class="fas fa-crown"></i> #}{# #}{# if the user is an admin #}
-    {#</footer>#}
+    <footer class="menu">
+        <i id="chat" class="item fas fa-comment-alt"></i>
+        <i class="item fas fa-dna"></i>
+        <i class="item fas fa-map-signs"></i>
+        <i class="item icon-swords"></i>
+        <i class="item icon-treasure"></i>
+        <i class="item fab fa-fort-awesome"></i>
+         {#<i class="fas fa-crown"></i>   if the user is an admin#}
+    </footer>
 {% endblock %}
 
 {% block scripts %}
