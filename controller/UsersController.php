@@ -158,4 +158,19 @@ class UsersController extends AppController {
             exit();
         }
     }
+
+    public function getJSONUser() {
+        if (isset($_SESSION['user'])) {
+
+            echo json_encode([
+                'status' => 'success',
+                'userFeatures' => $_SESSION['user']
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected !'
+            ]);
+        }
+    }
 }

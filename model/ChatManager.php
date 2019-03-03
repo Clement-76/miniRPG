@@ -69,7 +69,7 @@ class ChatManager extends Manager {
                 'isOwner' => $owner
             ];
 
-            $messages[] = new chatMessage($messageFeatures);
+            $messages[] = new ChatMessage($messageFeatures);
         }
 
         return $messages;
@@ -112,6 +112,6 @@ class ChatManager extends Manager {
             'isOwner' => $owner
         ];
 
-        return new chatMessage($messageFeatures);
+        return new ChatMessage($messageFeatures);
     }
 }

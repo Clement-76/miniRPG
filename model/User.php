@@ -2,7 +2,7 @@
 
 namespace ClementPatigny\Model;
 
-class User {
+class User implements \JsonSerializable {
     private $_id;
     private $_pseudo;
     private $_email;
@@ -43,6 +43,19 @@ class User {
                 $this->$setter($value);
             }
         }
+    }
+
+    public function jsonSerialize() {
+        return [
+            'id' => $this->getId(),
+            'pseudo' => $this->getPseudo(),
+            'xp' => $this->getXp(),
+            'life' => $this->getLife(),
+            'attack' => $this->getAttack(),
+            'defense' => $this->getDefense(),
+            'dollars' => $this->getDollar(),
+            'T' => $this->getT()
+        ];
     }
 
     /**

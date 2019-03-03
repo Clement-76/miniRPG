@@ -62,8 +62,8 @@ class Chat {
                 if (data.messages !== 'nothing') {
                     data.messages.forEach((message) => {
                         this.displayMessage(message);
-
                     });
+
                     this.lastIdRetrieved = data.lastIdRetrieved;
                 }
             } else {

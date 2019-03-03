@@ -2,7 +2,7 @@
 
 namespace ClementPatigny\Model;
 
-class chatMessage implements \JsonSerializable {
+class ChatMessage implements \JsonSerializable {
 
     private $_id;
     private $_content;
@@ -98,7 +98,7 @@ class chatMessage implements \JsonSerializable {
     /**
      * @return object
      */
-    public function getCreationDate(): object {
+    public function getCreationDate(): \DateTime {
         return $this->_creationDate;
     }
 

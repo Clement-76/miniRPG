@@ -22,5 +22,5 @@ if (class_exists($controller) && method_exists($controller, $action)) {
     $controller->$action();
 } else {
     header("HTTP/1.0 404 Not Found");
-    exit;
+    exit();
 }
