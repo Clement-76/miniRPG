@@ -1,9 +1,17 @@
 class User {
 
     constructor() {
+        this.stats = {
+            baseAttack: 0,
+            baseDefense: 0
+        }
+
         this.getUserFeatures();
     }
 
+    /**
+     * @param userFeatures an array
+     */
     hydrate(userFeatures) {
         for (let key in userFeatures) {
             let value = userFeatures[key];
@@ -11,6 +19,10 @@ class User {
         }
     }
 
+    /**
+     * call when we try to set a value to the xp property
+     * @param actualXp
+     */
     set xp(actualXp) {
         actualXp = Number(actualXp);
         let actualLvl;
@@ -43,6 +55,25 @@ class User {
         this.missingXp = missingXp;
     }
 
+    /**
+     * instantiates an Inventory object and stores it in a property
+     * @param inventory
+     */
+    set inventory(inventory) {
+        this.inventoryObj = new Inventory(inventory, this);
+    }
+
+    set attack(attack) {
+        this.stats.baseAttack = attack;
+    }
+
+    set defense(defense) {
+        this.stats.baseDefense = defense;
+    }
+
+    /**
+     * retrieve user data with an ajax request
+     */
     getUserFeatures() {
         $.get('index.php?action=users.getJSONUser', (data) => {
             if (data.status === 'success') {
@@ -54,13 +85,29 @@ class User {
         }, 'json');
     }
 
+    /**
+     * display the user stats in the characteristics window
+     */
     displayUserStats() {
+        let attack = this.stats.baseAttack;
+        let defense = this.stats.baseDefense;
+
+        // if a sword is equipped
+        if (this.inventoryObj.equippedStuff.sword !== null) {
+            attack += this.inventoryObj.equippedStuff.sword.stat;
+        }
+
+        // if a shield is equipped
+        if (this.inventoryObj.equippedStuff.shield !== null) {
+            defense += this.inventoryObj.equippedStuff.shield.stat
+        }
+
         $('.characteristics .pseudo').text(this.pseudo);
         $('.characteristics .lvl').text(`(lvl ${this.lvl})`);
         $('.characteristics .progress').text(`${this.xpPercentage}%`);
         $('.characteristics .progress').css('width', `${this.xpPercentage}%`);
         $('.characteristics .life span').text(this.life);
-        $('.characteristics .attack span').text(this.attack);
-        $('.characteristics .defense span').text(this.defense);
+        $('.characteristics .attack span').text(attack);
+        $('.characteristics .defense span').text(defense);
     }
 }

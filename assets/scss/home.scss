@@ -1,9 +1,11 @@
-@import "variables";
-@import "scrollbar";
-@import "window";
 @import "mixins/placeholder";
+@import "mixins/separator";
+@import "mixins/scrollbar";
+@import "variables";
+@import "window";
 @import "chat";
 @import "characteristics";
+@import "inventory";
 
 html {
     height: 100%;
@@ -80,6 +82,20 @@ html {
                 font-size: 3em;
                 cursor: pointer;
             }
+        }
+
+        .separator {
+            &.vertical {
+                @include separator(vertical, $separator);
+            }
+
+            &.horizontal {
+                @include separator(horizontal, $separator);
+            }
+        }
+
+        .custom-scrollbar {
+            @include scrollbar($windows-bg);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace ClementPatigny\Model;
 
-class Stuff {
+class Stuff implements \JsonSerializable {
     private $_id;
     private $_name;
     private $_type;
@@ -26,6 +26,18 @@ class Stuff {
                 $this->$setter($value);
             }
         }
+    }
+
+    public function jsonSerialize() {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'type' => $this->getType(),
+            'requiredLvl' => $this->getRequiredLvl(),
+            'stat' => $this->getStat(),
+            'rarity' => $this->getRarity(),
+            'equipped' => $this->getEquipped()
+        ];
     }
 
     /**

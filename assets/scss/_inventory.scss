@@ -1,0 +1,140 @@
+.inventory {
+
+    .window-content {
+        display: flex;
+        padding: 10px 0 10px 15px;
+        box-sizing: border-box;
+        height: 485px;
+
+        .stuff {
+            $bd-width-stuff: 2px;
+            border: $bd-width-stuff solid $borders;
+            $width: 75px;
+            width: $width;
+            height: $width;
+            position: relative;
+            box-sizing: border-box;
+            background: $body-bg;
+            cursor: pointer;
+
+            &.selected {
+                background-color: $selected;
+            }
+
+            &.common {
+                border: $bd-width-stuff solid $common;
+            }
+
+            &.rare {
+                border: $bd-width-stuff solid $rare;
+            }
+
+            &.epic {
+                border: $bd-width-stuff solid $epic;
+            }
+
+            &.legendary {
+                border: $bd-width-stuff solid $legendary;
+            }
+
+            [class^="icon-"] {
+                font-size: 2.8em;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .icon-shield {
+                top: calc(50% + 3px);
+            }
+
+            .stat {
+                position: absolute;
+                top: 3px;
+                right: 3px;
+                font-size: 0.75em;
+            }
+        }
+
+        .stuff-infos {
+            flex-basis: 50%;
+            padding-right: 15px;
+            text-align: center;
+
+            .stuff-select {
+
+                .name {
+                    margin-top: 8px;
+                    margin-bottom: 30px;
+                    font-size: 1.25em;
+                }
+
+                .type,
+                .rarity,
+                .stats {
+                    margin-bottom: 25px;
+                }
+
+                .rarity {
+                    &.common {
+                        color: $common;
+                    }
+
+                    &.rare {
+                        color: $rare;
+                    }
+
+                    &.epic {
+                        color: $epic;
+                    }
+
+                    &.legendary {
+                        color: $legendary;
+                    }
+                }
+
+                #equipped {
+                    margin-bottom: 35px;
+                    font-family: $fonts;
+                    background-color: $light-grey;
+                    border: 1px solid $borders;
+                    font-size: 1.125em;
+                    padding: 8px 35px;
+                    cursor: pointer;
+                    outline: none;
+                }
+
+                #unequipped {
+                    @extend #equipped;
+                    display: none;
+                }
+            }
+
+            .currently-equipped {
+                .equipped-stuff {
+                    display: flex;
+                    justify-content: center;
+                    margin-top: 50px;
+
+                    .equipped:first-child {
+                        margin-right: 50px;
+                    }
+                }
+            }
+        }
+
+        .all-stuff {
+            overflow: auto;
+            flex-basis: 360px;
+            padding-left: 15px;
+            @include scrollbar($windows-bg);
+
+            .stuff {
+                display: inline-block;
+                margin: 8px 6px;
+            }
+        }
+
+    }
+}

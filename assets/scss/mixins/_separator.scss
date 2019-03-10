@@ -1,0 +1,14 @@
+/* @direction: horizontal | vertical */
+@mixin separator($direction, $bgcolor, $width: 1px) {
+    background-color: $bgcolor;
+
+    @if ($direction == horizontal) {
+        height: $width;
+        width: 100%;
+    } @else if ($direction == vertical) {
+        height: 100%;
+        width: $width;
+    } @else {
+        @error "bad value '#{$direction}' for $direction variable";
+    }
+}

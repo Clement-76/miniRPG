@@ -10,7 +10,7 @@ class ChatManager extends Manager {
      * @throws \Exception
      */
     public function getChatMessages($lastIdRetrieved) {
-        $db = $this->connectDb();
+        $db = $this->getDb();
 
         try {
             // get the last messages in the db
@@ -82,7 +82,7 @@ class ChatManager extends Manager {
      * @throws \Exception
      */
     public function insertMessage($message) {
-        $db = $this->connectDb();
+        $db = $this->getDb();
 
         try {
             $q = $db->prepare(
@@ -103,12 +103,14 @@ class ChatManager extends Manager {
             $owner = false;
         }
 
+        $currentDate = new \DateTime(null, new \DateTimeZone("Europe/Paris"));
+
         $messageFeatures = [
             'id' => $db->lastInsertId(),
             'content' => $message['content'],
             'author' => $_SESSION['user']->getPseudo(),
             'authorId' => $message['authorId'],
-            'creationDate' => time(),
+            'creationDate' => $currentDate->format("d/m/Y H:i:s"),
             'isOwner' => $owner
         ];
 

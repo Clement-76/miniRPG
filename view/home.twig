@@ -30,6 +30,7 @@
     <div class="content">
         {% include 'chat.twig' %}
         {% include 'characteristics.twig' %}
+        {% include 'inventory.twig' %}
     </div>
 
     {#<footer class="menu">#}
@@ -39,12 +40,14 @@
         {#<i class="item icon-swords"></i>#}
         {#<i class="item icon-treasure"></i>#}
         {#<i class="item fab fa-fort-awesome"></i>#}
-         {#<i class="fas fa-crown"></i>   if the user is an admin#}
+        {#<i class="fas fa-crown"></i>   if the user is an admin#}
     {#</footer>#}
 {% endblock %}
 
 {% block scripts %}
+    <script src="assets/js/create.js"></script>
     <script src="assets/js/toggleWindow.js"></script>
+    <script src="assets/js/Inventory.js"></script>
     <script src="assets/js/User.js"></script>
     <script src="assets/js/Chat.js"></script>
     <script src="assets/js/main.js"></script>

@@ -16,9 +16,7 @@ class Chat {
 
         $('#' + this.textareaId).on("keypress", this.enterDetection.bind(this));
 
-        setInterval(() => {
-            this.getMessages();
-        }, this.ajaxPollingSeconds);
+        setInterval(this.getMessages.bind(this), this.ajaxPollingSeconds);
 
         $('#' + formId).on("submit", this.sendMessage.bind(this));
     }
@@ -104,23 +102,20 @@ class Chat {
      * @param message
      */
     displayMessage(message) {
-        let $message;
+        let authorClass = message.isOwner ? 'me' : 'other';
 
-        if (message.isOwner) {
-            $message = $(`<div class="message me"></div>`);
-        } else {
-            $message = $(`<div class="message other"></div>`);
-        }
-
-        $message.append(`<span class="pseudo">${message.author}</span>`);
-        $message.append(`<div class="content">${message.content}</div>`);
+        let newMessage = create('div', {
+            class: ['message', authorClass],
+            innerHTML: `<span class="pseudo">${message.author}</span>
+                        <div class="content">${message.content}</div>`
+        });
 
         // if the user is at the bottom of the messages div
         if (this.messages.scrollTop() + this.messages.innerHeight() === this.messages.prop('scrollHeight')) {
-            this.messages.append($message);
+            this.messages.append(newMessage);
             this.messages.scrollTop(this.messages.prop('scrollHeight'));
         } else {
-            this.messages.append($message);
+            this.messages.append(newMessage);
         }
     }
 }

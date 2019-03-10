@@ -162,6 +162,15 @@ class UsersController extends AppController {
     public function getJSONUser() {
         if (isset($_SESSION['user'])) {
 
+            try {
+                $userManager = new UserManager();
+                $user = $userManager->getUser($_SESSION['user']->getPseudo(), 'pseudo');
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
+
+            $_SESSION['user'] = $user['userObj'];
+
             echo json_encode([
                 'status' => 'success',
                 'userFeatures' => $_SESSION['user']

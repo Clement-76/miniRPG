@@ -11,7 +11,7 @@ class UserManager extends Manager {
      * @throws \Exception
      */
     public function getUser($login, $loginType) {
-        $db = $this->connectDb();
+        $db = $this->getDb();
 
         try {
             if ($loginType == 'email') {
@@ -22,6 +22,9 @@ class UserManager extends Manager {
 
             $q->execute([$login]);
             $user = $q->fetch();
+
+            $stuffManager = new StuffManager();
+            $stuff = $stuffManager->getPossessionsStuff($user['id']);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
@@ -47,7 +50,8 @@ class UserManager extends Manager {
             'remainingBattles' => $user['remaining_battles'],
             'lastBattle' => $user['last_battle'],
             'adventureBeginning' => $user['adventure_beginning'],
-            'currentAdventureId' => $user['current_adventure_id']
+            'currentAdventureId' => $user['current_adventure_id'],
+            'inventory' => $stuff
         ];
 
         $userObj = new User($userFeatures);
@@ -63,7 +67,7 @@ class UserManager extends Manager {
      * @throws \Exception
      */
     public function createUser($userFeatures) {
-        $db = $this->connectDb();
+        $db = $this->getDb();
 
         try {
             $q = $db->prepare('INSERT INTO minirpg_users(pseudo, email, password, confirmation_key) VALUE(:pseudo, :email, :password, :confirmation_key)');
@@ -85,7 +89,7 @@ class UserManager extends Manager {
      * @throws \Exception
      */
     public function getPseudo($pseudo) {
-        $db = $this->connectDb();
+        $db = $this->getDb();
 
         try {
             $q = $db->prepare('SELECT pseudo FROM minirpg_users WHERE pseudo = ?');
@@ -104,7 +108,7 @@ class UserManager extends Manager {
      * @throws \Exception
      */
     public function getEmail($email) {
-        $db = $this->connectDb();
+        $db = $this->getDb();
 
         try {
             $q = $db->prepare('SELECT email FROM minirpg_users WHERE email = ?');

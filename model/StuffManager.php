@@ -9,11 +9,15 @@ class StuffManager extends Manager {
      * @throws \Exception
      */
     public function getPossessionsStuff($userId) {
-        $db = $this->connectDb();
-        $q = $db->prepare('SELECT * FROM possessions_stuff WHERE user_id = ?');
-        $q->execute([$userId]);
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare('SELECT * FROM minirpg_possessions_stuff WHERE user_id = ?');
+            $q->execute([$userId]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
 
-//        $userStuff = [];
+        $allStuff = [];
 
         while ($userStuff = $q->fetch()) {
             $stuff = $this->getStuff($userStuff['stuff_id']);
@@ -28,10 +32,10 @@ class StuffManager extends Manager {
                 'rarity' => $stuff['rarity'],
             ];
 
-            $userStuff[] = new Stuff($stuffFeatures);
+            $allStuff[] = new Stuff($stuffFeatures);
         }
 
-        return $userStuff;
+        return $allStuff;
     }
 
     /**
@@ -40,12 +44,37 @@ class StuffManager extends Manager {
      * @throws \Exception
      */
     public function getStuff($stuffId) {
-        $db = $this->connectDb();
-        $q = $db->prepare('SELECT * FROM stuff WHERE id = ?');
-        $q->execute([$stuffId]);
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare('SELECT * FROM minirpg_stuff WHERE id = ?');
+            $q->execute([$stuffId]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
         
         $stuffFeatures = $q->fetch();
 
         return $stuffFeatures;
+    }
+
+    public function setEquippedValue($stuffId, $value) {
+        $db = $this->getDb();
+
+        try {
+            $q = $db->prepare(
+                'UPDATE minirpg_possessions_stuff AS stuff
+                 SET equipped = :value
+                 WHERE stuff.id = :stuffId'
+            );
+
+            $success = $q->execute([
+                ':value' => $value,
+                ':stuffId' => $stuffId
+            ]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $success;
     }
 }

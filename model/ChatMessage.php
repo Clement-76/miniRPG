@@ -96,7 +96,7 @@ class ChatMessage implements \JsonSerializable {
     }
 
     /**
-     * @return object
+     * @return \DateTime
      */
     public function getCreationDate(): \DateTime {
         return $this->_creationDate;

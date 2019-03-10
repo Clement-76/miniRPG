@@ -54,8 +54,39 @@ class User implements \JsonSerializable {
             'attack' => $this->getAttack(),
             'defense' => $this->getDefense(),
             'dollars' => $this->getDollar(),
-            'T' => $this->getT()
+            'T' => $this->getT(),
+            'inventory' => $this->getInventory()
         ];
+    }
+
+    /**
+     * if the player owns the stuff returns it if not returns false
+     * @param $stuffId
+     * @return bool
+     */
+    public function hasStuff($stuffId) {
+        foreach ($this->_inventory as $stuff) {
+            if ($stuff->getId() == $stuffId) {
+                return $stuff;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * if there is stuff already equipped, returns it if not returns false
+     * @param $type
+     * @return bool
+     */
+    public function hasStuffEquipped($type) {
+        foreach ($this->_inventory as $stuff) {
+            if ($stuff->getEquipped() && $stuff->getType() == $type) {
+                return $stuff;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -268,10 +299,12 @@ class User implements \JsonSerializable {
     }
 
     /**
-     * @param Stuff[] $inventory collection of Stuff objects
+     * @param Stuff[] $allStuff collection of Stuff objects
      */
-    public function setInventory($inventory) {
-        $this->_inventory = $inventory;
+    public function setInventory($allStuff) {
+        foreach ($allStuff as $stuff) {
+            $this->_inventory[] = $stuff;
+        }
     }
 
     /**
