@@ -8,44 +8,49 @@
 {% endblock %}
 
 {% block content %}
-    <div class="xp-bar">
-        <div class="progress" style="width: {{ session.getXpPercentage() }}%"></div>
-    </div>
+    <header class="top">
+        <div class="xp-bar">
+            <div class="progress" style="width: {{ session.getXpPercentage() }}%"></div>
+        </div>
 
-    <header>
-        <div class="money">
-            <span><i class="fas fa-dollar-sign"></i> {{ session.getDollar() }}</span>
-            <span><i class="fas fa-tenge"></i> {{ session.getT() }}</span>
-        </div>
-        <div class="user">
-            <p class="pseudo">{{ session.getPseudo() }}</p>
-            <p class="lvl">lvl {{ session.getLvl() }}</p>
-        </div>
-        <div class="options">
-            <i class="far fa-question-circle"></i>
-            <a href="index.php?action=users.logout"><i class="fas fa-power-off"></i></a>
+        <div class="info">
+            <div class="money">
+                <span><i class="fas fa-dollar-sign"></i> {{ session.getDollar() }}</span>
+                <span><i class="fas fa-tenge"></i> {{ session.getT() }}</span>
+            </div>
+
+            <div class="user">
+                <p class="pseudo">{{ session.getPseudo() }}</p>
+                <p class="lvl">lvl {{ session.getLvl() }}</p>
+            </div>
+
+            <div class="options">
+                <i class="far fa-question-circle"></i>
+                <a href="index.php?action=users.logout"><i class="fas fa-power-off"></i></a>
+            </div>
         </div>
     </header>
 
-    <div class="content">
+    <div id="content">
         {% include 'chat.twig' %}
         {% include 'characteristics.twig' %}
         {% include 'inventory.twig' %}
     </div>
 
-    {#<footer class="menu">#}
-        {#<i id="chat" class="item fas fa-comment-alt"></i>#}
-        {#<i class="item fas fa-dna"></i>#}
-        {#<i class="item fas fa-map-signs"></i>#}
-        {#<i class="item icon-swords"></i>#}
-        {#<i class="item icon-treasure"></i>#}
-        {#<i class="item fab fa-fort-awesome"></i>#}
+    <footer class="menu">
+        <div id="chat" class="item open"><i class="fas fa-comment-alt"></i></div>
+        <div id="characteristics" class="item"><i class="fas fa-dna"></i></div>
+        <div id="adventures" class="item"><i class="fas fa-map-signs"></i></div>
+        <div id="arena" class="item"><i class="icon-swords"></i></div>
+        <div id="inventory" class="item"><i class="icon-treasure"></i></div>
+        <div id="buildings" class="item"><i class="fab fa-fort-awesome"></i></div>
         {#<i class="fas fa-crown"></i>   if the user is an admin#}
-    {#</footer>#}
+    </footer>
 {% endblock %}
 
 {% block scripts %}
     <script src="assets/js/create.js"></script>
+    <script src="assets/js/WindowRPG.js"></script>
     <script src="assets/js/toggleWindow.js"></script>
     <script src="assets/js/Inventory.js"></script>
     <script src="assets/js/User.js"></script>

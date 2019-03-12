@@ -1,6 +1,7 @@
 /* @direction: horizontal | vertical */
 @mixin separator($direction, $bgcolor, $width: 1px) {
     background-color: $bgcolor;
+    flex-shrink: 0;
 
     @if ($direction == horizontal) {
         height: $width;

@@ -30,10 +30,14 @@
     content: "\e907";
 }
 
-.icon-invisible:before {
-    content: "\e900";
+.icon-close:before {
+    content: "\e902";
 }
 
 .icon-visible:before {
     content: "\e901";
+}
+
+.icon-invisible:before {
+    content: "\e900";
 }
