@@ -1,0 +1,52 @@
+.adventures {
+    width: 782px;
+    box-sizing: border-box;
+    right: 10px;
+    bottom: 30px;
+
+    .window-content {
+        box-sizing: border-box;
+        height: 350px;
+        overflow: auto;
+        padding: 10px 55px;
+        @include scrollbar($windows-bg);
+
+        #adventures {
+
+            .adventure {
+                border-bottom: 1px solid $separator;
+                position: relative;
+                padding: 10px 0;
+
+                > p {
+                    margin: 0;
+                }
+
+                .start-adventure {
+                    position: absolute;
+                    top: 10px;
+                    right: 0;
+
+                    button {
+                        font-family: $fonts;
+                        background-color: $light-grey;
+                        border: 1px solid $borders;
+                        font-size: 1.125em;
+                        padding: 3px 25px;
+                        cursor: pointer;
+                        outline: none;
+                    }
+
+                    .required-lvl {
+                        margin: 0;
+                        font-size: 0.7em;
+
+                        &.not-allowed {
+                            color: $error;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

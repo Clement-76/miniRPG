@@ -7,6 +7,7 @@ $(function() {
         let window = new WindowRPG(windowClass, 'content');
     });
 
-    let user = new User();
-    let chat = new Chat('chat-form', 'chat-messages', 'user-message', 1);
+    let userObj = new User();
+    let chatObj = new Chat('chat-form', 'chat-messages', 'user-message', 1);
+    let adventuresObj = new Adventures('adventures', userObj);
 });

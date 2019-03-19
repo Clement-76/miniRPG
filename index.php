@@ -1,6 +1,7 @@
 <?php
 
 define('ROOT', __DIR__);
+date_default_timezone_set('Europe/Paris');
 
 require 'composer/vendor/autoload.php';
 session_start();

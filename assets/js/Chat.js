@@ -65,7 +65,7 @@ class Chat {
                     this.lastIdRetrieved = data.lastIdRetrieved;
                 }
             } else {
-                throw new Error(data.message);
+                console.error(data.message);
             }
         }, "json");
     }

@@ -103,14 +103,12 @@ class ChatManager extends Manager {
             $owner = false;
         }
 
-        $currentDate = new \DateTime(null, new \DateTimeZone("Europe/Paris"));
-
         $messageFeatures = [
             'id' => $db->lastInsertId(),
             'content' => $message['content'],
             'author' => $_SESSION['user']->getPseudo(),
             'authorId' => $message['authorId'],
-            'creationDate' => $currentDate->format("d/m/Y H:i:s"),
+            'creationDate' => 'NOW',
             'isOwner' => $owner
         ];
 
