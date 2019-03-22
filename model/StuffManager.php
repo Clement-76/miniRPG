@@ -77,4 +77,50 @@ class StuffManager extends Manager {
 
         return $success;
     }
+
+    /**
+     * @param $maxRequiredLvl
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getStuffInfoWhereMaxRequiredLvl($maxRequiredLvl) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare('SELECT * FROM minirpg_stuff WHERE required_lvl <= ?');
+            $q->execute([$maxRequiredLvl]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        $allStuff = [];
+
+        while ($stuff = $q->fetch()) {
+            $stuffInfo = [
+                'id' => $stuff['id'],
+                'rarity' => $stuff['rarity'],
+            ];
+
+            $allStuff[] = $stuffInfo;
+        }
+
+        return $allStuff;
+    }
+
+    /**
+     * @param $userId
+     * @param $stuffId
+     * @throws \Exception
+     */
+    public function createPossessionStuff($userId, $stuffId) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare('INSERT INTO minirpg_possessions_stuff(user_id, stuff_id) VALUES(:userId, :stuffId)');
+            $q->execute([
+                ':userId' => $userId,
+                ':stuffId' => $stuffId
+            ]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
 }

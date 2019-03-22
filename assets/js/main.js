@@ -8,6 +8,7 @@ $(function() {
     });
 
     let userObj = new User();
+    console.log(userObj);
     let chatObj = new Chat('chat-form', 'chat-messages', 'user-message', 1);
     let adventuresObj = new Adventures('adventures', userObj);
 });

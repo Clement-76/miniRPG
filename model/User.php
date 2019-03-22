@@ -46,6 +46,8 @@ class User implements \JsonSerializable {
     }
 
     public function jsonSerialize() {
+        $adventureBeginning = $this->_adventureBeginning == null ? null : $this->_adventureBeginning->getTimestamp() * 1000;
+
         return [
             'id' => $this->getId(),
             'pseudo' => $this->getPseudo(),
@@ -55,7 +57,9 @@ class User implements \JsonSerializable {
             'defense' => $this->getDefense(),
             'dollars' => $this->getDollar(),
             'T' => $this->getT(),
-            'inventory' => $this->getInventory()
+            'inventory' => $this->getInventory(),
+            'adventureBeginning' => $adventureBeginning,
+            'currentAdventureId' => $this->getCurrentAdventureId()
         ];
     }
 
@@ -288,14 +292,18 @@ class User implements \JsonSerializable {
      * @param string $adventureBeginning the date when the adventure started
      */
     public function setAdventureBeginning($adventureBeginning) {
-        $this->_adventureBeginning = new \DateTime($adventureBeginning);
+        if (!empty($adventureBeginning)) {
+            $this->_adventureBeginning = new \DateTime($adventureBeginning);
+        } else {
+            $this->_adventureBeginning = null;
+        }
     }
 
     /**
      * @param int $currentAdventureId
      */
     public function setCurrentAdventureId($currentAdventureId) {
-        $this->_currentAdventureId = (int)$currentAdventureId;
+        $this->_currentAdventureId = (int) $currentAdventureId;
     }
 
     /**

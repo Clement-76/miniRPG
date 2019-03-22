@@ -9,6 +9,8 @@ class Adventure implements \JsonSerializable {
     private $_duration;
     private $_rewards;
     private $_requiredLvl;
+    private $_dollars;
+    private $_xp;
 
     /**
      * Adventure constructor.
@@ -67,16 +69,16 @@ class Adventure implements \JsonSerializable {
     }
 
     /**
-     * @return \DateTime
+     * @return int
      */
-    public function getDuration(): \DateTime {
+    public function getDuration(): int {
         return $this->_duration;
     }
 
     /**
-     * @param string $duration
+     * @param int $duration
      */
-    public function setDuration(string $duration) {
+    public function setDuration(int $duration) {
         $this->_duration = $duration;
     }
 
@@ -106,5 +108,33 @@ class Adventure implements \JsonSerializable {
      */
     public function setRequiredLvl(int $requiredLvl) {
         $this->_requiredLvl = $requiredLvl;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDollars(): int {
+        return $this->_dollars;
+    }
+
+    /**
+     * @param int $dollars
+     */
+    public function setDollars(int $dollars) {
+        $this->_dollars = $dollars;
+    }
+
+    /**
+     * @return int
+     */
+    public function getXp(): int {
+        return $this->_xp;
+    }
+
+    /**
+     * @param int $xp
+     */
+    public function setXp(int $xp) {
+        $this->_xp = $xp;
     }
 }

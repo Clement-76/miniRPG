@@ -81,6 +81,7 @@ class UsersController extends AppController {
                 }
 
                 if (!preg_match('#^[a-z\d]+([.\-_]{1}[a-z\d]+)*@[a-z\d]+\.[a-z]+$#', $_POST['email'])) {
+
                     $registerErrors['email'] = true;
                     $registerErrors['errors'] = true;
                 }

@@ -120,4 +120,29 @@ class UserManager extends Manager {
 
         return $email;
     }
+
+    /**
+     * start a new adventure for the user currently connected
+     * @param $adventureId
+     * @param $userId
+     * @return bool
+     * @throws \Exception
+     */
+    public function startAdventure($adventureId, $userId) {
+        $db = $this->getDb();
+
+        try {
+            $q = $db->prepare(
+                'UPDATE minirpg_users
+                 SET adventure_beginning = NOW(), current_adventure_id = ?
+                 WHERE id = ?'
+            );
+            $q->execute([$adventureId, $userId]);
+            $count =$q->rowCount();
+        } catch (Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $count > 0;
+    }
 }
