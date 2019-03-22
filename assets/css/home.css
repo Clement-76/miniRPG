@@ -164,7 +164,9 @@
         .characteristics .window-content .xp .bar .progress {
           height: 21px;
           text-align: center;
-          background-color: #316278; 
+          background-color: #316278;
+          font-size: 0.7em;
+          line-height: 21px; 
 }
 
 .inventory {

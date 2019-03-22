@@ -34,6 +34,17 @@ class Inventory {
         this.unequippedBtn.on('click', this.unequipStuff.bind(this));
     }
 
+    /**
+     * adds the new stuff in the inventory
+     * @param stuff
+     */
+    addStuff(stuff) {
+        this.nbStuff++;
+        this.setRarityInfos(stuff);
+        this.displayStuff(stuff, false);
+        this.inventory.push(stuff);
+    }
+
     displayStuff(stuff, isFirstStuff) {
         let cssClasses = ['stuff', stuff.type, stuff.rarityClass];
 

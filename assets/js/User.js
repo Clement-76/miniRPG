@@ -50,7 +50,7 @@ class User {
             missingXp += 100 * Math.pow(actualLvl + 2, 2);
         }
 
-        this.xpPercentage = actualXp / xpTotal * 100;
+        this.xpPercentage = Math.round(actualXp / xpTotal * 100);
         this.lvl = actualLvl;
         this.missingXp = missingXp;
     }
@@ -99,11 +99,14 @@ class User {
 
         // if a shield is equipped
         if (this.inventoryObj.equippedStuff.shield !== null) {
-            defense += this.inventoryObj.equippedStuff.shield.stat
+            defense += this.inventoryObj.equippedStuff.shield.stat;
         }
 
-        $('.characteristics .pseudo').text(this.pseudo);
+        $('#dollars').html(`<i class="fas fa-dollar-sign"></i> ${this.dollars}`);
+        $('#tenge').html(`<i class="fas fa-tenge"></i> ${this.T}`);
+        $('.characteristics .pseudo').html(this.pseudo);
         $('.characteristics .lvl').text(`(lvl ${this.lvl})`);
+        $('.xp-bar .progress').css('width', `${this.xpPercentage}%`);
         $('.characteristics .progress').text(`${this.xpPercentage}%`);
         $('.characteristics .progress').css('width', `${this.xpPercentage}%`);
         $('.characteristics .life span').text(this.life);

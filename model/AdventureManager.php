@@ -76,19 +76,4 @@ class AdventureManager extends Manager {
             return false;
         }
     }
-
-    public function resetAdventure($userId) {
-        try {
-            $db = $this->getDb();
-            $q = $db->prepare(
-                'UPDATE minirpg_users 
-                 SET current_adventure_id = NULL,
-                 adventure_beginning = NULL
-                 WHERE id = ?'
-            );
-            $q->execute([$userId]);
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
-        }
-    }
 }

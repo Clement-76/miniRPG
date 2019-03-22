@@ -145,4 +145,33 @@ class UserManager extends Manager {
 
         return $count > 0;
     }
+
+    /**
+     * updates the number of dollars and xp of the user and reset the user's adventure
+     * @param $userId
+     * @param $dollars
+     * @param $xp
+     * @throws \Exception
+     */
+    public function updateUser($userId, $dollars, $xp) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare(
+                'UPDATE minirpg_users 
+                 SET current_adventure_id = NULL,
+                 adventure_beginning = NULL,
+                 $ = :dollars,
+                 xp = :xp
+                 WHERE id = :userId'
+            );
+
+            $q->execute([
+                ':userId' => $userId,
+                ':dollars' => $dollars,
+                ':xp' => $xp
+            ]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
 }

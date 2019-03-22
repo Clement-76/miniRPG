@@ -51,7 +51,7 @@ class StuffManager extends Manager {
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
-        
+
         $stuffFeatures = $q->fetch();
 
         return $stuffFeatures;
@@ -83,32 +83,56 @@ class StuffManager extends Manager {
      * @return mixed
      * @throws \Exception
      */
-    public function getStuffInfoWhereMaxRequiredLvl($maxRequiredLvl) {
+    public function getStuffIdsWhereMaxRequiredLvl($maxRequiredLvl) {
         try {
             $db = $this->getDb();
-            $q = $db->prepare('SELECT * FROM minirpg_stuff WHERE required_lvl <= ?');
+            $q = $db->prepare('SELECT stuff.id FROM minirpg_stuff AS stuff WHERE required_lvl <= ?');
             $q->execute([$maxRequiredLvl]);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
 
-        $allStuff = [];
+        $stuffIds = [];
 
         while ($stuff = $q->fetch()) {
-            $stuffInfo = [
-                'id' => $stuff['id'],
-                'rarity' => $stuff['rarity'],
-            ];
-
-            $allStuff[] = $stuffInfo;
+            $stuffIds[] = $stuff['id'];
         }
 
-        return $allStuff;
+        return $stuffIds;
+    }
+
+    public function getPossessionStuff($possessionStuffId) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare('SELECT * FROM minirpg_possessions_stuff WHERE minirpg_possessions_stuff.id = ?');
+            $q->execute([$possessionStuffId]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        $userStuff = $q->fetch();
+        $stuff = $this->getStuff($userStuff['stuff_id']);
+
+        $stuffFeatures = [
+            'id' => $userStuff['id'],
+            'equipped' => $userStuff['equipped'],
+            'name' => $stuff['name'],
+            'type' => $stuff['type'],
+            'requiredLvl' => $stuff['required_lvl'],
+            'stat' => $stuff['stat'],
+            'rarity' => $stuff['rarity'],
+        ];
+
+        $stuff = new Stuff($stuffFeatures);
+
+        return $stuff;
     }
 
     /**
+     * add a new stuff to the user and returns the stuff added
      * @param $userId
      * @param $stuffId
+     * @return Stuff
      * @throws \Exception
      */
     public function createPossessionStuff($userId, $stuffId) {
@@ -119,8 +143,12 @@ class StuffManager extends Manager {
                 ':userId' => $userId,
                 ':stuffId' => $stuffId
             ]);
+
+            $stuff = $this->getPossessionStuff($db->lastInsertId());
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
+
+        return $stuff;
     }
 }

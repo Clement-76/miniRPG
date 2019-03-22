@@ -99,7 +99,10 @@ class Adventures {
             if (data.status === "success") {
                 this.currentAdventure = null;
                 this.user.adventureBeginning = null;
-                // recompenses (php + js) ---------------------------------------------------------------------
+                this.user.inventoryObj.addStuff(data['stuff']);
+                this.user.dollars = data['dollars'];
+                this.user.xp = data['xp'];
+                this.user.displayUserStats();
             } else {
                 console.error(data.message);
             }
@@ -124,7 +127,6 @@ class Adventures {
                 remainingSeconds -= 1;
                 $(timeP).text(toHHMMSS(remainingSeconds));
             } else {
-                console.log('jambon');
                 $(timeP).remove();
                 $(startBtn).siblings('p').show();
                 $(startBtn).show();
@@ -144,7 +146,6 @@ class Adventures {
             if (this.user.lvl >= adventure.requiredLvl) {
                 $.post("index.php?action=adventures.startAdventure", {adventureId: adventure.id}, (data) => {
                     if (data.status === "success") {
-                        console.log(data);
                         this.currentAdventure = adventure;
                         this.user.adventureBeginning = Date.now();
                         this.adventureTimer();

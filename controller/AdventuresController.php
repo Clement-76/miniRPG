@@ -39,6 +39,7 @@ class AdventuresController extends AppController {
             // if the user is in an adventure
             if ($_SESSION['user']->getCurrentAdventureId() != 0) {
                 try {
+                    $userManager = new UserManager();
                     $adventuresManager = new AdventureManager();
                     $adventure = $adventuresManager->getAdventure($_SESSION['user']->getCurrentAdventureId());
                 } catch (\Exception $e) {
@@ -47,29 +48,37 @@ class AdventuresController extends AppController {
 
                 // if the user is in an adventure that is done
                 if ($this->checkAdventureStatus($adventure) === 'end') {
-                    // reset value
+                    // reset values
                     $_SESSION['user']->setAdventureBeginning(null);
                     $_SESSION['user']->setCurrentAdventureId(null);
 
                     // create the rewards
                     $randomPercentageXp = mt_rand(70, 100) / 100;
                     $xpGained = $randomPercentageXp * $adventure->getXp();
+                    $totalXp = ceil($_SESSION['user']->getXp() + $xpGained);
 
                     $randomPercentageDollars = mt_rand(70, 100) / 100;
                     $dollarsGained = $randomPercentageDollars * $adventure->getDollars();
+                    $totalDollars = ceil($_SESSION['user']->getDollar() + $dollarsGained);
 
                     $stuffManager = new StuffManager();
-                    $stuffInfo = $stuffManager->getStuffInfoWhereMaxRequiredLvl($_SESSION['user']->getLvl());
-                    $stuffIdGained = array_rand($stuffInfo)['id'];
+                    $stuffIds = $stuffManager->getStuffIdsWhereMaxRequiredLvl($_SESSION['user']->getLvl());
+                    $randomStuffIndex = array_rand($stuffIds);
+                    $stuffGainedId = $stuffIds[$randomStuffIndex];
 
-                    $stuffManager->createPossessionStuff($_SESSION['user']->getId(), $stuffIdGained);
+                    $stuffGained = $stuffManager->createPossessionStuff($_SESSION['user']->getId(), $stuffGainedId);
+                    $userManager->updateUser($_SESSION['user']->getId(), $totalDollars, $totalXp);
 
-                    // remove the current adventure
-                    $adventuresManager->resetAdventure($_SESSION['user']->getId());
+                    // put new values
+                    $_SESSION['user']->setInventory($stuffGained);
+                    $_SESSION['user']->setDollar($totalDollars);
+                    $_SESSION['user']->setXp($totalXp);
 
-                    // echo the rewards (xp, stuff, $)
                     echo json_encode([
-                        'status' => 'success'
+                        'status' => 'success',
+                        'stuff' => $stuffGained,
+                        'dollars' => $totalDollars,
+                        'xp' => $totalXp
                     ]);
                 } else {
                     echo json_encode([
