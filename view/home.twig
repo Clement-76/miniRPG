@@ -10,13 +10,13 @@
 {% block content %}
     <header class="top">
         <div class="xp-bar">
-            <div class="progress" style="width: {{ session.getXpPercentage() }}%"></div>
+            <div class="progress"></div>
         </div>
 
         <div class="info">
             <div class="money">
-                <span id="dollars"><i class="fas fa-dollar-sign"></i> {{ session.getDollar() }}</span>
-                <span id="tenge"><i class="fas fa-tenge"></i> {{ session.getT() }}</span>
+                <span id="dollars"></span>
+                <span id="tenge"></span>
             </div>
 
             <div class="user">
@@ -52,6 +52,7 @@
 {% block scripts %}
     <script src="assets/js/toHHMMSS.js"></script>
     <script src="assets/js/create.js"></script>
+    <script src="assets/js/Modal.js"></script>
     <script src="assets/js/WindowRPG.js"></script>
     <script src="assets/js/toggleWindow.js"></script>
     <script src="assets/js/Adventures.js"></script>

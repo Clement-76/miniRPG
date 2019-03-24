@@ -180,46 +180,6 @@
     box-sizing: border-box;
     height: 485px; 
 }
-    .inventory .window-content .stuff {
-      border: 2px solid #000;
-      width: 75px;
-      height: 75px;
-      position: relative;
-      box-sizing: border-box;
-      background: #212121;
-      cursor: pointer; 
-}
-      .inventory .window-content .stuff.selected {
-        background-color: #515151; 
-}
-      .inventory .window-content .stuff.common {
-        border: 2px solid #79ba43; 
-}
-      .inventory .window-content .stuff.rare {
-        border: 2px solid #1f91d0; 
-}
-      .inventory .window-content .stuff.epic {
-        border: 2px solid #9734bd; 
-}
-      .inventory .window-content .stuff.legendary {
-        border: 2px solid #d47f2f; 
-}
-      .inventory .window-content .stuff [class^="icon-"] {
-        font-size: 2.8em;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%); 
-}
-      .inventory .window-content .stuff .icon-shield {
-        top: calc(50% + 3px); 
-}
-      .inventory .window-content .stuff .stat {
-        position: absolute;
-        top: 3px;
-        right: 3px;
-        font-size: 0.75em; 
-}
     .inventory .window-content .stuff-infos {
       flex-basis: 50%;
       padding-right: 15px;
@@ -290,6 +250,47 @@
         margin: 8px 6px; 
 }
 
+.stuff {
+  border: 2px solid #000;
+  width: 75px;
+  height: 75px;
+  position: relative;
+  box-sizing: border-box;
+  background: #212121;
+  cursor: pointer; 
+}
+  .stuff.selected {
+    background-color: #515151; 
+}
+  .stuff.common {
+    border: 2px solid #79ba43; 
+}
+  .stuff.rare {
+    border: 2px solid #1f91d0; 
+}
+  .stuff.epic {
+    border: 2px solid #9734bd; 
+}
+  .stuff.legendary {
+    border: 2px solid #d47f2f; 
+}
+  .stuff [class^="icon-"] {
+    font-size: 2.8em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+}
+  .stuff .icon-shield {
+    top: calc(50% + 3px); 
+}
+  .stuff .stat {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    font-size: 0.75em; 
+}
+
 .adventures {
   width: 782px;
   box-sizing: border-box;
@@ -342,6 +343,40 @@
 }
           .adventures .window-content #adventures .adventure .start-adventure .required-lvl.not-allowed {
             color: #b10b28; 
+}
+
+.modal .modal-overlay {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+  .modal .modal-overlay .modal-content {
+    background-color: #2b2b2b;
+    padding: 8px 10px;
+    font-size: 1.15em;
+    border-top: 5px solid #316278; 
+}
+    .modal .modal-overlay .modal-content.adventure-completed {
+      width: 450px;
+      padding: 10px 15px; 
+}
+    .modal .modal-overlay .modal-content .modal-close {
+      font-size: 1.2em;
+      display: flex;
+      justify-content: flex-end; 
+}
+      .modal .modal-overlay .modal-content .modal-close i {
+        cursor: pointer; 
+}
+    .modal .modal-overlay .modal-content .error-message {
+      margin: 6px 12px 18px 12px; 
 }
 
 html {

@@ -43,6 +43,8 @@ class Inventory {
         this.setRarityInfos(stuff);
         this.displayStuff(stuff, false);
         this.inventory.push(stuff);
+
+        return stuff;
     }
 
     displayStuff(stuff, isFirstStuff) {

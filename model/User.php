@@ -20,7 +20,6 @@ class User implements \JsonSerializable {
     private $_dollar;
     private $_T;
     private $_xp;
-    private $_xpPercentage;
     private $_lvl;
     private $_remainingBattles;
     private $_lastBattle;
@@ -91,6 +90,13 @@ class User implements \JsonSerializable {
         }
 
         return false;
+    }
+
+    /**
+     * @param Stuff $stuff
+     */
+    public function addStuff(Stuff $stuff) {
+        $this->_inventory[] = $stuff;
     }
 
     /**
@@ -253,25 +259,11 @@ class User implements \JsonSerializable {
             }
         }
 
-        $missingXp = $xpTotal - $actualXp;
-
         if ($actualXp > $xpTotal) {
             $actualLvl = 100;
-            $missingXp = 0;
-        } else if ($xpTotal == $actualXp) {
-            $missingXp += 100 * pow($actualLvl + 2, 2);
         }
 
-        $xpPercentage = $actualXp / $xpTotal * 100;
-        $this->setXpPercentage($xpPercentage);
         $this->_lvl = $actualLvl;
-    }
-
-    /**
-     * @param int $xpPercentage
-     */
-    public function setXpPercentage($xpPercentage) {
-        $this->_xpPercentage = (int) $xpPercentage;
     }
 
     /**
@@ -439,13 +431,6 @@ class User implements \JsonSerializable {
      */
     public function getLvl() {
         return $this->_lvl;
-    }
-
-    /**
-     * @return int
-     */
-    public function getXpPercentage() {
-        return $this->_xpPercentage;
     }
 
     /**

@@ -1,0 +1,41 @@
+.modal {
+
+    .modal-overlay {
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .modal-content {
+            background-color: $windows-bg;
+            padding: 8px 10px;
+            font-size: 1.15em;
+            border-top: 5px solid $dark-moderate-blue;
+
+            &.adventure-completed {
+                width: 450px;
+                padding: 10px 15px;
+            }
+
+            .modal-close {
+                font-size: 1.2em;
+                display: flex;
+                justify-content: flex-end;
+
+                i {
+                    cursor: pointer;
+                }
+            }
+
+            .error-message {
+                margin: 6px 12px 18px 12px;
+            }
+        }
+    }
+}

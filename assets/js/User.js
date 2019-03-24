@@ -50,9 +50,10 @@ class User {
             missingXp += 100 * Math.pow(actualLvl + 2, 2);
         }
 
-        this.xpPercentage = Math.round(actualXp / xpTotal * 100);
         this.lvl = actualLvl;
         this.missingXp = missingXp;
+        this.totalXpNeededForThisLvl = 100 * Math.pow(actualLvl + 2, 2);
+        this.xpPercentage = Math.floor(((this.totalXpNeededForThisLvl - this.missingXp) / this.totalXpNeededForThisLvl) * 100);
     }
 
     /**
@@ -106,6 +107,7 @@ class User {
         $('#tenge').html(`<i class="fas fa-tenge"></i> ${this.T}`);
         $('.characteristics .pseudo').html(this.pseudo);
         $('.characteristics .lvl').text(`(lvl ${this.lvl})`);
+        $('.user .lvl').text(`lvl ${this.lvl}`);
         $('.xp-bar .progress').css('width', `${this.xpPercentage}%`);
         $('.characteristics .progress').text(`${this.xpPercentage}%`);
         $('.characteristics .progress').css('width', `${this.xpPercentage}%`);

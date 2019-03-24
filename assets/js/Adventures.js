@@ -103,10 +103,23 @@ class Adventures {
                 this.user.dollars = data['dollars'];
                 this.user.xp = data['xp'];
                 this.user.displayUserStats();
+
+                this.showRewards(data['xpGained'], data['dollarsGained'], data['stuff']);
             } else {
                 console.error(data.message);
             }
         }, "json");
+    }
+
+    showRewards(xpGained, dollarsGained, stuffGained) {
+        let modalContent = create('div', null);
+        create('h3', {text: `Votre aventure est terminée`}, modalContent);
+        create('p', {text: `Vous avez gagné ${xpGained}xp`}, modalContent);
+        create('p', {text: `Vous avez gagné ${dollarsGained}$`}, modalContent);
+        create('p', {text: `Vous avez reçu un nouvel équipement :`}, modalContent);
+        create('div', {class: ['stuff', stuffGained.rarityClass], innerHTML: stuffGained.htmlElt.innerHTML}, modalContent);
+
+        new Modal(modalContent, ['adventure-completed']);
     }
 
     /**
@@ -154,10 +167,10 @@ class Adventures {
                     }
                 }, "json");
             } else {
-                console.log('You don\'t have the lvl');
+                new Modal(create('p', {class: 'error-message', text: `Vous n'avez pas le niveau nécessaire`}));
             }
         } else {
-            console.log('You\'re already in an adventure');
+            new Modal(create('p', {class: 'error-message', text: `Vous êtes déjà dans une aventure`}));
         }
     }
 }

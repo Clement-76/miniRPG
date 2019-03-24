@@ -54,11 +54,11 @@ class AdventuresController extends AppController {
 
                     // create the rewards
                     $randomPercentageXp = mt_rand(70, 100) / 100;
-                    $xpGained = $randomPercentageXp * $adventure->getXp();
+                    $xpGained = ceil($randomPercentageXp * $adventure->getXp());
                     $totalXp = ceil($_SESSION['user']->getXp() + $xpGained);
 
                     $randomPercentageDollars = mt_rand(70, 100) / 100;
-                    $dollarsGained = $randomPercentageDollars * $adventure->getDollars();
+                    $dollarsGained = ceil($randomPercentageDollars * $adventure->getDollars());
                     $totalDollars = ceil($_SESSION['user']->getDollar() + $dollarsGained);
 
                     $stuffManager = new StuffManager();
@@ -70,7 +70,7 @@ class AdventuresController extends AppController {
                     $userManager->updateUser($_SESSION['user']->getId(), $totalDollars, $totalXp);
 
                     // put new values
-                    $_SESSION['user']->setInventory($stuffGained);
+                    $_SESSION['user']->addStuff($stuffGained);
                     $_SESSION['user']->setDollar($totalDollars);
                     $_SESSION['user']->setXp($totalXp);
 
@@ -78,7 +78,9 @@ class AdventuresController extends AppController {
                         'status' => 'success',
                         'stuff' => $stuffGained,
                         'dollars' => $totalDollars,
-                        'xp' => $totalXp
+                        'xp' => $totalXp,
+                        'dollarsGained' => $dollarsGained,
+                        'xpGained' => $xpGained
                     ]);
                 } else {
                     echo json_encode([
