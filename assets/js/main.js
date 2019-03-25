@@ -13,5 +13,5 @@ $(function() {
 
     let userObj = new User();
     let chatObj = new Chat('chat-form', 'chat-messages', 'user-message', 1);
-    let adventuresObj = new Adventures('adventures', 'adventures-admin-container', userObj);
+    let adventuresObj = new Adventures('adventures', 'adventures-admin-container', 'create-adventure', userObj);
 });

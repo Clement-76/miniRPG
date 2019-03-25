@@ -77,6 +77,10 @@ class AdventureManager extends Manager {
         }
     }
 
+    /**
+     * @param $adventureId
+     * @throws \Exception
+     */
     public function deleteAdventure($adventureId) {
         try {
             $db = $this->getDb();
@@ -84,6 +88,43 @@ class AdventureManager extends Manager {
             $q->execute([$adventureId]);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * @param $name
+     * @param $duration
+     * @param $requiredLvl
+     * @param $dollars
+     * @param $xp
+     * @return bool|Adventure
+     * @throws \Exception
+     */
+    public function createAdventure($name, $duration, $requiredLvl, $dollars, $xp) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare(
+                'INSERT INTO minirpg_adventures(name, duration, required_lvl, dollars, xp) 
+                 VALUES(:name, :duration, :required_lvl, :dollars, :xp)'
+            );
+
+            $q->bindValue(':name', $name, \PDO::PARAM_STR);
+            $q->bindValue(':duration', $duration, \PDO::PARAM_INT);
+            $q->bindValue(':required_lvl', $requiredLvl, \PDO::PARAM_INT);
+            $q->bindValue(':dollars', $dollars, \PDO::PARAM_INT);
+            $q->bindValue(':xp', $xp, \PDO::PARAM_INT);
+
+            $notErrors = $q->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        if ($notErrors) {
+            $lastInsertId = $db->lastInsertId();
+            $adventure = $this->getAdventure($lastInsertId);
+            return $adventure;
+        } else {
+            return false;
         }
     }
 }

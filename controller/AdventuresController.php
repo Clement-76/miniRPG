@@ -225,4 +225,47 @@ class AdventuresController extends AppController {
             ]);
         }
     }
+
+    public function createAdventure() {
+        if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'admin') {
+            if (isset($_POST['name'], $_POST['duration'], $_POST['requiredLvl'], $_POST['dollars'], $_POST['xp'])) {
+
+                $errors = false;
+
+                if (!(is_int($_POST['duration']) && is_int($_POST['requiredLvl']) && is_int($_POST['dollars']) && is_int($_POST['xp']))) {
+                    $errors = false;
+                }
+
+                try {
+                    $adventureManager = new AdventureManager();
+                    $adventure = $adventureManager->createAdventure($_POST['name'], $_POST['duration'], $_POST['requiredLvl'], $_POST['dollars'], $_POST['xp']);
+                } catch (\Exception $e) {
+                    throw new \Exception($e->getMessage());
+                }
+
+                // if the request was successfully executed
+                if ($adventure != false) {
+                    echo json_encode([
+                        'status' => 'success',
+                        'adventure' => $adventure
+                    ]);
+                } else {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => 'An unexpected error occurred'
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Undefined POST data'
+                ]);
+            }
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected or you\'re not an admin'
+            ]);
+        }
+    }
 }

@@ -26,8 +26,12 @@ class Modal {
         this.modal = modal;
     }
 
-    closeModal(e) {
-        if (e.target === e.currentTarget) {
+    closeModal(e = null) {
+        if (e !== null) {
+            if (e.target === e.currentTarget) {
+                $(this.modal).remove();
+            }
+        } else {
             $(this.modal).remove();
         }
     }
