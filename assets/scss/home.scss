@@ -5,6 +5,7 @@
 @import "window";
 @import "chat";
 @import "characteristics";
+@import "admin-panels";
 @import "inventory";
 @import "adventures";
 @import "modal";
@@ -83,6 +84,52 @@ html {
             justify-content: center;
             border-top: 2px solid $light-grey;
             background-color: $body-bg;
+            position: relative;
+
+            #admin-menu {
+                border: 2px solid $borders;
+                border-bottom-width: 0;
+                background-color: $windows-bg;
+                padding: 0 10px;
+                text-align: center;
+                position: absolute;
+                z-index: 99999;
+                right: 0;
+                top: 0;
+                transform: translateY(calc(-100% - 2px)); // 2px for footer border top
+                display: none;
+
+                ul {
+                    padding: 0;
+                    margin: 0;
+
+                    li {
+                        list-style: none;
+                        padding: 6px 12px;
+                        text-transform: uppercase;
+                        cursor: pointer;
+                        margin: 7px 0 7px 0;
+
+                        &:hover {
+                            background-color: $selected;
+                        }
+
+                        &:not(:last-child) {
+                            border-bottom: 1px solid $light-grey;
+                        }
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+            }
+
+            #open-admin-menu-btn {
+                position: absolute;
+                right: 15px;
+                bottom: 0;
+            }
 
             .item {
                 box-sizing: border-box;

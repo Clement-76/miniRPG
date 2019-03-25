@@ -7,7 +7,6 @@ class Adventure implements \JsonSerializable {
     private $_id;
     private $_name;
     private $_duration;
-    private $_rewards;
     private $_requiredLvl;
     private $_dollars;
     private $_xp;
@@ -35,8 +34,9 @@ class Adventure implements \JsonSerializable {
             'id' => $this->_id,
             'name' => $this->_name,
             'duration' => $this->_duration,
-            'rewards' => $this->_rewards,
-            'requiredLvl' => $this->_requiredLvl
+            'requiredLvl' => $this->_requiredLvl,
+            'dollars' => $this->_dollars,
+            'xp' => $this->_xp
         ];
     }
 
@@ -80,20 +80,6 @@ class Adventure implements \JsonSerializable {
      */
     public function setDuration(int $duration) {
         $this->_duration = $duration;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRewards(): string {
-        return $this->_rewards;
-    }
-
-    /**
-     * @param string $rewards
-     */
-    public function setRewards(string $rewards) {
-        $this->_rewards = $rewards;
     }
 
     /**

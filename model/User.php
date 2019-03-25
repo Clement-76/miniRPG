@@ -48,17 +48,18 @@ class User implements \JsonSerializable {
         $adventureBeginning = $this->_adventureBeginning == null ? null : $this->_adventureBeginning->getTimestamp() * 1000;
 
         return [
-            'id' => $this->getId(),
-            'pseudo' => $this->getPseudo(),
-            'xp' => $this->getXp(),
-            'life' => $this->getLife(),
-            'attack' => $this->getAttack(),
-            'defense' => $this->getDefense(),
-            'dollars' => $this->getDollar(),
-            'T' => $this->getT(),
-            'inventory' => $this->getInventory(),
+            'id' => $this->_id,
+            'pseudo' => $this->_pseudo,
+            'xp' => $this->_xp,
+            'life' => $this->_life,
+            'attack' => $this->_attack,
+            'defense' => $this->_defense,
+            'dollars' => $this->_dollar,
+            'T' => $this->_T,
+            'role' => $this->_role,
+            'inventory' => $this->_inventory,
             'adventureBeginning' => $adventureBeginning,
-            'currentAdventureId' => $this->getCurrentAdventureId()
+            'currentAdventureId' => $this->_currentAdventureId
         ];
     }
 

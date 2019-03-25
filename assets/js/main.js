@@ -7,8 +7,11 @@ $(function() {
         let window = new WindowRPG(windowClass, 'content');
     });
 
+    $('#open-admin-menu-btn').on('click', function() {
+        $('#admin-menu').toggle();
+    });
+
     let userObj = new User();
-    console.log(userObj);
     let chatObj = new Chat('chat-form', 'chat-messages', 'user-message', 1);
-    let adventuresObj = new Adventures('adventures', userObj);
+    let adventuresObj = new Adventures('adventures', 'adventures-admin-container', userObj);
 });

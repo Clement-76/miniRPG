@@ -3,38 +3,44 @@ class Adventures {
      * @param adventuresContainerId
      * @param userObj
      */
-    constructor(adventuresContainerId, userObj) {
+    constructor(adventuresContainerId, adventuresAdminContainerId, userObj) {
         this.adventures = [];
         this.currentAdventure = null;
         this.user = userObj;
         this.adventuresContainer = $('#' + adventuresContainerId);
-        this.getAdventures();
+        this.adventuresAdminContainer = $('#' + adventuresAdminContainerId);
+
+        this.getAdventures((data) => {
+            data.adventures.forEach((adventure) => {
+                this.displayAdventure(adventure);
+                this.adventures.push(adventure);
+
+                if (this.user.role === 'admin') this.displayAdventureAdmin(adventure);
+
+                // if the user is currently in an adventure, we store it in a property
+                if (this.user.currentAdventureId === adventure.id) {
+                    this.currentAdventure = adventure;
+                }
+            });
+
+            let adventure = this.checkAdventureStatus();
+
+            if (adventure === 'end') {
+                this.adventureCompleted();
+            } else if (adventure === true) {
+                this.adventureTimer();
+            }
+        });
     }
 
     /**
-     * retrieves adventures with ajax request and execute code in case of success
+     * retrieves adventures with ajax request and executes the callback function in case of success
+     * @param callback
      */
-    getAdventures() {
+    getAdventures(callback) {
         $.get("index.php?action=adventures.getJSONAdventures", (data) => {
             if (data.status === "success") {
-                data.adventures.forEach((adventure) => {
-                    this.displayAdventure(adventure);
-                    this.adventures.push(adventure);
-
-                    // if the user is currently in an adventure, we store it in a property
-                    if (this.user.currentAdventureId === adventure.id) {
-                        this.currentAdventure = adventure;
-                    }
-                });
-
-                let adventure = this.checkAdventureStatus();
-
-                if (adventure === 'end') {
-                    this.adventureCompleted();
-                } else if (adventure === true) {
-                    //-> timer en deduisant le temps deja écoulé ---------------------------
-                    this.adventureTimer();
-                }
+                callback(data);
             } else {
                 console.error(data.message);
             }
@@ -49,18 +55,37 @@ class Adventures {
         let adventureDiv = create('div', {class: 'adventure'}, this.adventuresContainer[0]);
         create('p', {text: `Nom: ${adventure.name}`}, adventureDiv);
         create('p', {text: `Durée: ${toHHMMSS(adventure.duration)}`}, adventureDiv);
-        create('p', {text: `Récompenses: ${adventure.rewards}`}, adventureDiv);
+        create('p', {text: `Récompenses: équipements/argent($)/points d'expérience`}, adventureDiv);
 
         let startDiv = create('div', {class: 'start-adventure'}, adventureDiv);
         let startBtn = create('button', {text: 'Débuter'}, startDiv);
 
-        $(startDiv).on('click', this.beginAdventure.bind(this, adventure));
+        $(startBtn).on('click', this.beginAdventure.bind(this, adventure));
 
         let classes = ['required-lvl'];
         if (this.user.lvl < adventure.requiredLvl) classes.push('not-allowed');
         create('p', {class: classes, text: `niveau requis: ${adventure.requiredLvl}`}, startDiv);
 
         adventure.HTMLElt = adventureDiv;
+    }
+
+    /**
+     * displays adventures in the admin panel
+     * @param adventure
+     */
+    displayAdventureAdmin(adventure) {
+        let adventureTr = create('tr', null, this.adventuresAdminContainer[0]);
+        create('td', {class: 'adventure-name', text: adventure.name}, adventureTr);
+        create('td', {class: 'adventure-duration', text: adventure.duration}, adventureTr);
+        create('td', {class: 'adventure-lvl', text: adventure.requiredLvl}, adventureTr);
+        create('td', {class: 'adventure-dollars', text: adventure.dollars}, adventureTr);
+        create('td', {class: 'adventure-xp', text: adventure.xp}, adventureTr);
+
+        let deleteContainer = create('td', {class: 'edit', text: 'Modifier '}, adventureTr);
+        create('i', {class: ['far', 'fa-edit']}, deleteContainer);
+
+        let editContainer = create('td', {class: 'delete', text: 'Supprimer '}, adventureTr);
+        create('i', {class: ['far', 'fa-trash-alt']}, editContainer);
     }
 
     /**

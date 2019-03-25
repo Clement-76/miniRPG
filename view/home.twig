@@ -36,6 +36,7 @@
         {% include 'characteristics.twig' %}
         {% include 'inventory.twig' %}
         {% include 'adventures.twig' %}
+        {% include'admin/adventures.twig' %}
     </div>
 
     <footer class="menu">
@@ -45,7 +46,18 @@
         <div id="arena" class="item"><i class="icon-swords"></i></div>
         <div id="inventory" class="item"><i class="icon-treasure"></i></div>
         <div id="buildings" class="item"><i class="fab fa-fort-awesome"></i></div>
-        {#<i class="fas fa-crown"></i>   if the user is an admin#}
+
+        {% if session.getRole() == "admin" %}
+            <nav id="admin-menu">
+                <ul>
+                    <li id="admin-users">Joueurs</li>
+                    <li id="admin-stuff">Équipements</li>
+                    <li id="admin-adventures">Aventures</li>
+                </ul>
+            </nav>
+
+            <div id="open-admin-menu-btn" class="item"><i class="fas fa-crown"></i></div>
+        {% endif %}
     </footer>
 {% endblock %}
 

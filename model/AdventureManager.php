@@ -28,8 +28,9 @@ class AdventureManager extends Manager {
                 'id' => $adventure['id'],
                 'name' => $adventure['name'],
                 'duration' => $adventure['duration'],
-                'rewards' => $adventure['rewards'],
-                'requiredLvl' => $adventure['required_lvl']
+                'requiredLvl' => $adventure['required_lvl'],
+                'dollars' => $adventure['dollars'],
+                'xp' => $adventure['xp']
             ];
 
             $adventures[] = new Adventure($adventureFeatures);
@@ -63,7 +64,6 @@ class AdventureManager extends Manager {
                 'id' => $adventure['id'],
                 'name' => $adventure['name'],
                 'duration' => $adventure['duration'],
-                'rewards' => $adventure['rewards'],
                 'requiredLvl' => $adventure['required_lvl'],
                 'dollars' => $adventure['dollars'],
                 'xp' => $adventure['xp']
