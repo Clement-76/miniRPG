@@ -174,4 +174,25 @@ class UserManager extends Manager {
             throw new \Exception($e->getMessage());
         }
     }
+
+    /**
+     * resets the adventure of users who are in the adventure that has as id adventureId
+     * @param $adventureId
+     * @throws \Exception
+     */
+    public function resetAdventuresUsersWhereAdventureId($adventureId) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare(
+                'UPDATE minirpg_users 
+                 SET current_adventure_id = NULL,
+                 adventure_beginning = NULL,
+                 WHERE current_adventure_id = ?'
+            );
+
+            $q->execute([$adventureId]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
 }

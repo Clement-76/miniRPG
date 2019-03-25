@@ -160,33 +160,68 @@ class AdventuresController extends AppController {
                                 'CurrentAdventureId' => $_SESSION['user']->getCurrentAdventureId()
                             ]);
                         } else {
-                            echo json_encode([
-                                'status' => 'error',
-                                'message' => 'an unexpected error occurred'
-                            ]);
+                            echo json_encode(['status' => 'error', 'message' => 'an unexpected error occurred']);
                         }
                     } else {
-                        echo json_encode([
-                            'status' => 'error',
-                            'message' => 'You don\'t have the lvl to start this adventure'
-                        ]);
+                        echo json_encode(['status' => 'error', 'message' => 'You don\'t have the lvl to start this adventure']);
                     }
                 } else {
-                    echo json_encode([
-                        'status' => 'error',
-                        'message' => 'You\'re already in an adventure or you don\'t got your rewards'
-                    ]);
+                    echo json_encode(['status' => 'error', 'message' => 'You\'re already in an adventure or you don\'t got your rewards']);
                 }
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'This adventure doesn\'t exist !']);
+            }
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'You\'re not connected !']);
+        }
+    }
+
+    public function deleteAdventure() {
+        if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'admin') {
+            $errors = false;
+            $message = '';
+            $adventuresManager;
+
+            if (!isset($_POST['adventureId'])) {
+                $errors = true;
+                $message = 'adventureId is undefined';
+            } else {
+                try {
+                    $adventuresManager = new AdventureManager();
+                    $adventure = $adventuresManager->getAdventure($_POST['adventureId']);
+                } catch (\Exception $e) {
+                    throw new \Exception($e->getMessage());
+                }
+
+                // if the adventure doesn't exist
+                if ($adventure == false) {
+                    $errors = true;
+                    $message = 'This adventure doesn\'t exist';
+                }
+            }
+
+            if (!$errors) {
+                try {
+                    $userManager = new UserManager();
+                    $userManager->resetAdventuresUsersWhereAdventureId($_POST['adventureId']);
+                    $adventuresManager->deleteAdventure($_POST['adventureId']);
+                } catch (\Exception $e) {
+                    throw new \Exception($e->getMessage());
+                }
+
+                echo json_encode([
+                    'status' => 'success'
+                ]);
             } else {
                 echo json_encode([
                     'status' => 'error',
-                    'message' => 'This adventure doesn\'t exist !'
+                    'message' => $message
                 ]);
             }
         } else {
             echo json_encode([
                 'status' => 'error',
-                'message' => 'You\'re not connected !'
+                'message' => 'You\'re not connected or you\'re not an admin'
             ]);
         }
     }

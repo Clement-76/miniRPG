@@ -81,11 +81,14 @@ class Adventures {
         create('td', {class: 'adventure-dollars', text: adventure.dollars}, adventureTr);
         create('td', {class: 'adventure-xp', text: adventure.xp}, adventureTr);
 
-        let deleteContainer = create('td', {class: 'edit', text: 'Modifier '}, adventureTr);
-        create('i', {class: ['far', 'fa-edit']}, deleteContainer);
+        let editContainer = create('td', {class: 'edit', text: 'Modifier '}, adventureTr);
+        create('i', {class: ['far', 'fa-edit']}, editContainer);
 
-        let editContainer = create('td', {class: 'delete', text: 'Supprimer '}, adventureTr);
-        create('i', {class: ['far', 'fa-trash-alt']}, editContainer);
+        let deleteContainer = create('td', {class: 'delete', text: 'Supprimer '}, adventureTr);
+        create('i', {class: ['far', 'fa-trash-alt']}, deleteContainer);
+        $(deleteContainer).on('click', this.deleteAdventure.bind(this, adventure));
+
+        adventure.adminHTMLElt = adventureTr;
     }
 
     /**
@@ -196,6 +199,19 @@ class Adventures {
             }
         } else {
             new Modal(create('p', {class: 'error-message', text: `Vous êtes déjà dans une aventure`}));
+        }
+    }
+
+    deleteAdventure(adventure) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer cette aventure ?')) {
+            $.post("index.php?action=adventures.deleteAdventure", {adventureId: adventure.id}, (data) => {
+                if (data.status === "success") {
+                    new Modal(create('p', {text: `L'aventure a bien été supprimée`}), ['error-message']);
+                    $(adventure.adminHTMLElt).remove();
+                } else {
+                    console.error(data.message);
+                }
+            }, "json");
         }
     }
 }

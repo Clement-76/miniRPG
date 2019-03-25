@@ -76,4 +76,14 @@ class AdventureManager extends Manager {
             return false;
         }
     }
+
+    public function deleteAdventure($adventureId) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare('DELETE FROM minirpg_adventures WHERE id = ?');
+            $q->execute([$adventureId]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
 }
