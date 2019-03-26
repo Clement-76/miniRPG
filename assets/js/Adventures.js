@@ -16,7 +16,9 @@ class Adventures {
         // this.formAdventure = $('#' + formAdventureId);
         // this.submitInputAdventure = $(`#${formAdventureId} [type='submit']`);
 
-        this.btnCreateAdventure.on('click', this.displayAdventuresCreationForm.bind(this));
+        this.btnCreateAdventure.on('click', (e) => {
+            this.displayAdventuresForm(e);
+        });
 
         this.getAdventures((data) => {
             data.adventures.forEach((adventure) => {
@@ -83,14 +85,17 @@ class Adventures {
      */
     displayAdventureAdmin(adventure) {
         let adventureTr = create('tr', null, this.adventuresAdminContainer[0]);
-        create('td', {class: 'adventure-name', text: adventure.name}, adventureTr);
-        create('td', {class: 'adventure-duration', text: adventure.duration}, adventureTr);
-        create('td', {class: 'adventure-lvl', text: adventure.requiredLvl}, adventureTr);
-        create('td', {class: 'adventure-dollars', text: adventure.dollars}, adventureTr);
-        create('td', {class: 'adventure-xp', text: adventure.xp}, adventureTr);
+        adventure.nameElt = create('td', {class: 'adventure-name', text: adventure.name}, adventureTr);
+        adventure.durationElt = create('td', {class: 'adventure-duration', text: adventure.duration}, adventureTr);
+        adventure.requiredLvlElt = create('td', {class: 'adventure-lvl', text: adventure.requiredLvl}, adventureTr);
+        adventure.dollarsElt = create('td', {class: 'adventure-dollars', text: adventure.dollars}, adventureTr);
+        adventure.xpElt = create('td', {class: 'adventure-xp', text: adventure.xp}, adventureTr);
 
         let editContainer = create('td', {class: 'edit', text: 'Modifier '}, adventureTr);
         create('i', {class: ['far', 'fa-edit']}, editContainer);
+        $(editContainer).on('click', (e) => {
+            this.displayAdventuresForm(e, adventure);
+        });
 
         let deleteContainer = create('td', {class: 'delete', text: 'Supprimer '}, adventureTr);
         create('i', {class: ['far', 'fa-trash-alt']}, deleteContainer);
@@ -212,10 +217,10 @@ class Adventures {
                     }
                 }, "json");
             } else {
-                new Modal(create('p', {class: 'error-message', text: `Vous n'avez pas le niveau nécessaire`}));
+                new Modal(create('p', {class: 'info-message', text: `Vous n'avez pas le niveau nécessaire`}));
             }
         } else {
-            new Modal(create('p', {class: 'error-message', text: `Vous êtes déjà dans une aventure`}));
+            new Modal(create('p', {class: 'info-message', text: `Vous êtes déjà dans une aventure`}));
         }
     }
 
@@ -227,7 +232,7 @@ class Adventures {
         if (confirm('Êtes-vous sûr de vouloir supprimer cette aventure ?')) {
             $.post("index.php?action=adventures.deleteAdventure", {adventureId: adventure.id}, (data) => {
                 if (data.status === "success") {
-                    new Modal(create('p', {text: `L'aventure a bien été supprimée`}), ['error-message']);
+                    new Modal(create('p', {text: `L'aventure a bien été supprimée`, class: 'info-message'}));
                     $(adventure.adminHTMLElt).remove();
                 } else {
                     console.error(data.message);
@@ -239,19 +244,42 @@ class Adventures {
     /**
      * displays the form to create a new adventure
      */
-    displayAdventuresCreationForm() {
+    displayAdventuresForm(e, adventure = null) {
         let adventureForm = create('form', null);
-        create('h2', {text: `Création de l'aventure`}, adventureForm);
-        let nameInput = create('input', {type: 'text', placeholder: 'Nom', maxlength: 50, required: ''}, adventureForm);
-        let durationInput = create('input', {type: 'text', placeholder: 'Durée en secondes (Ex: 3600)'}, adventureForm);
-        let requiredLvlInput = create('input', {type: 'text', placeholder: 'Niveau requis', required: ''}, adventureForm);
-        let dollarsInput = create('input', {type: 'text', placeholder: 'Dollars (Ex: 250)', required: ''}, adventureForm);
-        let xpInput = create('input', {type: 'text', placeholder: 'XP (Ex: 75)', required: ''}, adventureForm);
-        create('input', {type: 'submit', placeholder: 'Créer'}, adventureForm);
+        let h2Elt = create('h2', {text: `Création de l'aventure`}, adventureForm);
+
+        create('label', {for: 'adventure-name', text: `Nom de l'aventure :`}, adventureForm);
+        let nameInput = create('input', {id: 'adventure-name', maxlength: 50, required: ''}, adventureForm);
+
+        create('label', {for: 'adventure-duration', text: `Durée (en secondes) :`}, adventureForm);
+        let durationInput = create('input', {id: 'adventure-duration', type: 'text'}, adventureForm);
+
+        create('label', {for: 'adventure-required-lvl', text: `Niveau requis :`}, adventureForm);
+        let requiredLvlInput = create('input', {id: 'adventure-required-lvl', type: 'text', required: ''}, adventureForm);
+
+        create('label', {for: 'adventure-dollars', text: `Récompense en dollars :`}, adventureForm);
+        let dollarsInput = create('input', {id: 'adventure-dollars', type: 'text', required: ''}, adventureForm);
+
+        create('label', {for: 'adventure-xp', text: `Récompense en xp :`}, adventureForm);
+        let xpInput = create('input', {id: 'adventure-xp', type: 'text', required: ''}, adventureForm);
+
+        let submitInput = create('input', {type: 'submit', value: 'Créer'}, adventureForm);
 
         let modal = new Modal(adventureForm);
 
-        $(adventureForm).on('submit', this.createAdventure.bind(this, modal, adventureForm, nameInput, durationInput, requiredLvlInput, dollarsInput, xpInput));
+        if (adventure !== null) {
+            h2Elt.textContent = `Modification de l'aventure`;
+            nameInput.value = adventure.name;
+            durationInput.value = adventure.duration;
+            requiredLvlInput.value = adventure.requiredLvl;
+            dollarsInput.value = adventure.dollars;
+            xpInput.value = adventure.xp;
+            submitInput.value = 'Modifier';
+
+            $(adventureForm).on('submit', this.editAdventure.bind(this, adventure, modal, adventureForm, nameInput, durationInput, requiredLvlInput, dollarsInput, xpInput));
+        } else {
+            $(adventureForm).on('submit', this.createAdventure.bind(this, modal, adventureForm, nameInput, durationInput, requiredLvlInput, dollarsInput, xpInput));
+        }
     }
 
     /**
@@ -289,10 +317,63 @@ class Adventures {
                     this.displayAdventureAdmin(data['adventure']);
                 } else {
                     console.error(data.message);
+                    new Modal(create('p', {text: `Une erreur est survenue`, class: 'info-message'}));
                 }
             }, 'json');
         } else {
-            new Modal(create('p', {text: `Erreur : valeurs incorrects`}));
+            new Modal(create('p', {text: `Erreur : valeurs incorrects`, class: 'info-message'}));
+        }
+    }
+
+    /**
+     * update an adventure and if successful, change it in the panel
+     * @param adventureId
+     * @param modal
+     * @param adventureForm
+     * @param nameInput
+     * @param durationInput
+     * @param requiredLvlInput
+     * @param dollarsInput
+     * @param xpInput
+     * @param e
+     */
+    editAdventure(adventure, modal, adventureForm, nameInput, durationInput, requiredLvlInput, dollarsInput, xpInput, e) {
+        e.preventDefault();
+
+        let name = nameInput.value;
+        let duration = durationInput.value;
+        let requiredLvl = requiredLvlInput.value;
+        let dollars = dollarsInput.value;
+        let xp = xpInput.value;
+
+        if (!(isNaN(duration) || isNaN(requiredLvl) || isNaN(dollars) || isNaN(xp))) {
+            let data = {
+                id: adventure.id,
+                name: name,
+                duration: duration,
+                requiredLvl: requiredLvl,
+                dollars: dollars,
+                xp: xp
+            }
+
+            $.post('index.php?action=adventures.editAdventure', data, (data) => {
+                if (data.status === "success") {
+                    modal.closeModal();
+                    // change the values of the adventure in the panel
+                    adventure.nameElt.textContent = adventure.name = name;
+                    adventure.durationElt.textContent = adventure.duration = duration;
+                    adventure.requiredLvlElt.textContent = adventure.requiredLvl = requiredLvl;
+                    adventure.dollarsElt.textContent = adventure.dollars = dollars;
+                    adventure.xpElt.textContent = adventure.xp = xp;
+
+                    new Modal(create('p', {text: `La modification a été effectuée avec succès`, class: 'info-message'}));
+                } else {
+                    console.error(data.message);
+                    new Modal(create('p', {text: `Une erreur est survenue`, class: 'info-message'}));
+                }
+            }, 'json');
+        } else {
+            new Modal(create('p', {text: `Erreur : valeurs incorrects`, class: 'info-message'}));
         }
     }
 }

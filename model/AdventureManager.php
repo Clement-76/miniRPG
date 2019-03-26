@@ -127,4 +127,42 @@ class AdventureManager extends Manager {
             return false;
         }
     }
+
+    /**
+     * @param $adventureId
+     * @param $name
+     * @param $duration
+     * @param $requiredLvl
+     * @param $dollars
+     * @param $xp
+     * @return bool|Adventure
+     * @throws \Exception
+     */
+    public function updateAdventure($adventureId, $name, $duration, $requiredLvl, $dollars, $xp) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare('
+                UPDATE minirpg_adventures
+                SET name = :name,
+                duration = :duration,
+                required_lvl = :requiredLvl,
+                dollars = :dollars,
+                xp = :xp
+                WHERE id = :adventureId
+            ');
+
+            $q->bindValue(':adventureId', $adventureId, \PDO::PARAM_INT);
+            $q->bindValue(':name', $name, \PDO::PARAM_STR);
+            $q->bindValue(':duration', $duration, \PDO::PARAM_INT);
+            $q->bindValue(':requiredLvl', $requiredLvl, \PDO::PARAM_INT);
+            $q->bindValue(':dollars', $dollars, \PDO::PARAM_INT);
+            $q->bindValue(':xp', $xp, \PDO::PARAM_INT);
+
+            $notErrors = $q->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $notErrors;
+    }
 }

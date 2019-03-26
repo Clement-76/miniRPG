@@ -90,7 +90,7 @@ html {
                 border: 2px solid $borders;
                 border-bottom-width: 0;
                 background-color: $windows-bg;
-                padding: 0 10px;
+                padding: 0;
                 text-align: center;
                 position: absolute;
                 z-index: 99999;
@@ -126,8 +126,9 @@ html {
             }
 
             #open-admin-menu-btn {
+                color: #d5ce00;
                 position: absolute;
-                right: 15px;
+                right: 0;
                 bottom: 0;
             }
 

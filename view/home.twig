@@ -45,16 +45,13 @@
         <div id="adventures" class="item"><i class="fas fa-map-signs"></i></div>
         <div id="arena" class="item"><i class="icon-swords"></i></div>
         <div id="inventory" class="item"><i class="icon-treasure"></i></div>
-        <div id="buildings" class="item"><i class="fab fa-fort-awesome"></i></div>
 
         {% if session.getRole() == "admin" %}
-            <nav id="admin-menu">
-                <ul>
-                    <li id="admin-users">Joueurs</li>
-                    <li id="admin-stuff">Équipements</li>
-                    <li id="admin-adventures">Aventures</li>
-                </ul>
-            </nav>
+            <div id="admin-menu">
+                <div id="admin-users" class="item"><i class="fas fa-users"></i></div>
+                <div id="admin-stuff" class="item"><i class="icon-swords"></i></div>
+                <div id="admin-adventures" class="item"><i class="fas fa-map-signs"></i></div>
+            </div>
 
             <div id="open-admin-menu-btn" class="item"><i class="fas fa-crown"></i></div>
         {% endif %}

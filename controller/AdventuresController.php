@@ -232,27 +232,82 @@ class AdventuresController extends AppController {
 
                 $errors = false;
 
-                if (!(is_int($_POST['duration']) && is_int($_POST['requiredLvl']) && is_int($_POST['dollars']) && is_int($_POST['xp']))) {
-                    $errors = false;
+                if (!($_POST['duration'] > 0 && $_POST['requiredLvl'] > 0 && $_POST['dollars'] > 0 && $_POST['xp'] > 0)) {
+                    $errors = true;
                 }
 
-                try {
-                    $adventureManager = new AdventureManager();
-                    $adventure = $adventureManager->createAdventure($_POST['name'], $_POST['duration'], $_POST['requiredLvl'], $_POST['dollars'], $_POST['xp']);
-                } catch (\Exception $e) {
-                    throw new \Exception($e->getMessage());
-                }
+                if (!$errors) {
+                    try {
+                        $adventureManager = new AdventureManager();
+                        $adventure = $adventureManager->createAdventure($_POST['name'], $_POST['duration'], $_POST['requiredLvl'], $_POST['dollars'], $_POST['xp']);
+                    } catch (\Exception $e) {
+                        throw new \Exception($e->getMessage());
+                    }
 
-                // if the request was successfully executed
-                if ($adventure != false) {
-                    echo json_encode([
-                        'status' => 'success',
-                        'adventure' => $adventure
-                    ]);
+                    // if the request was successfully executed
+                    if ($adventure != false) {
+                        echo json_encode([
+                            'status' => 'success',
+                            'adventure' => $adventure
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'status' => 'error',
+                            'message' => 'An unexpected error occurred'
+                        ]);
+                    }
                 } else {
                     echo json_encode([
                         'status' => 'error',
-                        'message' => 'An unexpected error occurred'
+                        'message' => 'Bad values'
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Undefined POST data'
+                ]);
+            }
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected or you\'re not an admin'
+            ]);
+        }
+    }
+
+    public function editAdventure() {
+        if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'admin') {
+            if (isset($_POST['id'], $_POST['name'], $_POST['duration'], $_POST['requiredLvl'], $_POST['dollars'], $_POST['xp'])) {
+
+                $errors = false;
+
+                if (!($_POST['duration'] > 0 && $_POST['requiredLvl'] > 0 && $_POST['dollars'] > 0 && $_POST['xp'] > 0)) {
+                    $errors = true;
+                }
+
+                if (!$errors) {
+
+                    try {
+                        $adventureManager = new AdventureManager();
+                        $notErrors = $adventureManager->updateAdventure($_POST['id'], $_POST['name'], $_POST['duration'], $_POST['requiredLvl'], $_POST['dollars'], $_POST['xp']);
+                    } catch (\Exception $e) {
+                        throw new \Exception($e->getMessage());
+                    }
+
+                    // if the request was successfully executed
+                    if ($notErrors) {
+                        echo json_encode(['status' => 'success']);
+                    } else {
+                        echo json_encode([
+                            'status' => 'error',
+                            'message' => 'An unexpected error occurred'
+                        ]);
+                    }
+                } else {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => 'Bad values'
                     ]);
                 }
             } else {
