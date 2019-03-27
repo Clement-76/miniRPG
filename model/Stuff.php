@@ -6,7 +6,7 @@ class Stuff implements \JsonSerializable {
     private $_id;
     private $_name;
     private $_type;
-    private $_required_lvl;
+    private $_requiredLvl = null;
     private $_stat;
     private $_rarity;
     private $_equipped;
@@ -29,15 +29,20 @@ class Stuff implements \JsonSerializable {
     }
 
     public function jsonSerialize() {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-            'type' => $this->getType(),
-            'requiredLvl' => $this->getRequiredLvl(),
-            'stat' => $this->getStat(),
-            'rarity' => $this->getRarity(),
-            'equipped' => $this->getEquipped()
+        $stuffFeatures = [
+            'id' => $this->_id,
+            'name' => $this->_name,
+            'type' => $this->_type,
+            'stat' => $this->_stat,
+            'rarity' => $this->_rarity,
+            'equipped' => $this->_equipped
         ];
+
+        if ($this->_requiredLvl != null) {
+            $stuffFeatures['requiredLvl'] = $this->_requiredLvl;
+        }
+
+        return $stuffFeatures;
     }
 
     /**
@@ -69,7 +74,7 @@ class Stuff implements \JsonSerializable {
      * @param int $required_lvl
      */
     public function setRequiredLvl($required_lvl) {
-        $this->_required_lvl = (int) $required_lvl;
+        $this->_requiredLvl = (int) $required_lvl;
     }
 
     /**
@@ -122,7 +127,7 @@ class Stuff implements \JsonSerializable {
      * @return int
      */
     public function getRequiredLvl() {
-        return $this->_required_lvl;
+        return $this->_requiredLvl;
     }
 
     /**

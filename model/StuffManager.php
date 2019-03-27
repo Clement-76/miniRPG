@@ -151,4 +151,31 @@ class StuffManager extends Manager {
 
         return $stuff;
     }
+
+    public function getAllStuff() {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare('SELECT * FROM minirpg_stuff');
+            $q->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        $allStuff = [];
+
+        while ($stuff = $q->fetch()) {
+            $stuffFeatures = [
+                'id' => $stuff['id'],
+                'name' => $stuff['name'],
+                'type' => $stuff['type'],
+                'stat' => $stuff['stat'],
+                'requiredLvl' => $stuff['required_lvl'],
+                'rarity' => $stuff['rarity'],
+            ];
+
+            $allStuff[] = new Stuff($stuffFeatures);
+        }
+
+        return $allStuff;
+    }
 }

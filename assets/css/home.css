@@ -169,29 +169,35 @@
           line-height: 21px; 
 }
 
-.admin-adventures {
+.admin-adventures,
+.admin-stuff {
   height: 450px;
   width: 1000px;
   left: calc(50% - 1000px / 2); 
 }
-  .admin-adventures .window-content {
+  .admin-adventures .window-content,
+  .admin-stuff .window-content {
     height: 390px;
     padding: 10px 0;
     overflow: auto; 
 }
-    .admin-adventures .window-content::-webkit-scrollbar {
+    .admin-adventures .window-content::-webkit-scrollbar,
+    .admin-stuff .window-content::-webkit-scrollbar {
       background: #2b2b2b;
       width: 10px; 
 }
-    .admin-adventures .window-content::-webkit-scrollbar-track {
+    .admin-adventures .window-content::-webkit-scrollbar-track,
+    .admin-stuff .window-content::-webkit-scrollbar-track {
       background: #2b2b2b; 
 }
-    .admin-adventures .window-content::-webkit-scrollbar-thumb {
+    .admin-adventures .window-content::-webkit-scrollbar-thumb,
+    .admin-stuff .window-content::-webkit-scrollbar-thumb {
       border: 2px solid #2b2b2b;
       background: #171717;
       border-radius: 20px; 
 }
-    .admin-adventures .window-content .create {
+    .admin-adventures .window-content .create,
+    .admin-stuff .window-content .create {
       margin: 0 0 14px 15px;
       display: inline-block;
       color: #e0e0e0;
@@ -204,10 +210,12 @@
       font-size: 1.1em;
       transition-duration: 0.5s; 
 }
-      .admin-adventures .window-content .create:hover {
+      .admin-adventures .window-content .create:hover,
+      .admin-stuff .window-content .create:hover {
         background-color: #000; 
 }
-    .admin-adventures .window-content table {
+    .admin-adventures .window-content table,
+    .admin-stuff .window-content table {
       width: 100%;
       border-collapse: collapse;
       border: 1px solid #000;
@@ -215,36 +223,46 @@
       border-radius: 3px;
       margin-bottom: 20px; 
 }
-      .admin-adventures .window-content table thead tr:first-child {
+      .admin-adventures .window-content table thead tr:first-child,
+      .admin-stuff .window-content table thead tr:first-child {
         background-color: #212121; 
 }
       .admin-adventures .window-content table td,
-      .admin-adventures .window-content table th {
+      .admin-adventures .window-content table th,
+      .admin-stuff .window-content table td,
+      .admin-stuff .window-content table th {
         padding: 12px 10px; 
 }
-      .admin-adventures .window-content table th {
+      .admin-adventures .window-content table th,
+      .admin-stuff .window-content table th {
         text-align: left; 
 }
-      .admin-adventures .window-content table tr {
+      .admin-adventures .window-content table tr,
+      .admin-stuff .window-content table tr {
         border-bottom: 2px solid #000; 
 }
-        .admin-adventures .window-content table tr:hover {
+        .admin-adventures .window-content table tr:hover,
+        .admin-stuff .window-content table tr:hover {
           background-color: #242424; 
 }
-        .admin-adventures .window-content table tr .edit {
+        .admin-adventures .window-content table tr .edit,
+        .admin-stuff .window-content table tr .edit {
           cursor: pointer;
           color: #247bcc;
           transition-duration: 0.3s; 
 }
-          .admin-adventures .window-content table tr .edit:hover {
+          .admin-adventures .window-content table tr .edit:hover,
+          .admin-stuff .window-content table tr .edit:hover {
             color: #19508b; 
 }
-        .admin-adventures .window-content table tr .delete {
+        .admin-adventures .window-content table tr .delete,
+        .admin-stuff .window-content table tr .delete {
           cursor: pointer;
           color: #db665e;
           transition-duration: 0.3s; 
 }
-          .admin-adventures .window-content table tr .delete:hover {
+          .admin-adventures .window-content table tr .delete:hover,
+          .admin-stuff .window-content table tr .delete:hover {
             color: #9b4545; 
 }
 

@@ -105,4 +105,25 @@ class StuffController extends AppController {
             echo json_encode(['status' => 'error', 'message' => 'You\'re not connected !']);
         }
     }
+
+    public function getJSONStuff() {
+        if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'admin') {
+            try {
+                $stuffManager = new StuffManager();
+                $allStuff = $stuffManager->getAllStuff();
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
+
+            echo json_encode([
+                'status' => 'success',
+                'allStuff' => $allStuff
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected or you\'re not an admin'
+            ]);
+        }
+    }
 }

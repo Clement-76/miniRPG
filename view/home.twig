@@ -37,6 +37,7 @@
         {% include 'inventory.twig' %}
         {% include 'adventures.twig' %}
         {% include'admin/adventures.twig' %}
+        {% include'admin/stuff.twig' %}
     </div>
 
     <footer class="menu">
@@ -59,14 +60,20 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="assets/js/toHHMMSS.js"></script>
     <script src="assets/js/create.js"></script>
+    <script src="assets/js/toHHMMSS.js"></script>
     <script src="assets/js/Modal.js"></script>
     <script src="assets/js/WindowRPG.js"></script>
     <script src="assets/js/toggleWindow.js"></script>
+
+
     <script src="assets/js/Adventures.js"></script>
     <script src="assets/js/Inventory.js"></script>
     <script src="assets/js/User.js"></script>
     <script src="assets/js/Chat.js"></script>
+    {% if session.getRole() == "admin" %}
+        <script src="assets/js/StuffAdmin.js"></script>
+        <script src="assets/js/admin.js"></script>
+    {% endif %}
     <script src="assets/js/main.js"></script>
 {% endblock %}
