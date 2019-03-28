@@ -25,7 +25,7 @@ class Adventures {
                 this.displayAdventure(adventure);
                 this.adventures.push(adventure);
 
-                if (this.user.role === 'admin') this.displayAdventureAdmin(adventure);
+                if (this.user.role === 'admin') this.displayAdventuresAdmin(adventure);
 
                 // if the user is currently in an adventure, we store it in a property
                 if (this.user.currentAdventureId === adventure.id) {
@@ -83,7 +83,7 @@ class Adventures {
      * displays adventures in the admin panel
      * @param adventure
      */
-    displayAdventureAdmin(adventure) {
+    displayAdventuresAdmin(adventure) {
         let adventureTr = create('tr', null, this.adventuresAdminContainer[0]);
         adventure.nameElt = create('td', {class: 'adventure-name', text: adventure.name}, adventureTr);
         adventure.durationElt = create('td', {class: 'adventure-duration', text: adventure.duration}, adventureTr);
@@ -314,7 +314,7 @@ class Adventures {
             $.post('index.php?action=adventures.createAdventure', data, (data) => {
                 if (data.status === "success") {
                     modal.closeModal();
-                    this.displayAdventureAdmin(data['adventure']);
+                    this.displayAdventuresAdmin(data['adventure']);
                 } else {
                     console.error(data.message);
                     new Modal(create('p', {text: `Une erreur est survenue`, class: 'info-message'}));

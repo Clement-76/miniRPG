@@ -198,4 +198,42 @@ class StuffManager extends Manager {
             throw new \Exception($e->getMessage());
         }
     }
+
+    /**
+     * @param int $stuffId
+     * @param string $name
+     * @param string $type
+     * @param int $requiredLvl
+     * @param int $stat
+     * @param int $rarity
+     * @return bool
+     * @throws \Exception
+     */
+    public function updateStuff($stuffId, $name, $type, $requiredLvl, $stat, $rarity) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare('
+                UPDATE minirpg_stuff
+                SET name = :name,
+                type = :type,
+                required_lvl = :requiredLvl,
+                stat = :stat,
+                rarity = :rarity
+                WHERE id = :stuffId
+            ');
+
+            $q->bindValue(':stuffId', $stuffId, \PDO::PARAM_INT);
+            $q->bindValue(':name', $name, \PDO::PARAM_STR);
+            $q->bindValue(':type', $type, \PDO::PARAM_STR);
+            $q->bindValue(':requiredLvl', $requiredLvl, \PDO::PARAM_INT);
+            $q->bindValue(':stat', $stat, \PDO::PARAM_INT);
+            $q->bindValue(':rarity', $rarity, \PDO::PARAM_INT);
+
+            $notErrors = $q->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $notErrors;
+    }
 }

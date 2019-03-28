@@ -72,6 +72,9 @@ class StuffController extends AppController {
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function unequipStuff() {
         if (isset($_SESSION['user'])) {
             if (isset($_POST['stuffId'])) {
@@ -106,6 +109,10 @@ class StuffController extends AppController {
         }
     }
 
+    /**
+     * returns all stuff in JSON format
+     * @throws \Exception
+     */
     public function getJSONStuff() {
         if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'admin') {
             try {
@@ -152,6 +159,56 @@ class StuffController extends AppController {
                 echo json_encode([
                     'status' => 'error',
                     'message' => 'StuffId is undefined'
+                ]);
+            }
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected or you\'re not an admin'
+            ]);
+        }
+    }
+
+    /**
+     * edit a stuff
+     */
+    public function editStuff() {
+        if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'admin') {
+            if (isset($_POST['id'], $_POST['name'], $_POST['type'], $_POST['requiredLvl'], $_POST['stat'], $_POST['rarity'])) {
+
+                $errors = false;
+
+                if (!($_POST['requiredLvl'] > 0 && $_POST['stat'] > 0)) {
+                    $errors = true;
+                }
+
+                if (!$errors) {
+                    try {
+                        $stuffManager = new StuffManager();
+                        $notErrors = $stuffManager->updateStuff($_POST['id'], $_POST['name'], $_POST['type'], $_POST['requiredLvl'], $_POST['stat'], $_POST['rarity']);
+                    } catch (\Exception $e) {
+                        throw new \Exception($e->getMessage());
+                    }
+
+                    // if the request was successfully executed
+                    if ($notErrors) {
+                        echo json_encode(['status' => 'success']);
+                    } else {
+                        echo json_encode([
+                            'status' => 'error',
+                            'message' => 'An unexpected error occurred'
+                        ]);
+                    }
+                } else {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => 'Bad values'
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Undefined POST values'
                 ]);
             }
         } else {
