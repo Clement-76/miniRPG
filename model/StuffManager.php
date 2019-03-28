@@ -178,4 +178,24 @@ class StuffManager extends Manager {
 
         return $allStuff;
     }
+
+    /**
+     * delete the stuff with the id and delete the possessions stuff with this id in stuff_id
+     * @param $stuffId
+     * @throws \Exception
+     */
+    public function deleteStuffAndPossesionsStuff($stuffId) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare('
+                DELETE FROM minirpg_possessions_stuff WHERE stuff_id = :stuffId;
+                DELETE FROM minirpg_stuff WHERE id = :stuffId;
+            ');
+
+            $q->bindValue(':stuffId', $stuffId, \PDO::PARAM_INT);
+            $q->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
 }

@@ -126,4 +126,39 @@ class StuffController extends AppController {
             ]);
         }
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function deleteStuff() {
+        if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'admin') {
+            if (isset($_POST['stuffId'])) {
+                if ($_POST['stuffId'] > 0) {
+                    try {
+                        $stuffManager = new StuffManager();
+                        $stuffManager->deleteStuffAndPossesionsStuff($_POST['stuffId']);
+                    } catch (\Exception $e) {
+                        throw new \Exception($e->getMessage());
+                    }
+
+                    echo json_encode(['status' => 'success']);
+                } else {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => 'bad value'
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'StuffId is undefined'
+                ]);
+            }
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected or you\'re not an admin'
+            ]);
+        }
+    }
 }

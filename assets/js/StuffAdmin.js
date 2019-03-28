@@ -1,4 +1,7 @@
 class StuffAdmin {
+    /**
+     * @param adminStuffContainerId
+     */
     constructor(adminStuffContainerId) {
         this.adminStuffContainer = $('#' + adminStuffContainerId);
 
@@ -9,6 +12,10 @@ class StuffAdmin {
         });
     }
 
+    /**
+     * get the stuff and execute the callback function if successful
+     * @param callback
+     */
     getStuff(callback) {
         $.get('index.php?action=stuff.getJSONStuff', (data) => {
             if (data.status === 'success') {
@@ -19,8 +26,12 @@ class StuffAdmin {
         }, 'json');
     }
 
+    /**
+     * displays the stuff in the admin panel
+     * @param stuff
+     */
     displayStuff(stuff) {
-        this.setRarityInfos(stuff);
+        this.setRarityName(stuff);
         let stuffTr = create('tr', null, this.adminStuffContainer[0]);
         stuff.nameElt = create('td', {class: 'stuff-name', text: stuff.name}, stuffTr);
         stuff.typeElt = create('td', {class: 'stuff-type', text: stuff.type}, stuffTr);
@@ -41,23 +52,22 @@ class StuffAdmin {
         stuff.adminHTMLElt = stuffTr;
     }
 
-    setRarityInfos(stuff) {
+    /**
+     * @param stuff
+     */
+    setRarityName(stuff) {
         switch (stuff.rarity) {
             case 0:
                 stuff.rarityName = 'commun';
-                stuff.rarityClass = 'common';
                 break;
             case 1:
                 stuff.rarityName = 'rare';
-                stuff.rarityClass = 'rare';
                 break;
             case 2:
                 stuff.rarityName = 'épique';
-                stuff.rarityClass = 'epic';
                 break;
             case 3:
                 stuff.rarityName = 'légendaire';
-                stuff.rarityClass = 'legendary';
                 break;
         }
     }
@@ -66,8 +76,21 @@ class StuffAdmin {
 
     }
 
+    /**
+     * do an ajax request to delete the stuff with his id
+     * @param stuff
+     */
     deleteStuff(stuff) {
-
+        if (confirm(`Êtes-vous sûr de vouloir supprimer cet équipement ? Cela le supprimera également de l'inventaire de chaque joueur qui le possède.`)) {
+            $.post("index.php?action=stuff.deleteStuff", {stuffId: stuff.id}, (data) => {
+                if (data.status === "success") {
+                    new Modal(create('p', {text: `L'équipement a bien été supprimée`, class: 'info-message'}));
+                    $(stuff.adminHTMLElt).remove();
+                } else {
+                    console.error(data.message);
+                }
+            }, "json");
+        }
     }
 }
 
