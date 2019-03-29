@@ -2,8 +2,10 @@ class StuffAdmin {
     /**
      * @param adminStuffContainerId
      */
-    constructor(adminStuffContainerId) {
+    constructor(adminStuffContainerId, createStuffBtnId) {
         this.adminStuffContainer = $('#' + adminStuffContainerId);
+        this.createStuffBtn = $('#' + createStuffBtnId);
+        this.createStuffBtn.on('click', this.displayStuffForm.bind(this, null));
 
         this.getStuff((data) => {
             data.allStuff.forEach((stuff) => {
@@ -118,9 +120,9 @@ class StuffAdmin {
             submitInput.value = 'Modifier';
 
             $(stuffForm).on('submit', this.editStuff.bind(this, stuff, modal, stuffForm, nameInput, typeSelect.select, requiredLvlInput, statInput, raritySelect.select));
-        } //else {
-            // $(stuffForm).on('submit', this.createStuff.bind(this, modal, stuffForm, nameInput, durationInput, requiredLvlInput, dollarsInput, xpInput));
-        // }
+        } else {
+            $(stuffForm).on('submit', this.createStuff.bind(this, modal, stuffForm, nameInput, typeSelect.select, requiredLvlInput, statInput, raritySelect.select));
+        }
     }
 
     /**
@@ -178,8 +180,47 @@ class StuffAdmin {
         }
     }
 
-    createStuff() {
+    /**
+     * creates a stuff and adds it in the admin panel if successful
+     * @param modal
+     * @param stuffForm
+     * @param nameInput
+     * @param typeSelect
+     * @param requiredLvlInput
+     * @param statInput
+     * @param raritySelect
+     * @param e
+     */
+    createStuff(modal, stuffForm, nameInput, typeSelect, requiredLvlInput, statInput, raritySelect, e) {
+        e.preventDefault();
 
+        let name = nameInput.value;
+        let type = typeSelect.value;
+        let requiredLvl = requiredLvlInput.value;
+        let stat = statInput.value;
+        let rarityNb = raritySelect.value;
+
+        if (!(isNaN(stat) || isNaN(requiredLvl))) {
+            let data = {
+                name: name,
+                type: type,
+                requiredLvl: requiredLvl,
+                stat: stat,
+                rarity: rarityNb
+            }
+
+            $.post('index.php?action=stuff.createStuff', data, (data) => {
+                if (data.status === "success") {
+                    modal.closeModal();
+                    this.displayStuff(data['stuff']);
+                } else {
+                    console.error(data.message);
+                    new Modal(create('p', {text: `Une erreur est survenue`, class: 'info-message'}));
+                }
+            }, 'json');
+        } else {
+            new Modal(create('p', {text: `Erreur : valeurs incorrects`, class: 'info-message'}));
+        }
     }
 
     /**

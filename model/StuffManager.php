@@ -236,4 +236,52 @@ class StuffManager extends Manager {
 
         return $notErrors;
     }
+
+    /**
+     * @param string $name
+     * @param string $type
+     * @param int $requiredLvl
+     * @param int $stat
+     * @param int $rarity
+     * @return bool
+     * @throws \Exception
+     */
+    public function createStuff($name, $type, $requiredLvl, $stat, $rarity) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare(
+                'INSERT INTO minirpg_stuff(name, type, required_lvl, stat, rarity) 
+                 VALUES(:name, :type, :requiredLvl, :stat, :rarity)'
+            );
+
+            $q->bindValue(':name', $name, \PDO::PARAM_STR);
+            $q->bindValue(':type', $type, \PDO::PARAM_STR);
+            $q->bindValue(':requiredLvl', $requiredLvl, \PDO::PARAM_INT);
+            $q->bindValue(':stat', $stat, \PDO::PARAM_INT);
+            $q->bindValue(':rarity', $rarity, \PDO::PARAM_INT);
+
+            $notErrors = $q->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        if ($notErrors) {
+            $lastInsertId = $db->lastInsertId();
+            $stuff = $this->getStuff($lastInsertId);
+
+            $stuffFeatures = [
+                'id' => $stuff['id'],
+                'name' => $stuff['name'],
+                'type' => $stuff['type'],
+                'requiredLvl' => $stuff['required_lvl'],
+                'stat' => $stuff['stat'],
+                'rarity' => $stuff['rarity']
+            ];
+
+            $stuff = new Stuff($stuffFeatures);
+            return $stuff;
+        } else {
+            return false;
+        }
+    }
 }

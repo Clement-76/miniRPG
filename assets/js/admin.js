@@ -13,5 +13,5 @@ $(function () {
         }
     });
 
-    let stuffAdmin = new StuffAdmin('stuff-admin-container');
+    let stuffAdmin = new StuffAdmin('stuff-admin-container', 'create-stuff');
 });

@@ -218,4 +218,54 @@ class StuffController extends AppController {
             ]);
         }
     }
+
+    public function createStuff() {
+        if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'admin') {
+            if (isset($_POST['name'], $_POST['type'], $_POST['requiredLvl'], $_POST['stat'], $_POST['rarity'])) {
+
+                $errors = false;
+
+                if (!($_POST['requiredLvl'] > 0 && $_POST['stat'] > 0)) {
+                    $errors = true;
+                }
+
+                if (!$errors) {
+                    try {
+                        $stuffManager = new StuffManager();
+                        $stuff = $stuffManager->createStuff($_POST['name'], $_POST['type'], $_POST['requiredLvl'], $_POST['stat'], $_POST['rarity']);
+                    } catch (\Exception $e) {
+                        throw new \Exception($e->getMessage());
+                    }
+
+                    // if the request was successfully executed
+                    if ($stuff != false) {
+                        echo json_encode([
+                            'status' => 'success',
+                            'stuff' => $stuff
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'status' => 'error',
+                            'message' => 'An unexpected error occurred'
+                        ]);
+                    }
+                } else {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => 'Bad values'
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Undefined POST data'
+                ]);
+            }
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected or you\'re not an admin'
+            ]);
+        }
+    }
 }

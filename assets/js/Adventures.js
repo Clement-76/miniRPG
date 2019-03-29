@@ -13,8 +13,6 @@ class Adventures {
         this.adventuresContainer = $('#' + adventuresContainerId);
         this.adventuresAdminContainer = $('#' + adventuresAdminContainerId);
         this.btnCreateAdventure = $('#' + btnCreateAdventureId);
-        // this.formAdventure = $('#' + formAdventureId);
-        // this.submitInputAdventure = $(`#${formAdventureId} [type='submit']`);
 
         this.btnCreateAdventure.on('click', (e) => {
             this.displayAdventuresForm(e);

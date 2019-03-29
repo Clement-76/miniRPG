@@ -470,7 +470,7 @@
       .modal .modal-overlay .modal-content form label {
         font-size: 0.9em; 
 }
-      .modal .modal-overlay .modal-content form input {
+      .modal .modal-overlay .modal-content form input, .modal .modal-overlay .modal-content form select {
         font-family: "Varela Round", sans-serif;
         font-size: 1em;
         margin-bottom: 15px;
@@ -480,7 +480,7 @@
         display: block;
         width: 100%; 
 }
-        .modal .modal-overlay .modal-content form input[type='submit'] {
+        .modal .modal-overlay .modal-content form input[type='submit'], .modal .modal-overlay .modal-content form select[type='submit'] {
           background-color: #e0e0e0;
           border: 1px solid #000;
           padding: 3px 25px;
@@ -490,7 +490,7 @@
           transition-duration: 0.5s;
           margin-top: 25px; 
 }
-          .modal .modal-overlay .modal-content form input[type='submit']:hover {
+          .modal .modal-overlay .modal-content form input[type='submit']:hover, .modal .modal-overlay .modal-content form select[type='submit']:hover {
             background-color: #a4a4a4; 
 }
     .modal .modal-overlay .modal-content.adventure-completed {
