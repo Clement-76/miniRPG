@@ -183,4 +183,30 @@ class UsersController extends AppController {
             ]);
         }
     }
+
+    /**
+     * returns all users in JSON
+     * @throws \Exception
+     */
+    public function getJSONUsers() {
+        if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'admin') {
+
+            try {
+                $userManager = new UserManager();
+                $users = $userManager->getUsers();
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
+
+            echo json_encode([
+                'status' => 'success',
+                'users' => $users
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected or you\'re not an admin'
+            ]);
+        }
+    }
 }

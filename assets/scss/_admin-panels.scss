@@ -1,5 +1,6 @@
 .admin-adventures,
-.admin-stuff {
+.admin-stuff,
+.admin-users {
     height: 450px;
     $width: 1000px;
     width: $width;
@@ -69,13 +70,24 @@
                     }
                 }
 
-                .delete {
+                .delete,
+                .ban {
                     cursor: pointer;
                     color: $delete;
                     transition-duration: 0.3s;
 
                     &:hover {
                         color: #9b4545;
+                    }
+                }
+
+                .warn {
+                    cursor: pointer;
+                    color: $warn;
+                    transition-duration: 0.3s;
+
+                    &:hover {
+                        color: #a6651c;
                     }
                 }
             }

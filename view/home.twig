@@ -38,6 +38,7 @@
         {% include 'adventures.twig' %}
         {% include'admin/adventures.twig' %}
         {% include'admin/stuff.twig' %}
+        {% include'admin/users.twig' %}
     </div>
 
     <footer class="menu">
@@ -72,6 +73,7 @@
     <script src="assets/js/User.js"></script>
     <script src="assets/js/Chat.js"></script>
     {% if session.getRole() == "admin" %}
+        <script src="assets/js/UsersAdmin.js"></script>
         <script src="assets/js/StuffAdmin.js"></script>
         <script src="assets/js/admin.js"></script>
     {% endif %}

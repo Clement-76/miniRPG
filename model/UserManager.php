@@ -195,4 +195,52 @@ class UserManager extends Manager {
             throw new \Exception($e->getMessage());
         }
     }
+
+    /**
+     * returns all users
+     * @return User[] array of User objects
+     * @throws \Exception
+     */
+    public function getUsers() {
+        try {
+            $db = $this->getDb();
+            $q = $db->query('SELECT * FROM minirpg_users');
+            $q->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        $users = [];
+
+        while ($user = $q->fetch()) {
+            $userFeatures = [
+                'id' => $user['id'],
+                'pseudo' => $user['pseudo'],
+                'email' => $user['email'],
+                'password' => $user['password'],
+                'role' => $user['role'],
+                'confirmationKey' => $user['confirmation_key'],
+                'confirmedEmail' => $user['confirmed_email'],
+                'warnings' => $user['warnings'],
+                'banned' => $user['banned'],
+                'registrationDate' => $user['registration_date'],
+                'tutorial' => $user['tutorial'],
+                'life' => $user['life'],
+                'attack' => $user['attack'],
+                'defense' => $user['defense'],
+                'dollar' => $user['$'],
+                'T' => $user['T'],
+                'xp' => $user['xp'],
+                'remainingBattles' => $user['remaining_battles'],
+                'lastBattle' => $user['last_battle'],
+                'adventureBeginning' => $user['adventure_beginning'],
+                'currentAdventureId' => $user['current_adventure_id']
+            ];
+
+            $users[] = new User($userFeatures);
+        }
+
+
+        return $users;
+    }
 }

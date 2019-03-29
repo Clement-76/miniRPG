@@ -59,7 +59,11 @@ class User implements \JsonSerializable {
             'role' => $this->_role,
             'inventory' => $this->_inventory,
             'adventureBeginning' => $adventureBeginning,
-            'currentAdventureId' => $this->_currentAdventureId
+            'currentAdventureId' => $this->_currentAdventureId,
+            'lvl' => $this->_lvl,
+            'registrationDate' => $this->_registrationDate->format('d/m/Y'),
+            'warnings' => $this->_warnings,
+            'banned' => $this->_banned
         ];
     }
 

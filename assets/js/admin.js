@@ -13,5 +13,6 @@ $(function () {
         }
     });
 
-    let stuffAdmin = new StuffAdmin('stuff-admin-container', 'create-stuff');
+    new StuffAdmin('stuff-admin-container', 'create-stuff');
+    new UsersAdmin('users-admin-container');
 });
