@@ -39,7 +39,7 @@ class UsersAdmin {
         user.dollarsElt = create('td', {class: 'user-dollars', text: user.dollars}, userTr);
         user.tElt = create('td', {class: 'user-t', text: user.T}, userTr);
         user.warningsElt = create('td', {class: 'user-warnings', text: user.warnings}, userTr);
-        user.bannedElt = create('td', {class: 'user-banned', text: user.banned === 'true' ? 'Oui' : 'Non'}, userTr);
+        user.bannedElt = create('td', {class: 'user-banned', text: user.banned === true ? 'Oui' : 'Non'}, userTr);
 
         let warnContainer = create('td', {class: 'warn', text: 'Avertir '}, userTr);
         create('i', {class: ['fas', 'fa-exclamation-triangle']}, warnContainer);
@@ -52,11 +52,37 @@ class UsersAdmin {
         user.adminHTMLElt = userTr;
     }
 
-    warnUser() {
-
+    /**
+     * warn the user and if successfull change the warnings value of the user in the admin panel
+     * @param user
+     */
+    warnUser(user) {
+        if (confirm('Êtes-vous sûr de vouloir ajouter un avertissement à ce joueur ?')) {
+            $.post('index.php?action=users.warnUser', {userId: user.id}, (data) => {
+                if (data.status === 'success') {
+                    user.warnings++;
+                    user.warningsElt.textContent = user.warnings;
+                } else {
+                    console.error(data.message);
+                }
+            }, 'json');
+        }
     }
 
-    banUser() {
-
+    /**
+     * ban the user and if successful change the value of the column banned of the user in the panel
+     * @param user
+     */
+    banUser(user) {
+        if (confirm('Êtes-vous sûr de vouloir bannir ce joueur ?')) {
+            $.post('index.php?action=users.banUser', {userId: user.id}, (data) => {
+                if (data.status === 'success') {
+                    user.banned = true;
+                    user.bannedElt.textContent = 'Oui';
+                } else {
+                    console.error(data.message);
+                }
+            }, 'json');
+        }
     }
 }

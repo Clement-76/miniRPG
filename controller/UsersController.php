@@ -209,4 +209,75 @@ class UsersController extends AppController {
             ]);
         }
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function banUser() {
+        if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'admin') {
+            if (isset($_POST['userId'])) {
+                try {
+                    $userManager = new UserManager();
+                    $notErrors = $userManager->updateBanned($_POST['userId']);
+                } catch (\Exception $e) {
+                    throw new \Exception($e->getMessage());
+                }
+
+                if ($notErrors) {
+                    echo json_encode(['status' => 'success']);
+                } else {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => 'An unexpected error occurred'
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'userId is undefined'
+                ]);
+            }
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected or you\'re not an admin'
+            ]);
+        }
+    }
+
+    /**
+     * adds a warnings to the user
+     * @throws \Exception
+     */
+    public function warnUser() {
+        if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'admin') {
+            if (isset($_POST['userId'])) {
+                try {
+                    $userManager = new UserManager();
+                    $notErrors = $userManager->updateUserWarnings($_POST['userId']);
+                } catch (\Exception $e) {
+                    throw new \Exception($e->getMessage());
+                }
+
+                if ($notErrors) {
+                    echo json_encode(['status' => 'success']);
+                } else {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => 'An unexpected error occurred'
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'userId is undefined'
+                ]);
+            }
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected or you\'re not an admin'
+            ]);
+        }
+    }
 }

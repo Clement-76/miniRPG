@@ -204,7 +204,7 @@ class UserManager extends Manager {
     public function getUsers() {
         try {
             $db = $this->getDb();
-            $q = $db->query('SELECT * FROM minirpg_users');
+            $q = $db->query('SELECT * FROM minirpg_users ORDER BY warnings DESC');
             $q->execute();
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
@@ -242,5 +242,43 @@ class UserManager extends Manager {
 
 
         return $users;
+    }
+
+    /**
+     * increments the number of warnings of the user
+     * @param $userId
+     * @return bool
+     * @throws \Exception
+     */
+    public function updateUserWarnings($userId) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare('UPDATE minirpg_users SET warnings = warnings + 1 WHERE id = :userId');
+            $q->bindValue(':userId', $userId, \PDO::PARAM_INT);
+            $notErrors = $q->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $notErrors;
+    }
+
+    /**
+     * set the banned column of the user to 1
+     * @param $userId
+     * @return bool
+     * @throws \Exception
+     */
+    public function updateBanned($userId) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare('UPDATE minirpg_users SET banned = 1 WHERE id = :userId');
+            $q->bindValue(':userId', $userId, \PDO::PARAM_INT);
+            $notErrors = $q->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $notErrors;
     }
 }
