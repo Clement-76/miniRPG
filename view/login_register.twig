@@ -30,6 +30,10 @@
                     <p class="error">Identifiant ou mot de passe incorrect</p>
                 {% endif %}
 
+                {% if bannedErrors %}
+                    <p class="error">Ce compte a été banni</p>
+                {% endif %}
+
                 <form class="login" action="index.php?action=users.login" method="post">
                     <div>
                         <label for="login">Pseudo/email</label><br>

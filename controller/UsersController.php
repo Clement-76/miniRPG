@@ -16,6 +16,7 @@ class UsersController extends AppController {
     public function login() {
         if (!isset($_SESSION['user'])) {
             $loginErrors = false;
+            $bannedErrors = false;
 
             if (isset($_POST['login_connect']) && isset($_POST['password_connect'])) {
                 if (preg_match('#^[a-z\d]+([.\-_]{1}[a-z\d]+)*@[a-z\d]+\.[a-z]+$#', $_POST['login_connect'])) {
@@ -32,9 +33,13 @@ class UsersController extends AppController {
                 }
 
                 if (password_verify($_POST['password_connect'], $user['password'])) {
-                    $_SESSION['user'] = $user['userObj'];
-                    header('Location: index.php?action=home.displayHome');
-                    exit();
+                    if ($user['userObj']->getBanned() == false) {
+                        $_SESSION['user'] = $user['userObj'];
+                        header('Location: index.php?action=home.displayHome');
+                        exit();
+                    } else {
+                        $bannedErrors = true;
+                    }
                 } else {
                     $loginErrors = true;
                 }
@@ -43,7 +48,7 @@ class UsersController extends AppController {
             $pageTitle = "Connexion / Inscription";
             $activeForm = "login";
 
-            echo $this->twig->render('login_register.twig', compact('loginErrors', 'pageTitle', 'activeForm'));
+            echo $this->twig->render('login_register.twig', compact('loginErrors', 'bannedErrors', 'pageTitle', 'activeForm'));
         } else {
             header('Location: index.php?action=home.displayHome');
             exit();

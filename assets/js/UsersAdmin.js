@@ -7,7 +7,6 @@ class UsersAdmin {
 
         this.getUsers((data) => {
             data.users.forEach((user) => {
-                console.log(user)
                 this.displayUser(user);
             });
         });
