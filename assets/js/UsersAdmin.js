@@ -17,7 +17,7 @@ class UsersAdmin {
      * @param callback
      */
     getUsers(callback) {
-        $.get('index.php?action=users.getJSONUsers', (data) => {
+        $.get(baseUrl + 'Users/getJSONUsers', (data) => {
             if (data.status === 'success') {
                 callback(data);
             } else {
@@ -57,7 +57,7 @@ class UsersAdmin {
      */
     warnUser(user) {
         if (confirm('Êtes-vous sûr de vouloir ajouter un avertissement à ce joueur ?')) {
-            $.post('index.php?action=users.warnUser', {userId: user.id}, (data) => {
+            $.post(baseUrl + 'Users/warnUser', {userId: user.id}, (data) => {
                 if (data.status === 'success') {
                     user.warnings++;
                     user.warningsElt.textContent = user.warnings;
@@ -74,7 +74,7 @@ class UsersAdmin {
      */
     banUser(user) {
         if (confirm('Êtes-vous sûr de vouloir bannir ce joueur ?')) {
-            $.post('index.php?action=users.banUser', {userId: user.id}, (data) => {
+            $.post(baseUrl + 'Users/banUser', {userId: user.id}, (data) => {
                 if (data.status === 'success') {
                     user.banned = true;
                     user.bannedElt.textContent = 'Oui';

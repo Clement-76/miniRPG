@@ -2,9 +2,9 @@
 
 {% block links %}
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/fonts.css">
-    <link rel="stylesheet" href="assets/css/icons.css">
-    <link rel="stylesheet" href="assets/css/home.css">
+    <link rel="stylesheet" href="{{ baseUrl }}assets/css/fonts.css">
+    <link rel="stylesheet" href="{{ baseUrl }}assets/css/icons.css">
+    <link rel="stylesheet" href="{{ baseUrl }}assets/css/home.css">
 {% endblock %}
 
 {% block content %}
@@ -26,7 +26,7 @@
 
             <div class="options">
                 <i class="far fa-question-circle"></i>
-                <a href="index.php?action=users.logout"><i class="fas fa-power-off"></i></a>
+                <a href="Users/logout"><i class="fas fa-power-off"></i></a>
             </div>
         </div>
     </header>
@@ -61,21 +61,20 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="assets/js/create.js"></script>
-    <script src="assets/js/toHHMMSS.js"></script>
-    <script src="assets/js/Modal.js"></script>
-    <script src="assets/js/WindowRPG.js"></script>
-    <script src="assets/js/toggleWindow.js"></script>
-
-
-    <script src="assets/js/Adventures.js"></script>
-    <script src="assets/js/Inventory.js"></script>
-    <script src="assets/js/User.js"></script>
-    <script src="assets/js/Chat.js"></script>
+    <script>const baseUrl = '{{ baseUrl }}';</script>
+    <script src="{{ baseUrl }}assets/js/create.js"></script>
+    <script src="{{ baseUrl }}assets/js/toHHMMSS.js"></script>
+    <script src="{{ baseUrl }}assets/js/Modal.js"></script>
+    <script src="{{ baseUrl }}assets/js/WindowRPG.js"></script>
+    <script src="{{ baseUrl }}assets/js/toggleWindow.js"></script>
+    <script src="{{ baseUrl }}assets/js/Adventures.js"></script>
+    <script src="{{ baseUrl }}assets/js/Inventory.js"></script>
+    <script src="{{ baseUrl }}assets/js/User.js"></script>
+    <script src="{{ baseUrl }}assets/js/Chat.js"></script>
     {% if session.getRole() == "admin" %}
-        <script src="assets/js/UsersAdmin.js"></script>
-        <script src="assets/js/StuffAdmin.js"></script>
-        <script src="assets/js/admin.js"></script>
+        <script src="{{ baseUrl }}assets/js/UsersAdmin.js"></script>
+        <script src="{{ baseUrl }}assets/js/StuffAdmin.js"></script>
+        <script src="{{ baseUrl }}assets/js/admin.js"></script>
     {% endif %}
-    <script src="assets/js/main.js"></script>
+    <script src="{{ baseUrl }}assets/js/main.js"></script>
 {% endblock %}

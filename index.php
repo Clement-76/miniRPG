@@ -6,22 +6,45 @@ date_default_timezone_set('Europe/Paris');
 require 'composer/vendor/autoload.php';
 session_start();
 
-$action = 'login';
-$controller = '\ClementPatigny\Controller\\'; // the namespace
+$actualUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-if (isset($_GET['action']) && !empty($_GET['action']) && preg_match('#.+\..+#', $_GET['action'])) {
-    // the format of the GET parameter is controllerName.action
-    $data = explode('.', $_GET['action']);
-    $action = $data[1];
-    $controller .= ucfirst($data[0]) . 'Controller';
+if (empty($_GET['url'])) {
+    $url = '/';
+    $baseUrl = rtrim($actualUrl, '/');
 } else {
-    $controller .= 'UsersController';
+    $url = $_GET['url'];
+    $baseUrl = rtrim(preg_replace("#/$url.*$#", '', $actualUrl), '/'); // the url without the GET parameters
 }
 
-if (class_exists($controller) && method_exists($controller, $action)) {
-    $controller = new $controller();
-    $controller->$action();
-} else {
-    header("HTTP/1.0 404 Not Found");
-    exit();
-}
+define('baseUrl', $baseUrl);
+
+$router = new ClementPatigny\Router\Router($url);
+
+$router->addRoute('GET', '/', function() {
+    $usersController = new ClementPatigny\Controller\UsersController();
+    $usersController->login();
+});
+
+$router->addRoute('GET|POST', '/login/', function() {
+    $usersController = new ClementPatigny\Controller\UsersController();
+    $usersController->login();
+});
+
+$router->addRoute('GET', '/home/', function() {
+    $homeController = new ClementPatigny\Controller\HomeController();
+    $homeController->displayHome();
+});
+
+$router->addRoute('GET|POST', '/:controller/:action', function($controller, $action) {
+    $controller = '\ClementPatigny\Controller\\' . ucfirst($controller) . 'Controller';
+
+    if (class_exists($controller) && method_exists($controller, $action)) {
+        $controller = new $controller();
+        $controller->$action();
+    } else {
+        header("HTTP/1.0 404 Not Found");
+        exit();
+    }
+});
+
+$router->run();

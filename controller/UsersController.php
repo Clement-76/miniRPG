@@ -35,7 +35,7 @@ class UsersController extends AppController {
                 if (password_verify($_POST['password_connect'], $user['password'])) {
                     if ($user['userObj']->getBanned() == false) {
                         $_SESSION['user'] = $user['userObj'];
-                        header('Location: index.php?action=home.displayHome');
+                        header('Location: '. baseUrl . '/home');
                         exit();
                     } else {
                         $bannedErrors = true;
@@ -50,7 +50,7 @@ class UsersController extends AppController {
 
             echo $this->twig->render('login_register.twig', compact('loginErrors', 'bannedErrors', 'pageTitle', 'activeForm'));
         } else {
-            header('Location: index.php?action=home.displayHome');
+            header('Location: '. baseUrl . '/home');
             exit();
         }
     }
@@ -62,7 +62,8 @@ class UsersController extends AppController {
         $_SESSION = [];
         session_destroy();
 
-        header('Location: index.php');
+        header('Location: '. baseUrl . '/login');
+        exit();
     }
 
     /**
@@ -144,7 +145,7 @@ class UsersController extends AppController {
                         throw new \Exception($e->getMessage());
                     }
 
-                    header('Location: index.php');
+                    header('Location: '. baseUrl . '/login');
                     exit();
                 }
             }
@@ -160,7 +161,7 @@ class UsersController extends AppController {
                 echo $this->twig->render('login_register.twig', compact('registerErrors', 'pageTitle', 'activeForm', 'email', 'pseudo'));
             }
         } else {
-            header('Location: index.php?action=home.displayHome');
+            header('Location: '. baseUrl . '/home');
             exit();
         }
     }

@@ -127,7 +127,7 @@ class Inventory {
     equipStuff() {
         let stuffId = this.selectedStuff.id;
 
-        $.post('index.php?action=stuff.equipStuff', {stuffId: stuffId}, (data) => {
+        $.post(baseUrl + 'Stuff/equipStuff', {stuffId: stuffId}, (data) => {
             if (data['status'] === 'success') {
 
                 let equippedStuff = this.equippedStuff[this.selectedStuff.type];
@@ -160,7 +160,7 @@ class Inventory {
     unequipStuff() {
         let stuffId = this.selectedStuff.id;
 
-        $.post('index.php?action=stuff.unequipStuff', {stuffId: stuffId}, (data) => {
+        $.post(baseUrl + 'Stuff/unequipStuff', {stuffId: stuffId}, (data) => {
             if (data['status'] === 'success') {
                 this.selectedStuff.equipped = false;
                 this.equippedStuff[this.selectedStuff.type] = null;

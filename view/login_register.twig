@@ -2,9 +2,9 @@
 
 {% block links %}
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/fonts.css">
-    <link rel="stylesheet" href="assets/css/icons.css">
-    <link rel="stylesheet" href="assets/css/login-register.css">
+    <link rel="stylesheet" href="{{ baseUrl }}assets/css/fonts.css">
+    <link rel="stylesheet" href="{{ baseUrl }}assets/css/icons.css">
+    <link rel="stylesheet" href="{{ baseUrl }}assets/css/login-register.css">
 {% endblock %}
 
 {% block content %}
@@ -34,7 +34,7 @@
                     <p class="error">Ce compte a été banni</p>
                 {% endif %}
 
-                <form class="login" action="index.php?action=users.login" method="post">
+                <form class="login" action="login" method="post">
                     <div>
                         <label for="login">Pseudo/email</label><br>
                         <input type="text" id="login" name="login_connect">
@@ -50,7 +50,7 @@
             </div>
 
             {# register form #}
-            <form action="index.php?action=users.register" method="post" class="form{% if activeForm == "register" %} active{% endif %}">
+            <form action="Users/register" method="post" class="form{% if activeForm == "register" %} active{% endif %}">
                 <div>
                     <label for="email">Email</label><br>
                     <input id="email" type="email" name="email" value="{{ email }}" required>
@@ -86,6 +86,6 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="assets/js/toggleWindow.js"></script>
-    <script src="assets/js/passwordVisibilty.js"></script>
+    <script src="{{ baseUrl }}assets/js/toggleWindow.js"></script>
+    <script src="{{ baseUrl }}assets/js/passwordVisibilty.js"></script>
 {% endblock %}

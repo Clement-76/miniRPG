@@ -122,6 +122,8 @@ class AdventuresController extends AppController {
             }
 
             return $isInAdventure;
+        } else {
+            header('HTTP/1.0 404 Not Found');
         }
     }
 

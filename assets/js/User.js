@@ -76,7 +76,7 @@ class User {
      * retrieve user data with an ajax request
      */
     getUserFeatures() {
-        $.get('index.php?action=users.getJSONUser', (data) => {
+        $.get(baseUrl + 'Users/getJSONUser', (data) => {
             if (data.status === 'success') {
                 this.hydrate(data.userFeatures);
                 this.displayUserStats();

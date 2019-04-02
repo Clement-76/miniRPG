@@ -46,7 +46,7 @@ class Adventures {
      * @param callback
      */
     getAdventures(callback) {
-        $.get("index.php?action=adventures.getJSONAdventures", (data) => {
+        $.get(baseUrl + 'Adventures/getJSONAdventures', (data) => {
             if (data.status === "success") {
                 callback(data);
             } else {
@@ -134,7 +134,7 @@ class Adventures {
      * executes an ajax request to get rewards if the adventure is over
      */
     adventureCompleted() {
-        $.post("index.php?action=adventures.finishedAdventure", (data) => {
+        $.post(baseUrl + 'Adventures/finishedAdventure', (data) => {
             if (data.status === "success") {
                 this.currentAdventure = null;
                 this.user.adventureBeginning = null;
@@ -205,7 +205,7 @@ class Adventures {
         // if the user isn't already in an adventure
         if (this.checkAdventureStatus() === false) {
             if (this.user.lvl >= adventure.requiredLvl) {
-                $.post("index.php?action=adventures.startAdventure", {adventureId: adventure.id}, (data) => {
+                $.post(baseUrl + 'Adventures/startAdventure', {adventureId: adventure.id}, (data) => {
                     if (data.status === "success") {
                         this.currentAdventure = adventure;
                         this.user.adventureBeginning = Date.now();
@@ -228,7 +228,7 @@ class Adventures {
      */
     deleteAdventure(adventure) {
         if (confirm('Êtes-vous sûr de vouloir supprimer cette aventure ?')) {
-            $.post("index.php?action=adventures.deleteAdventure", {adventureId: adventure.id}, (data) => {
+            $.post(baseUrl + 'Adventures/deleteAdventure', {adventureId: adventure.id}, (data) => {
                 if (data.status === "success") {
                     new Modal(create('p', {text: `L'aventure a bien été supprimée`, class: 'info-message'}));
                     $(adventure.adminHTMLElt).remove();
@@ -309,7 +309,7 @@ class Adventures {
                 xp: xp
             }
 
-            $.post('index.php?action=adventures.createAdventure', data, (data) => {
+            $.post(baseUrl + 'Adventures/createAdventure', data, (data) => {
                 if (data.status === "success") {
                     modal.closeModal();
                     this.displayAdventuresAdmin(data['adventure']);
@@ -354,7 +354,7 @@ class Adventures {
                 xp: xp
             }
 
-            $.post('index.php?action=adventures.editAdventure', data, (data) => {
+            $.post(baseUrl + 'Adventures/editAdventure', data, (data) => {
                 if (data.status === "success") {
                     modal.closeModal();
                     // change the values of the adventure in the panel

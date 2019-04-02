@@ -6,7 +6,8 @@
     "autoload": {
         "psr-4": {
             "ClementPatigny\\Controller\\": "../controller",
-            "ClementPatigny\\Model\\": "../model"
+            "ClementPatigny\\Model\\": "../model",
+            "ClementPatigny\\Router\\": "../router"
         }
     },
     "authors": [

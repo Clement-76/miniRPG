@@ -19,7 +19,7 @@ class StuffAdmin {
      * @param callback
      */
     getStuff(callback) {
-        $.get('index.php?action=stuff.getJSONStuff', (data) => {
+        $.get(baseUrl + 'Stuff/getJSONStuff', (data) => {
             if (data.status === 'success') {
                 callback(data);
             } else {
@@ -156,7 +156,7 @@ class StuffAdmin {
                 rarity: rarityNb
             }
 
-            $.post('index.php?action=stuff.editStuff', data, (data) => {
+            $.post(baseUrl + 'Stuff/editStuff', data, (data) => {
                 if (data.status === "success") {
                     modal.closeModal();
                     // change the values of the stuff in the panel
@@ -209,10 +209,11 @@ class StuffAdmin {
                 rarity: rarityNb
             }
 
-            $.post('index.php?action=stuff.createStuff', data, (data) => {
+            $.post(baseUrl + 'Stuff/createStuff', data, (data) => {
                 if (data.status === "success") {
                     modal.closeModal();
                     this.displayStuff(data['stuff']);
+                    new Modal(create('p', {text: `L'équipement a été créé avec succès`, class: 'info-message'}));
                 } else {
                     console.error(data.message);
                     new Modal(create('p', {text: `Une erreur est survenue`, class: 'info-message'}));
@@ -229,7 +230,7 @@ class StuffAdmin {
      */
     deleteStuff(stuff) {
         if (confirm(`Êtes-vous sûr de vouloir supprimer cet équipement ? Cela le supprimera également de l'inventaire de chaque joueur qui le possède.`)) {
-            $.post("index.php?action=stuff.deleteStuff", {stuffId: stuff.id}, (data) => {
+            $.post(baseUrl + 'Stuff/deleteStuff', {stuffId: stuff.id}, (data) => {
                 if (data.status === "success") {
                     new Modal(create('p', {text: `L'équipement a bien été supprimée`, class: 'info-message'}));
                     $(stuff.adminHTMLElt).remove();

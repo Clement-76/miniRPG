@@ -54,7 +54,7 @@ class Chat {
      * gets all messages with ajax request
      */
     getMessages() {
-        $.post("index.php?action=chat.getJSONChatMessages", {lastIdRetrieved: this.lastIdRetrieved}, (data) => {
+        $.post(baseUrl + 'Chat/getJSONChatMessages', {lastIdRetrieved: this.lastIdRetrieved}, (data) => {
             if (data.status === "success") {
                 // if there are new messages
                 if (data.messages !== 'nothing') {
@@ -81,7 +81,7 @@ class Chat {
         let message = $('#' + this.textareaId).val();
 
         if (!emptyRegex.test(message)) {
-            $.post("index.php?action=chat.addMessage", {message: message}, (data) => {
+            $.post(baseUrl + 'Chat/addMessage', {message: message}, (data) => {
                 if (data.status === 'success') {
                     $('#' + this.textareaId).val("");
                     $('#' + this.textareaId).attr('rows', '1');
