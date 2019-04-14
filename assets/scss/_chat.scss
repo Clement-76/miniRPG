@@ -1,30 +1,53 @@
+$width: 420px;
+
 .chat {
-    width: 420px;
+    width: $width;
     left: 10px;
     top: 30px;
-    display: block;
+
+    &:not(.login-register) {
+        display: block;
+    }
 
     #chat-messages {
         overflow-y: auto;
         height: 450px;
         padding: 20px 15px 0 15px;
+        box-sizing: border-box;
 
-        .message {
-            width: 65%;
-            margin-bottom: 12px;
-            box-sizing: border-box;
+        .me,
+        .other {
+            display: flex;
+        }
 
-            &.me {
-                margin-left: auto;
+        .me {
+            justify-content: flex-end;
+
+            .message {
+                margin-bottom: 3px;
 
                 .content {
                     background-color: $dark-moderate-blue;
+                    margin-left: auto;
                 }
             }
+        }
 
-            &.other .content {
-                background-color: $body-bg;
+        .other {
+            .message {
+                margin-bottom: 12px;
+
+                .content {
+                    background-color: $body-bg;
+                }
             }
+        }
+
+        .message {
+            max-width: 65%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
 
             .pseudo {
                 font-size: 0.75em;
@@ -52,6 +75,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        background-color: $windows-bg;
 
         #user-message {
             font-family: $fonts;
@@ -63,6 +87,9 @@
             color: $light-grey;
             resize: none;
             max-height: 80px;
+            width: 300px;
+            box-sizing: border-box;
+            overflow-x: hidden;
 
             @include placeholder {
                 color: #9e9e9e;
@@ -80,6 +107,28 @@
             cursor: pointer;
             margin: 14px;
             align-self: flex-start;
+        }
+    }
+}
+
+@media all and (max-width: $width) {
+    .chat {
+        width: 100%;
+    }
+}
+
+@media all and (max-height: 670px) {
+    .chat {
+        height: 100%;
+
+        .window-content {
+            height: 100%;
+
+            #chat-messages {
+                overflow-y: auto;
+                height: calc(100% - 90px); // 100% - (form message height + window title height)
+                padding: 20px 15px 0 15px;
+            }
         }
     }
 }

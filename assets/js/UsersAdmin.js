@@ -33,6 +33,7 @@ class UsersAdmin {
     displayUser(user) {
         let userTr = create('tr', null, this.usersContainer[0]);
         user.pseudoElt = create('td', {class: 'user-pseudo', text: user.pseudo}, userTr);
+        let down = create('i', {class: ['fas', 'fa-caret-down']}, user.pseudoElt);
         user.lvlElt = create('td', {class: 'user-lvl', text: user.lvl}, userTr);
         user.registrationDateElt = create('td', {class: 'user-registration-date', text: user.registrationDate}, userTr);
         user.dollarsElt = create('td', {class: 'user-dollars', text: user.dollars}, userTr);
@@ -47,6 +48,15 @@ class UsersAdmin {
         let banContainer = create('td', {class: 'ban', text: 'Bannir '}, userTr);
         create('i', {class: ['fas', 'fa-user-times']}, banContainer);
         $(banContainer).on('click', this.banUser.bind(this, user));
+
+        $(down).on('click', () => {
+            $(down).toggleClass("fa-caret-down");
+            $(down).toggleClass("fa-caret-up");
+
+            $(down).parents("td").siblings("td").toggleClass("d-block");
+            $(warnContainer).toggleClass("d-inline").removeClass('d-block');
+            $(banContainer).toggleClass("d-inline").removeClass('d-block');
+        });
 
         user.adminHTMLElt = userTr;
     }

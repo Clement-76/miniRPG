@@ -307,8 +307,12 @@ class User implements \JsonSerializable {
      * @param Stuff[] $allStuff collection of Stuff objects
      */
     public function setInventory($allStuff) {
-        foreach ($allStuff as $stuff) {
-            $this->_inventory[] = $stuff;
+        if ($allStuff == null) {
+            $this->_inventory = [];
+        } else {
+            foreach ($allStuff as $stuff) {
+                $this->_inventory[] = $stuff;
+            }
         }
     }
 

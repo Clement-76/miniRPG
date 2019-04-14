@@ -42,11 +42,15 @@
     </div>
 
     <footer class="menu">
-        <div id="chat" class="item open"><i class="fas fa-comment-alt"></i></div>
-        <div id="characteristics" class="item"><i class="fas fa-dna"></i></div>
-        <div id="adventures" class="item"><i class="fas fa-map-signs"></i></div>
-        <div id="arena" class="item"><i class="icon-swords"></i></div>
-        <div id="inventory" class="item"><i class="icon-treasure"></i></div>
+        <div class="invisible"></div>
+
+        <nav class="user-menu">
+            <div id="chat" class="item open"><i class="fas fa-comment-alt"></i></div>
+            <div id="characteristics" class="item"><i class="fas fa-dna"></i></div>
+            <div id="adventures" class="item"><i class="fas fa-map-signs"></i></div>
+            <div id="arena" class="item"><i class="icon-swords"></i></div>
+            <div id="inventory" class="item"><i class="icon-treasure"></i></div>
+        </nav>
 
         {% if session.getRole() == "admin" %}
             <div id="admin-menu">

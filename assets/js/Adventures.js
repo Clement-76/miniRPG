@@ -84,6 +84,7 @@ class Adventures {
     displayAdventuresAdmin(adventure) {
         let adventureTr = create('tr', null, this.adventuresAdminContainer[0]);
         adventure.nameElt = create('td', {class: 'adventure-name', text: adventure.name}, adventureTr);
+        let down = create('i', {class: ['fas', 'fa-caret-down']}, adventure.nameElt);
         adventure.durationElt = create('td', {class: 'adventure-duration', text: adventure.duration}, adventureTr);
         adventure.requiredLvlElt = create('td', {class: 'adventure-lvl', text: adventure.requiredLvl}, adventureTr);
         adventure.dollarsElt = create('td', {class: 'adventure-dollars', text: adventure.dollars}, adventureTr);
@@ -98,6 +99,15 @@ class Adventures {
         let deleteContainer = create('td', {class: 'delete', text: 'Supprimer '}, adventureTr);
         create('i', {class: ['far', 'fa-trash-alt']}, deleteContainer);
         $(deleteContainer).on('click', this.deleteAdventure.bind(this, adventure));
+
+        $(down).on('click', () => {
+            $(down).toggleClass("fa-caret-down");
+            $(down).toggleClass("fa-caret-up");
+
+            $(down).parents("td").siblings("td").toggleClass("d-block");
+            $(editContainer).toggleClass("d-inline").removeClass('d-block');
+            $(deleteContainer).toggleClass("d-inline").removeClass('d-block');
+        });
 
         adventure.adminHTMLElt = adventureTr;
     }
@@ -185,7 +195,7 @@ class Adventures {
 
         let timer = setInterval(() => {
             if (remainingSeconds > 1) {
-                remainingSeconds -= 1;
+                remainingSeconds--;
                 $(timeP).text(toHHMMSS(remainingSeconds));
             } else {
                 $(timeP).remove();

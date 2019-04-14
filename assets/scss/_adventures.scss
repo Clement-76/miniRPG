@@ -1,5 +1,7 @@
+$width: 782px;
+
 .adventures {
-    width: 782px;
+    width: $width;
     box-sizing: border-box;
     right: 10px;
     bottom: 30px;
@@ -44,6 +46,32 @@
                         &.not-allowed {
                             color: $error;
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media all and (max-width: $width) {
+    .adventures {
+        width: 100%;
+    }
+}
+
+@media all and (max-width: 700px) {
+    .adventures .window-content {
+        padding: 10px 20px;
+
+        #adventures {
+            .adventure {
+
+                .start-adventure {
+                    margin-top: 5px;
+                    position: static;
+
+                    .required-lvl {
+                        font-size: 0.85em;
                     }
                 }
             }

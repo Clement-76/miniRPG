@@ -18,7 +18,7 @@ body {
         h1 {
             text-align: center;
             font-size: 1.4em;
-            margin-bottom: 35px;
+            margin-bottom: 50px;
         }
 
         .fa-question-circle {
@@ -32,12 +32,21 @@ body {
         p {
             text-align: center;
             width: 45%;
-            margin: 0 auto 30px auto;
+            margin: 0 auto 50px auto;
         }
     }
 
-    .window {
+    .window.login-register {
         margin: 0 auto;
+        width: 450px;
+
+        .window-title {
+            cursor: default;
+        }
+        
+        [type="submit"] {
+            cursor: pointer;
+        }
     }
 
     .copyright {
@@ -46,5 +55,48 @@ body {
         bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
+    }
+}
+
+@media all and (max-width: 768px) {
+    body {
+
+        header {
+            h1 {
+                margin-bottom: 26px;
+            }
+
+            p {
+                width: 65%;
+                margin: 0 auto 35px auto;
+            }
+        }
+
+        .copyright {
+            position: static;
+            transform: none;
+        }
+    }
+}
+
+@media all and (max-width: 460px) {
+    body {
+
+        header {
+            h1 {
+                margin-bottom: 20px;
+            }
+
+            p {
+                width: 100%;
+                padding: 0 5px;
+                margin: 0 auto 20px auto;
+                box-sizing: border-box;
+            }
+        }
+
+        .window.login-register {
+            width: 95%;
+        }
     }
 }

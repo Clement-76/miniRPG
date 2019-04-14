@@ -2,6 +2,7 @@
 
 namespace ClementPatigny\Controller;
 
+use ClementPatigny\Model\StuffManager;
 use ClementPatigny\Model\UserManager;
 
 class UsersController extends AppController {
@@ -32,16 +33,18 @@ class UsersController extends AppController {
                     throw new \Exception($e->getMessage());
                 }
 
-                if (password_verify($_POST['password_connect'], $user['password'])) {
-                    if ($user['userObj']->getBanned() == false) {
-                        $_SESSION['user'] = $user['userObj'];
-                        header('Location: '. baseUrl . '/home');
-                        exit();
+                if ($user != false) {
+                    if (password_verify($_POST['password_connect'], $user['password'])) {
+                        if ($user['userObj']->getBanned() == false) {
+                            $_SESSION['user'] = $user['userObj'];
+                            header('Location: '. baseUrl . '/home');
+                            exit();
+                        } else {
+                            $bannedErrors = true;
+                        }
                     } else {
-                        $bannedErrors = true;
+                        $loginErrors = true;
                     }
-                } else {
-                    $loginErrors = true;
                 }
             }
 
@@ -87,12 +90,11 @@ class UsersController extends AppController {
                 }
 
                 if (!preg_match('#^[a-z\d]+([.\-_]{1}[a-z\d]+)*@[a-z\d]+\.[a-z]+$#', $_POST['email'])) {
-
-                    $registerErrors['email'] = true;
+                    $registerErrors['email'] = !preg_match('#^[a-z\d]+([.\-_]{1}[a-z\d]+)*@[a-z\d]+\.[a-z]+$#', $_POST['email']);
                     $registerErrors['errors'] = true;
                 }
 
-                if ($_POST['email'] == $email) {
+                if (strtoupper($_POST['email']) == strtoupper($email)) {
                     $registerErrors['email_not_available'] = true;
                     $registerErrors['errors'] = true;
                 }
@@ -103,7 +105,7 @@ class UsersController extends AppController {
                     throw new \Exception($e->getMessage());
                 }
 
-                if ($_POST['pseudo'] == $pseudo) {
+                if (strtoupper($_POST['pseudo']) == strtoupper($pseudo)) {
                     $registerErrors['pseudo_not_available'] = true;
                     $registerErrors['errors'] = true;
                 }
@@ -140,7 +142,12 @@ class UsersController extends AppController {
                     ];
 
                     try {
-                        $userManager->createUser($userData);
+                        $userId = $userManager->createUser($userData);
+                        $stuffManager = new StuffManager();
+                        $stuffIds = $stuffManager->getStuffIdsWhereMaxRequiredLvl(1);
+                        $randomStuffIndex = array_rand($stuffIds);
+                        $stuffId = $stuffIds[$randomStuffIndex];
+                        $stuffManager->createPossessionStuff($userId, $stuffId);
                     } catch (\Exception $e) {
                         throw new \Exception($e->getMessage());
                     }

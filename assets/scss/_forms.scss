@@ -88,3 +88,15 @@
         }
     }
 }
+
+@media all and (max-width: 460px) {
+    .forms {
+        padding: 15px 20px;
+
+        .form {
+            .login {
+                min-height: auto;
+            }
+        }
+    }
+}

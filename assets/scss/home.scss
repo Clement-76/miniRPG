@@ -37,7 +37,7 @@ html {
             .info {
                 display: flex;
                 padding: 15px 15px 0 15px;
-
+                position: relative;
 
                 .money {
                     font-size: 1.6em;
@@ -59,6 +59,7 @@ html {
 
                     .lvl {
                         margin-top: 2px;
+                        margin-bottom: 10px;
                     }
                 }
 
@@ -80,11 +81,14 @@ html {
         }
 
         .menu {
-            display: flex;
-            justify-content: center;
             border-top: 2px solid $light-grey;
             background-color: $body-bg;
             position: relative;
+
+            .user-menu {
+                display: flex;
+                justify-content: center;
+            }
 
             #admin-menu {
                 border: 2px solid $borders;
@@ -98,31 +102,6 @@ html {
                 top: 0;
                 transform: translateY(calc(-100% - 2px)); // 2px for footer border top
                 display: none;
-
-                ul {
-                    padding: 0;
-                    margin: 0;
-
-                    li {
-                        list-style: none;
-                        padding: 6px 12px;
-                        text-transform: uppercase;
-                        cursor: pointer;
-                        margin: 7px 0 7px 0;
-
-                        &:hover {
-                            background-color: $selected;
-                        }
-
-                        &:not(:last-child) {
-                            border-bottom: 1px solid $light-grey;
-                        }
-
-                        &:last-child {
-                            margin-bottom: 0;
-                        }
-                    }
-                }
             }
 
             #open-admin-menu-btn {
@@ -164,7 +143,6 @@ html {
                     font-size: 3em;
                 }
             }
-
         }
 
         .separator {
@@ -179,6 +157,120 @@ html {
 
         .custom-scrollbar {
             @include scrollbar($windows-bg);
+        }
+    }
+}
+
+@media all and (max-width: 690px) {
+    html body {
+
+        header {
+
+            .info {
+                padding: 12px 15px 0;
+
+                .money {
+                    font-size: 1.3em;
+
+                    #dollars {
+                        margin-right: 15px;
+                    }
+                }
+
+                .user {
+                    .pseudo {
+                        font-size: 1.2em;
+                    }
+
+                    .lvl {
+                        margin-bottom: 5px;
+                    }
+                }
+
+                .options {
+                    font-size: 1.5em;
+
+                    a {
+                        margin-left: 8px;
+                    }
+                }
+            }
+        }
+
+        .menu {
+            display: flex;
+            justify-content: space-between;
+
+            .user-menu {
+                overflow: auto;
+            }
+
+            #open-admin-menu-btn {
+                position: static;
+            }
+
+            .item {
+                height: 60px;
+                width: 60px;
+                margin: 5px 3px;
+                padding: 5px;
+
+                i {
+                    font-size: 2.6em;
+                }
+            }
+        }
+    }
+}
+
+@media all and (max-width: 425px) {
+    html body {
+
+        header {
+
+            .info {
+                padding: 12px 10px 0;
+
+                .money {
+                    font-size: 1.1em;
+
+                    #dollars {
+                        margin-right: 10px;
+                    }
+
+                    #tenge {
+                        display: block;
+                        margin-top: 6px;
+                    }
+                }
+
+                .user {
+                    .pseudo {
+                        font-size: 1.1em;
+                    }
+                }
+
+                .options {
+                    font-size: 1.4em;
+
+                    a {
+                        margin-left: 5px;
+                    }
+                }
+            }
+        }
+
+        .menu {
+            .item {
+                height: 50px;
+                width: 50px;
+                margin: 5px 2px;
+                padding: 4px;
+
+                i {
+                    font-size: 2.3em;
+                }
+            }
         }
     }
 }

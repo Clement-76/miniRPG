@@ -23,47 +23,52 @@ class UserManager extends Manager {
             $q->execute([$login]);
             $user = $q->fetch();
 
-            $stuffManager = new StuffManager();
-            $stuff = $stuffManager->getPossessionsStuff($user['id']);
+            if ($user != false) {
+                $stuffManager = new StuffManager();
+                $stuff = $stuffManager->getPossessionsStuff($user['id']);
+
+                $userFeatures = [
+                    'id' => $user['id'],
+                    'pseudo' => $user['pseudo'],
+                    'email' => $user['email'],
+                    'role' => $user['role'],
+                    'confirmationKey' => $user['confirmation_key'],
+                    'confirmedEmail' => $user['confirmed_email'],
+                    'warnings' => $user['warnings'],
+                    'banned' => $user['banned'],
+                    'registrationDate' => $user['registration_date'],
+                    'tutorial' => $user['tutorial'],
+                    'life' => $user['life'],
+                    'attack' => $user['attack'],
+                    'defense' => $user['defense'],
+                    'dollar' => $user['$'],
+                    'T' => $user['T'],
+                    'xp' => $user['xp'],
+                    'remainingBattles' => $user['remaining_battles'],
+                    'lastBattle' => $user['last_battle'],
+                    'adventureBeginning' => $user['adventure_beginning'],
+                    'currentAdventureId' => $user['current_adventure_id'],
+                    'inventory' => $stuff
+                ];
+
+                $userObj = new User($userFeatures);
+
+                return [
+                    'password' => $user['password'],
+                    'userObj' => $userObj
+                ];
+            } else {
+                return false;
+            }
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
-
-        $userFeatures = [
-            'id' => $user['id'],
-            'pseudo' => $user['pseudo'],
-            'email' => $user['email'],
-            'password' => $user['password'],
-            'role' => $user['role'],
-            'confirmationKey' => $user['confirmation_key'],
-            'confirmedEmail' => $user['confirmed_email'],
-            'warnings' => $user['warnings'],
-            'banned' => $user['banned'],
-            'registrationDate' => $user['registration_date'],
-            'tutorial' => $user['tutorial'],
-            'life' => $user['life'],
-            'attack' => $user['attack'],
-            'defense' => $user['defense'],
-            'dollar' => $user['$'],
-            'T' => $user['T'],
-            'xp' => $user['xp'],
-            'remainingBattles' => $user['remaining_battles'],
-            'lastBattle' => $user['last_battle'],
-            'adventureBeginning' => $user['adventure_beginning'],
-            'currentAdventureId' => $user['current_adventure_id'],
-            'inventory' => $stuff
-        ];
-
-        $userObj = new User($userFeatures);
-        return [
-            'password' => $user['password'],
-            'userObj' => $userObj
-        ];
     }
 
     /**
      * add a new user to the db
      * @param $userFeatures
+     * @return string the user id
      * @throws \Exception
      */
     public function createUser($userFeatures) {
@@ -81,6 +86,8 @@ class UserManager extends Manager {
         } catch (Exception $e) {
             throw new \Exception($e->getMessage());
         }
+
+        return $db->lastInsertId();
     }
 
     /**

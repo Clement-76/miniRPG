@@ -11,11 +11,15 @@ class Inventory {
             shield: null
         }
 
-        if (this.inventory !== null) {
+        if (this.inventory.length > 0) {
             this.nbStuff = this.inventory.length;
 
             // return the first stuff in the inventory that is not equipped if there is one
             let firstStuff = this.inventory.find(stuff => stuff.equipped === false);
+
+            if (firstStuff === undefined) {
+                firstStuff = this.inventory.find(stuff => stuff.equipped === true);
+            }
 
             this.inventory.forEach((stuff) => {
                 this.setRarityInfos(stuff);

@@ -15,7 +15,7 @@
         <p>Rejoins-nous maintenant, crée ton personnage et fais le évoluer afin de devenir le plus puissant de tous !</p>
     </header>
 
-    <div class="window extra-small">
+    <div class="window login-register extra-small">
         <h2 class="window-title">Rejoins-nous</h2>
 
         <div class="btn-group">
@@ -50,7 +50,7 @@
             </div>
 
             {# register form #}
-            <form action="Users/register" method="post" class="form{% if activeForm == "register" %} active{% endif %}">
+            <form action="{{ baseUrl }}Users/register" method="post" class="form{% if activeForm == "register" %} active{% endif %}">
                 <div>
                     <label for="email">Email</label><br>
                     <input id="email" type="email" name="email" value="{{ email }}" required>
@@ -73,7 +73,7 @@
                 </div>
                 <div class="terms">
                     <input type="checkbox" name="terms" id="terms" required>
-                    <label class="{% if registerErrors['terms'] %} error {% endif %}"  for="terms">En m'inscrivant, j'accepte que mes données soient utilisées afin de confirmer mon compte par email. J'accepte également les conditions générales d'utilisation ainsi que la politique d'utilisation des cookies.</label>
+                    <label class="{% if registerErrors['terms'] %} error {% endif %}"  for="terms">En m'inscrivant, j'accepte que mes données soient utilisées afin de confirmer mon compte par email et j'accepte également les conditions générales d'utilisation.</label>
                 </div>
                 <div>
                     <input type="submit" value="S'inscrire">

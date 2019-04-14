@@ -6,7 +6,7 @@
     <title>{{ pageTitle }}</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     {% block links %}{% endblock %}
-    {#<link rel="icon" type="image/png" href="assets/images/favicon.png">#}
+    <link rel="icon" type="image/png" href="{{ baseUrl }}assets/images/favicon.png">
 </head>
 <body>
     {% block content %}{% endblock %}

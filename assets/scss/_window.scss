@@ -2,9 +2,12 @@
     background-color: $windows-bg;
     border: 2px solid $borders;
     box-sizing: border-box;
-    display: none;
-    position: absolute;
-    z-index: 10;
+
+    &:not(.login-register) {
+        display: none;
+        position: absolute;
+        z-index: 10;
+    }
 
     .window-title {
         margin: 0;
@@ -61,5 +64,15 @@
                 border-width: 0 0 2px 1px;
             }
         }
+    }
+}
+
+@media all and (max-width: 900px) {
+    body .window {
+        left: 50%;
+        top: 50%;
+        bottom: auto;
+        right: auto;
+        transform: translate(-50%, -50%);
     }
 }

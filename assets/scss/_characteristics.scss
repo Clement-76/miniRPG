@@ -1,3 +1,5 @@
+$width: 420px;
+
 .characteristics {
     width: 420px;
     bottom: 30px;
@@ -35,5 +37,11 @@
                 }
             }
         }
+    }
+}
+
+@media all and (max-width: $width) {
+    .characteristics {
+        width: 100%;
     }
 }

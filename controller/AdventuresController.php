@@ -62,7 +62,7 @@ class AdventuresController extends AppController {
                     $totalDollars = ceil($_SESSION['user']->getDollar() + $dollarsGained);
 
                     $stuffManager = new StuffManager();
-                    $stuffIds = $stuffManager->getStuffIdsWhereMaxRequiredLvl($_SESSION['user']->getLvl());
+                    $stuffIds = $stuffManager->getStuffIdsWhereMaxRequiredLvl($adventure->getRequiredLvl());
                     $randomStuffIndex = array_rand($stuffIds);
                     $stuffGainedId = $stuffIds[$randomStuffIndex];
 

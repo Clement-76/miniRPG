@@ -1,5 +1,7 @@
+$width: 820px;
+
 .inventory {
-    width: 820px;
+    width: $width;
     right: 10px;
     top: 30px;
 
@@ -78,7 +80,7 @@
 
         .all-stuff {
             overflow: auto;
-            flex-basis: 360px;
+            flex-basis: 368px;
             padding-left: 15px;
             @include scrollbar($windows-bg);
 
@@ -139,5 +141,116 @@
         top: 3px;
         right: 3px;
         font-size: 0.75em;
+    }
+}
+
+@media all and (max-width: $width) {
+    .inventory {
+        width: 648px;
+
+        .window-content {
+            height: 395px;
+
+            .stuff-infos {
+                overflow-y: auto;
+                @include scrollbar($windows-bg);
+
+                .stuff-select {
+
+                    .name {
+                        margin-bottom: 20px;
+                    }
+
+                    .type,
+                    .rarity,
+                    .stats {
+                        margin-bottom: 15px;
+                    }
+
+                    #equipped,
+                    #unequipped {
+                        margin-bottom: 25px;
+                    }
+                }
+
+                .currently-equipped .equipped-stuff {
+                    margin-top: 25px;
+                }
+            }
+
+            .all-stuff {
+                flex-basis: 278px;
+            }
+        }
+    }
+}
+
+@media all and (max-width: 655px) {
+    .inventory {
+        width: 472px;
+
+        .window-content .all-stuff {
+            flex-basis: 192px;
+        }
+    }
+}
+
+@media all and (max-width: 474px) {
+    .inventory {
+        width: 100%;
+
+        .window-content {
+            height: 395px;
+            padding: 10px 0 10px 8px;
+            $all-stuff-flex-basis: 106px;
+
+            .stuff-infos {
+                padding-right: 8px;
+                flex-basis: calc(100% - #{$all-stuff-flex-basis});
+
+                .stuff-select {
+
+                    .name {
+                        margin-bottom: 15px;
+                    }
+
+                    .type,
+                    .rarity,
+                    .stats {
+                        margin-bottom: 10px;
+                    }
+
+                    #equipped,
+                    #unequipped {
+                        margin-bottom: 20px;
+                    }
+                }
+
+                .currently-equipped {
+                    .equipped-stuff {
+                        margin-top: 20px;
+
+                        .equipped:first-child {
+                            margin-right: 30px;
+                        }
+                    }
+                }
+            }
+
+            .all-stuff {
+                padding-left: 8px;
+                flex-basis: $all-stuff-flex-basis;
+
+                .stuff {
+                    margin: 4px 6px;
+                }
+            }
+        }
+    }
+}
+
+@media all and (max-height: 589px) {
+    .inventory .window-content {
+        height: 320px;
     }
 }

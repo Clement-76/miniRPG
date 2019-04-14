@@ -13,14 +13,18 @@
         align-items: center;
 
         .modal-content {
+            box-sizing: border-box;
             background-color: $windows-bg;
             padding: 8px 10px;
             font-size: 1.15em;
             border-top: 5px solid $dark-moderate-blue;
+            overflow: auto;
+            @include scrollbar($windows-bg);
 
             form {
                 padding: 0 35px 15px;
-                width: 350px;
+                width: 420px;
+                box-sizing: border-box;
 
                 h2 {
                     margin-top: 6px;
@@ -63,6 +67,7 @@
 
             &.adventure-completed {
                 width: 450px;
+                box-sizing: border-box;
                 padding: 10px 15px;
             }
 
@@ -80,5 +85,36 @@
                 margin: 6px 12px 18px 12px;
             }
         }
+    }
+}
+
+@media all and (max-width: 450px) {
+    .modal {
+
+        .modal-overlay {
+
+            .modal-content {
+
+                form {
+                    h2 {
+                        margin-top: 0;
+                        font-size: 1.35em;
+                    }
+
+                    padding: 0 15px 15px;
+                    width: 100%;
+                }
+
+                &.adventure-completed {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+@media all and (max-height: 545px) {
+    .modal .modal-overlay .modal-content form {
+        height: 400px;
     }
 }

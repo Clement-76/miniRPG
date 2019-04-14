@@ -6,16 +6,21 @@ date_default_timezone_set('Europe/Paris');
 require 'composer/vendor/autoload.php';
 session_start();
 
-$actualUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
+    $actualUrl = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+} else {
+    $actualUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+}
 
 if (empty($_GET['url'])) {
     $url = '/';
-    $baseUrl = rtrim($actualUrl, '/');
+    $baseUrl = $actualUrl;
 } else {
     $url = $_GET['url'];
-    $baseUrl = rtrim(preg_replace("#/$url.*$#", '', $actualUrl), '/'); // the url without the GET parameters
+    $baseUrl = preg_replace("#/$url.*$#", '', $actualUrl); // the url without the GET parameters
 }
 
+$baseUrl = rtrim(preg_replace("#(.*)index\.php.*#", '$1', $baseUrl), '/');
 define('baseUrl', $baseUrl);
 
 $router = new ClementPatigny\Router\Router($url);

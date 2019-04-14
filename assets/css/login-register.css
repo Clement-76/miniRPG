@@ -72,10 +72,23 @@
         font-size: 21px; 
 }
 
+@media all and (max-width: 460px) {
+  .forms {
+    padding: 15px 20px; 
+}
+    .forms .form .login {
+      min-height: auto; 
+} 
+}
 .window {
   background-color: #2b2b2b;
   border: 2px solid #000;
   box-sizing: border-box; 
+}
+  .window:not(.login-register) {
+    display: none;
+    position: absolute;
+    z-index: 10; 
 }
   .window .window-title {
     margin: 0;
@@ -84,7 +97,21 @@
     padding: 5px 15px;
     text-align: center;
     background-color: #316278;
-    border-bottom: 2px solid #000; 
+    border-bottom: 2px solid #000;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    user-select: none;
+    cursor: move; 
+}
+    .window .window-title .window-close {
+      font-size: 1.2em;
+      position: absolute;
+      right: 0;
+      cursor: pointer; 
+}
+      .window .window-title .window-close .icon-close {
+        padding: 6px; 
 }
   .window .btn-group {
     display: flex; 
@@ -112,10 +139,16 @@
       .window .btn-group button:last-child {
         border-width: 0 0 2px 1px; 
 }
-  .window.extra-small {
-    width: 33%; 
-}
 
+@media all and (max-width: 900px) {
+  body .window {
+    left: 50%;
+    top: 50%;
+    bottom: auto;
+    right: auto;
+    transform: translate(-50%, -50%); 
+} 
+}
 body {
   font-family: "Varela Round", sans-serif;
   background-color: #212121;
@@ -130,7 +163,7 @@ body {
   body header h1 {
     text-align: center;
     font-size: 1.4em;
-    margin-bottom: 35px; 
+    margin-bottom: 50px; 
 }
   body header .fa-question-circle {
     position: absolute;
@@ -142,10 +175,17 @@ body {
   body header p {
     text-align: center;
     width: 45%;
-    margin: 0 auto 30px auto; 
+    margin: 0 auto 50px auto; 
 }
-  body .window {
-    margin: 0 auto; 
+  body .window.login-register {
+    margin: 0 auto;
+    width: 450px; 
+}
+    body .window.login-register .window-title {
+      cursor: default; 
+}
+    body .window.login-register [type="submit"] {
+      cursor: pointer; 
 }
   body .copyright {
     text-align: center;
@@ -153,6 +193,34 @@ body {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%); 
+}
+
+@media all and (max-width: 768px) {
+  body header h1 {
+    margin-bottom: 26px; 
+}
+  body header p {
+    width: 65%;
+    margin: 0 auto 35px auto; 
+}
+  body .copyright {
+    position: static;
+    transform: none; 
+} 
+}
+@media all and (max-width: 460px) {
+  body header h1 {
+    margin-bottom: 20px; 
+}
+  body header p {
+    width: 100%;
+    padding: 0 5px;
+    margin: 0 auto 20px auto;
+    box-sizing: border-box; 
+}
+  body .window.login-register {
+    width: 95%; 
+} 
 }
 
 /*# sourceMappingURL=login-register.css.map */

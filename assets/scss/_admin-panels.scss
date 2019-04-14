@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 .admin-adventures,
 .admin-stuff,
 .admin-users {
@@ -38,6 +40,10 @@
             border-radius: 3px;
             margin-bottom: 20px;
 
+            td:first-child i {
+                display: none;
+            }
+
             thead {
                 tr:first-child {
                     background-color: $body-bg;
@@ -64,6 +70,7 @@
                     cursor: pointer;
                     color: $edit;
                     transition-duration: 0.3s;
+                    white-space: nowrap;
                     
                     &:hover {
                         color: #19508b;
@@ -75,6 +82,7 @@
                     cursor: pointer;
                     color: $delete;
                     transition-duration: 0.3s;
+                    white-space: nowrap;
 
                     &:hover {
                         color: #9b4545;
@@ -89,9 +97,140 @@
                     cursor: pointer;
                     color: $warn;
                     transition-duration: 0.3s;
+                    white-space: nowrap;
 
                     &:hover {
                         color: #a6651c;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media all and (max-width: 1000px) {
+    .admin-adventures,
+    .admin-stuff,
+    .admin-users {
+        $width: 100%;
+        width: $width;
+        left: calc(50% - #{$width} / 2);
+    }
+}
+
+@media all and (max-width: 768px) {
+    .admin-adventures,
+    .admin-stuff,
+    .admin-users {
+        height: auto;
+
+        .window-content {
+            height: 280px;
+
+            table {
+
+                thead {
+                    th:not(:first-child) {
+                        display: none;
+                    }
+                }
+
+                tbody {
+                    tr {
+                        .user-warnings {
+                            text-align: left;
+                        }
+
+                        td {
+                            padding: 5px 10px;
+
+                            &:first-child {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+
+                                i {
+                                    display: block;
+                                    padding: 6px 20px;
+                                    cursor: pointer;
+                                    font-size: 1.2em;
+                                }
+                            }
+
+                            &:not(:first-child) {
+                                display: none;
+                            }
+
+                            &.d-block {
+                                display: block;
+                            }
+
+                            &.d-inline {
+                                display: inline-block;
+                            }
+
+                            &.adventure-duration:before {
+                                content: 'Durée (en s) :';
+                            }
+
+                            &.adventure-lvl:before {
+                                content: 'Niveau requis :';
+                            }
+
+                            &.adventure-dollars:before {
+                                content: 'Récompense ($) :';
+                            }
+
+                            &.adventure-xp:before {
+                                content: 'Récompense (XP) :';
+                            }
+
+                            &.stuff-type:before {
+                                content: 'Type :';
+                            }
+
+                            &.stuff-lvl:before {
+                                content: 'Niveau requis :';
+                            }
+
+                            &.stuff-stat:before {
+                                content: 'Stat :';
+                            }
+
+                            &.stuff-rarity:before {
+                                content: 'Rareté :';
+                            }
+
+                            &.user-lvl:before {
+                                content: 'Lvl :';
+                            }
+
+                            &.user-registration-date:before {
+                                content: 'Date d\'inscription :';
+                            }
+
+                            &.user-dollars:before {
+                                content: '$';
+                            }
+
+                            &.user-t:before {
+                                font-family: "Font Awesome 5 Free";
+                                content: '\f7d7';
+                            }
+
+                            &.user-warnings:before {
+                                content: 'Avertissements :';
+                            }
+
+                            &.user-banned:before {
+                                content: 'Banni :';
+                            }
+
+                            &:before {
+                                margin-right: 8px;
+                                font-weight: bold;
+                            }
+                        }
                     }
                 }
             }

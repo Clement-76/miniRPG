@@ -104,18 +104,17 @@ class Chat {
     displayMessage(message) {
         let authorClass = message.isOwner ? 'me' : 'other';
 
-        let newMessage = create('div', {
-            class: ['message', authorClass],
-            innerHTML: `<span class="pseudo">${message.author}</span>
-                        <div class="content">${message.content}</div>`
-        });
+        let messageContainer = create('div', {class: authorClass});
+        let messageDiv = create('div', {class: 'message'}, messageContainer);
+        if (!message.isOwner) create('span', {class: 'pseudo', text: message.author}, messageDiv);
+        create('div', {class: 'content', innerHTML: message.content}, messageDiv);
 
         // if the user is at the bottom of the messages div
         if (this.messages.scrollTop() + this.messages.innerHeight() === this.messages.prop('scrollHeight')) {
-            this.messages.append(newMessage);
+            this.messages.append(messageContainer);
             this.messages.scrollTop(this.messages.prop('scrollHeight'));
         } else {
-            this.messages.append(newMessage);
+            this.messages.append(messageContainer);
         }
     }
 }

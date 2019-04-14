@@ -36,6 +36,7 @@ class StuffAdmin {
         this.setRarityInfos(stuff);
         let stuffTr = create('tr', null, this.adminStuffContainer[0]);
         stuff.nameElt = create('td', {class: 'stuff-name', text: stuff.name}, stuffTr);
+        let down = create('i', {class: ['fas', 'fa-caret-down']}, stuff.nameElt);
         stuff.typeElt = create('td', {class: 'stuff-type', text: stuff.type === 'sword' ? 'Épée' : 'Bouclier'}, stuffTr);
         stuff.requiredLvlElt = create('td', {class: 'stuff-lvl', text: stuff.requiredLvl}, stuffTr);
         stuff.statElt = create('td', {class: 'stuff-stat', text: stuff.stat}, stuffTr);
@@ -50,6 +51,15 @@ class StuffAdmin {
         let deleteContainer = create('td', {class: 'delete', text: 'Supprimer '}, stuffTr);
         create('i', {class: ['far', 'fa-trash-alt']}, deleteContainer);
         $(deleteContainer).on('click', this.deleteStuff.bind(this, stuff));
+
+        $(down).on('click', () => {
+            $(down).toggleClass("fa-caret-down");
+            $(down).toggleClass("fa-caret-up");
+
+            $(down).parents("td").siblings("td").toggleClass("d-block");
+            $(editContainer).toggleClass("d-inline").removeClass('d-block');
+            $(deleteContainer).toggleClass("d-inline").removeClass('d-block');
+        });
 
         stuff.adminHTMLElt = stuffTr;
     }
