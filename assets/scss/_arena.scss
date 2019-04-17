@@ -1,0 +1,83 @@
+$width: 420px;
+
+.arena {
+    width: 420px;
+    box-sizing: border-box;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .window-content {
+        padding-top: 15px;
+
+        .info {
+            display: flex;
+
+            .text {
+                font-size: 1.1em;
+                margin-right: 10px;
+                margin-left: 15px;
+            }
+
+            .attempts-info {
+                #remaining-fights {
+                    display: flex;
+
+                    .square {
+                        height: 19px;
+                        width: 19px;
+                        box-sizing: border-box;
+                        border: 1px solid $borders;
+                        background-color: $body-bg;
+                        margin: 0 5px;
+
+                        &.full {
+                            background-color: $dark-moderate-blue;
+                        }
+                    }
+                }
+
+                .timer {
+                    font-size: 0.7em;
+                    margin-left: 5px;
+                    margin-top: 2px;
+                }
+            }
+        }
+
+        #players {
+            margin-top: 35px;
+            padding: 0 15px 8px;
+            height: 410px;
+            overflow: auto;
+            @include scrollbar($windows-bg);
+            border-top: 1px solid $separator;
+
+            .empty {
+                text-align: center;
+            }
+
+            .player {
+                padding: 10px 3px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid $separator;
+
+                .player-info {
+                    margin: 0;
+                }
+
+                .fight-btn {
+                    font-family: "Varela Round", sans-serif;
+                    background-color: $light-grey;
+                    border: 1px solid $borders;
+                    font-size: 1.125em;
+                    padding: 3px 10px;
+                    cursor: pointer;
+                    outline: none;
+                }
+            }
+        }
+    }
+}

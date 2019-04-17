@@ -64,6 +64,8 @@ class Chat {
 
                     this.lastIdRetrieved = data.lastIdRetrieved;
                 }
+            } else if (data.status === 'not connected') {
+                window.location.href = baseUrl + 'login';
             } else {
                 console.error(data.message);
             }

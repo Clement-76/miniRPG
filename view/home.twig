@@ -35,6 +35,7 @@
         {% include 'chat.twig' %}
         {% include 'characteristics.twig' %}
         {% include 'inventory.twig' %}
+        {% include 'arena.twig' %}
         {% include 'adventures.twig' %}
         {% include'admin/adventures.twig' %}
         {% include'admin/stuff.twig' %}
@@ -75,6 +76,7 @@
     <script src="{{ baseUrl }}assets/js/Inventory.js"></script>
     <script src="{{ baseUrl }}assets/js/User.js"></script>
     <script src="{{ baseUrl }}assets/js/Chat.js"></script>
+    <script src="{{ baseUrl }}assets/js/Arena.js"></script>
     {% if session.getRole() == "admin" %}
         <script src="{{ baseUrl }}assets/js/UsersAdmin.js"></script>
         <script src="{{ baseUrl }}assets/js/StuffAdmin.js"></script>

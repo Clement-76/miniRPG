@@ -288,4 +288,56 @@ class UserManager extends Manager {
 
         return $notErrors;
     }
+
+    public function getUsersWithLvlDifference($minXp, $maxXp, $userId) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare(
+                'SELECT * 
+                 FROM minirpg_users 
+                 WHERE xp >= :minXp
+                 AND xp <= :maxXp
+                 AND id != :userId
+                 ORDER BY xp DESC'
+            );
+
+            $q->bindValue(':minXp', $minXp, \PDO::PARAM_INT);
+            $q->bindValue(':maxXp', $maxXp, \PDO::PARAM_INT);
+            $q->bindValue(':userId', $userId, \PDO::PARAM_INT);
+            $q->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        $users = [];
+
+        while ($user = $q->fetch()) {
+            $userFeatures = [
+                'id' => $user['id'],
+                'pseudo' => $user['pseudo'],
+                'email' => $user['email'],
+                'role' => $user['role'],
+                'confirmationKey' => $user['confirmation_key'],
+                'confirmedEmail' => $user['confirmed_email'],
+                'warnings' => $user['warnings'],
+                'banned' => $user['banned'],
+                'registrationDate' => $user['registration_date'],
+                'tutorial' => $user['tutorial'],
+                'life' => $user['life'],
+                'attack' => $user['attack'],
+                'defense' => $user['defense'],
+                'dollar' => $user['$'],
+                'T' => $user['T'],
+                'xp' => $user['xp'],
+                'remainingBattles' => $user['remaining_battles'],
+                'lastBattle' => $user['last_battle'],
+                'adventureBeginning' => $user['adventure_beginning'],
+                'currentAdventureId' => $user['current_adventure_id']
+            ];
+
+            $users[] = new User($userFeatures);
+        }
+
+        return $users;
+    }
 }

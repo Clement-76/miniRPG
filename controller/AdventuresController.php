@@ -234,7 +234,7 @@ class AdventuresController extends AppController {
 
                 $errors = false;
 
-                if (!($_POST['duration'] > 0 && $_POST['requiredLvl'] > 0 && $_POST['dollars'] > 0 && $_POST['xp'] > 0)) {
+                if (!($_POST['duration'] > 0 && $_POST['requiredLvl'] > 0 && $_POST['dollars'] >= 0 && $_POST['xp'] >= 0)) {
                     $errors = true;
                 }
 

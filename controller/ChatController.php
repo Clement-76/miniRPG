@@ -48,8 +48,7 @@ class ChatController extends AppController {
             }
         } else {
             echo json_encode([
-                'status' => 'error',
-                'message' => 'You\'re not connected !'
+                'status' => 'not connected'
             ]);
         }
     }

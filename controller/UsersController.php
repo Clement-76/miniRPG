@@ -198,6 +198,74 @@ class UsersController extends AppController {
     }
 
     /**
+     * @param int $lvlToConvert the lvl to convert in xp
+     * @param string $extremum 'min' or 'max', specify if the function will returns
+     * the max or min xp of the lvl to convert
+     * @return int
+     * @throws \Exception
+     */
+    public function lvlToXp($lvlToConvert = null, $extremum = 'min') {
+        if ($lvlToConvert !== null) {
+            $xpTotal = 0;
+
+            for ($lvl = 2; $lvl <= $lvlToConvert; $lvl++) {
+                $xpToThisLvl = 100 * pow($lvl + 1, 2);
+                $xpTotal += $xpToThisLvl;
+            }
+
+            if ($extremum === 'min') {
+                return $xpTotal;
+            } else if ($extremum === 'max') {
+                if ($lvlToConvert < 100) {
+                    // - 1 to return the max xp of the lvl just before lvl up
+                    $xpToNextLvl = 100 * pow($lvl + 1, 2) - 1;
+                    return $xpTotal + $xpToNextLvl;
+                } else {
+                    return $xpTotal;
+                }
+            } else {
+                throw new \Exception('Bad value for extremum variable');
+            }
+        } else {
+            header('HTTP/1.0 404 Not Found');
+            exit();
+        }
+    }
+
+    /**
+     * returns users that are almost the same lvl (according to the value of $lvlDiff
+     * @throws \Exception
+     */
+    public function getJSONUsersWithLvlDifference() {
+        if (isset($_SESSION['user'])) {
+
+            $lvlDiff = 2;
+            $userLvl = $_SESSION['user']->getLvl();
+            $minXp = $this->lvlToXp($userLvl - $lvlDiff);
+            $maxXp = $this->lvlToXp($userLvl + $lvlDiff, 'max');
+
+            try {
+                $userManager = new UserManager();
+                $players = $userManager->getUsersWithLvlDifference($minXp, $maxXp, $_SESSION['user']->getId());
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
+
+            if (empty($players)) $players = false;
+
+            echo json_encode([
+                'status' => 'success',
+                'players' => $players
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected or you\'re not an admin'
+            ]);
+        }
+    }
+
+    /**
      * returns all users in JSON
      * @throws \Exception
      */

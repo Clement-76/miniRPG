@@ -810,6 +810,88 @@
         font-size: 0.85em; 
 } 
 }
+.arena {
+  width: 420px;
+  box-sizing: border-box;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+}
+  .arena .window-content {
+    padding-top: 15px; 
+}
+    .arena .window-content .info {
+      display: flex; 
+}
+      .arena .window-content .info .text {
+        font-size: 1.1em;
+        margin-right: 10px;
+        margin-left: 15px; 
+}
+      .arena .window-content .info .attempts-info #remaining-fights {
+        display: flex; 
+}
+        .arena .window-content .info .attempts-info #remaining-fights .square {
+          height: 19px;
+          width: 19px;
+          box-sizing: border-box;
+          border: 1px solid #000;
+          background-color: #212121;
+          margin: 0 5px; 
+}
+          .arena .window-content .info .attempts-info #remaining-fights .square.full {
+            background-color: #316278; 
+}
+      .arena .window-content .info .attempts-info .timer {
+        font-size: 0.7em;
+        margin-left: 5px;
+        margin-top: 2px; 
+}
+    .arena .window-content #players {
+      margin-top: 35px;
+      padding: 0 15px 8px;
+      height: 410px;
+      overflow: auto;
+      border-top: 1px solid #757575; 
+}
+      .arena .window-content #players::-webkit-scrollbar {
+        background: #2b2b2b;
+        width: 10px; 
+}
+      .arena .window-content #players::-webkit-scrollbar-track {
+        background: #2b2b2b; 
+}
+      .arena .window-content #players::-webkit-scrollbar-thumb {
+        border: 2px solid #2b2b2b;
+        background: #171717;
+        border-radius: 20px; 
+}
+      .arena .window-content #players::-webkit-scrollbar-corner {
+        background: rgba(0, 0, 0, 0); 
+}
+      .arena .window-content #players .empty {
+        text-align: center; 
+}
+      .arena .window-content #players .player {
+        padding: 10px 3px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #757575; 
+}
+        .arena .window-content #players .player .player-info {
+          margin: 0; 
+}
+        .arena .window-content #players .player .fight-btn {
+          font-family: "Varela Round", sans-serif;
+          background-color: #e0e0e0;
+          border: 1px solid #000;
+          font-size: 1.125em;
+          padding: 3px 10px;
+          cursor: pointer;
+          outline: none; 
+}
+
 .modal .modal-overlay {
   position: absolute;
   bottom: 0;

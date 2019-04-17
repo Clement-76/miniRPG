@@ -63,7 +63,8 @@ class User implements \JsonSerializable {
             'lvl' => $this->_lvl,
             'registrationDate' => $this->_registrationDate->format('d/m/Y'),
             'warnings' => $this->_warnings,
-            'banned' => $this->_banned
+            'banned' => $this->_banned,
+            'battles' => $this->_remainingBattles
         ];
     }
 

@@ -72,6 +72,11 @@ class User {
         this.stats.baseDefense = defense;
     }
 
+    set battles(nb) {
+        this.remainingBattles = nb;
+        new Arena('players');
+    }
+
     /**
      * retrieve user data with an ajax request
      */
