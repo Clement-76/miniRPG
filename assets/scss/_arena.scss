@@ -81,3 +81,26 @@ $width: 420px;
         }
     }
 }
+
+@media all and (max-width: $width) {
+    .arena {
+        width: 100%;
+
+        .window-content .info .text {
+            font-size: 1em;
+            margin-right: 5px;
+        }
+    }
+}
+
+@media all and (max-height: 700px) {
+    .arena .window-content #players {
+        height: 300px;
+    }
+}
+
+@media all and (max-height: 556px) {
+    .arena .window-content #players {
+        height: 250px;
+    }
+}

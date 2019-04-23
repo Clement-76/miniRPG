@@ -132,10 +132,15 @@ class Arena {
             }
         }
 
-        if (this.userObj.remainingBattles < this.maxBattles) this.setBattlesTimer();
+        this.setBattlesTimer();
     }
 
     setBattlesTimer() {
         // determiner l'avancement du timer
+        if (this.userObj.remainingBattles < this.maxBattles) {
+            this.timer.text('(+1 dans 38:12)');
+        } else {
+            this.timer.text('Tentatives restaurées');
+        }
     }
 }

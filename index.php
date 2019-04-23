@@ -6,6 +6,9 @@ date_default_timezone_set('Europe/Paris');
 require 'composer/vendor/autoload.php';
 session_start();
 
+$userManager = new \ClementPatigny\Model\UserManager();
+$userManager->updateUserRemainingBattles($_SESSION['user']->getId(), 5);
+
 if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
     $actualUrl = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 } else {

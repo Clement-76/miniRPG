@@ -893,6 +893,25 @@
           outline: none; 
 }
 
+@media all and (max-width: 420px) {
+  .arena {
+    width: 100%; 
+}
+    .arena .window-content .info .text {
+      font-size: 1em;
+      margin-right: 5px; 
+} 
+}
+@media all and (max-height: 700px) {
+  .arena .window-content #players {
+    height: 300px; 
+} 
+}
+@media all and (max-height: 556px) {
+  .arena .window-content #players {
+    height: 250px; 
+} 
+}
 .modal .modal-overlay {
   position: absolute;
   bottom: 0;
@@ -1036,6 +1055,11 @@
       margin: 6px 12px 18px 12px; 
 }
 
+@media all and (max-width: 600px) {
+  .modal .modal-overlay .modal-content .logs {
+    width: auto; 
+} 
+}
 @media all and (max-width: 450px) {
   .modal .modal-overlay {
     padding: 10px; 
@@ -1047,9 +1071,6 @@
       .modal .modal-overlay .modal-content form h2 {
         margin-top: 0;
         font-size: 1.35em; 
-}
-    .modal .modal-overlay .modal-content .logs {
-      width: auto; 
 }
     .modal .modal-overlay .modal-content.adventure-completed {
       width: 100%; 

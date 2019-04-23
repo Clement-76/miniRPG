@@ -140,6 +140,12 @@
     }
 }
 
+@media all and (max-width: 600px) {
+    .modal .modal-overlay .modal-content .logs {
+        width: auto;
+    }
+}
+
 @media all and (max-width: 450px) {
     .modal {
 
@@ -149,17 +155,13 @@
             .modal-content {
 
                 form {
+                    padding: 0 15px 15px;
+                    width: 100%;
+
                     h2 {
                         margin-top: 0;
                         font-size: 1.35em;
                     }
-
-                    padding: 0 15px 15px;
-                    width: 100%;
-                }
-
-                .logs {
-                    width: auto;
                 }
 
                 &.adventure-completed {
