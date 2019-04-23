@@ -39,8 +39,8 @@ class UserManager extends Manager {
                     'registrationDate' => $user['registration_date'],
                     'tutorial' => $user['tutorial'],
                     'life' => $user['life'],
-                    'attack' => $user['attack'],
-                    'defense' => $user['defense'],
+                    'naturalAttack' => $user['attack'],
+                    'naturalDefense' => $user['defense'],
                     'dollar' => $user['$'],
                     'T' => $user['T'],
                     'xp' => $user['xp'],
@@ -57,6 +57,52 @@ class UserManager extends Manager {
                     'password' => $user['password'],
                     'userObj' => $userObj
                 ];
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    public function getUserById($userId) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare('SELECT * FROM minirpg_users WHERE id = ?');
+            $q->execute([$userId]);
+            $user = $q->fetch();
+
+            if ($user != false) {
+                $stuffManager = new StuffManager();
+                $stuff = $stuffManager->getPossessionsStuff($user['id']);
+
+                $userFeatures = [
+                    'id' => $user['id'],
+                    'pseudo' => $user['pseudo'],
+                    'email' => $user['email'],
+                    'role' => $user['role'],
+                    'confirmationKey' => $user['confirmation_key'],
+                    'confirmedEmail' => $user['confirmed_email'],
+                    'warnings' => $user['warnings'],
+                    'banned' => $user['banned'],
+                    'registrationDate' => $user['registration_date'],
+                    'tutorial' => $user['tutorial'],
+                    'life' => $user['life'],
+                    'naturalAttack' => $user['attack'],
+                    'naturalDefense' => $user['defense'],
+                    'dollar' => $user['$'],
+                    'T' => $user['T'],
+                    'xp' => $user['xp'],
+                    'remainingBattles' => $user['remaining_battles'],
+                    'lastBattle' => $user['last_battle'],
+                    'adventureBeginning' => $user['adventure_beginning'],
+                    'currentAdventureId' => $user['current_adventure_id'],
+                    'inventory' => $stuff
+                ];
+
+                $userObj = new User($userFeatures);
+
+                return $userObj;
             } else {
                 return false;
             }
@@ -145,7 +191,7 @@ class UserManager extends Manager {
                  WHERE id = ?'
             );
             $q->execute([$adventureId, $userId]);
-            $count =$q->rowCount();
+            $count = $q->rowCount();
         } catch (Exception $e) {
             throw new \Exception($e->getMessage());
         }
@@ -233,8 +279,8 @@ class UserManager extends Manager {
                 'registrationDate' => $user['registration_date'],
                 'tutorial' => $user['tutorial'],
                 'life' => $user['life'],
-                'attack' => $user['attack'],
-                'defense' => $user['defense'],
+                'naturalAttack' => $user['attack'],
+                'naturalDefense' => $user['defense'],
                 'dollar' => $user['$'],
                 'T' => $user['T'],
                 'xp' => $user['xp'],
@@ -289,6 +335,14 @@ class UserManager extends Manager {
         return $notErrors;
     }
 
+    /**
+     * returns users who have an xp between $minXp and $maxXp
+     * @param $minXp
+     * @param $maxXp
+     * @param $userId
+     * @return User[] an array of User objects
+     * @throws \Exception
+     */
     public function getUsersWithLvlDifference($minXp, $maxXp, $userId) {
         try {
             $db = $this->getDb();
@@ -298,6 +352,7 @@ class UserManager extends Manager {
                  WHERE xp >= :minXp
                  AND xp <= :maxXp
                  AND id != :userId
+                 AND banned = 0
                  ORDER BY xp DESC'
             );
 
@@ -324,8 +379,8 @@ class UserManager extends Manager {
                 'registrationDate' => $user['registration_date'],
                 'tutorial' => $user['tutorial'],
                 'life' => $user['life'],
-                'attack' => $user['attack'],
-                'defense' => $user['defense'],
+                'naturalAttack' => $user['attack'],
+                'naturalDefense' => $user['defense'],
                 'dollar' => $user['$'],
                 'T' => $user['T'],
                 'xp' => $user['xp'],
@@ -339,5 +394,31 @@ class UserManager extends Manager {
         }
 
         return $users;
+    }
+
+    /**
+     * @param $userId
+     * @param $remainingBattles
+     * @return bool
+     * @throws \Exception
+     */
+    public function updateUserRemainingBattles($userId, $remainingBattles) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare(
+                'UPDATE minirpg_users 
+                 SET remaining_battles = :remainingBattles,
+                 last_battle = NOW()
+                 WHERE id = :userId'
+            );
+
+            $q->bindValue(':userId', $userId, \PDO::PARAM_INT);
+            $q->bindValue(':remainingBattles', $remainingBattles, \PDO::PARAM_INT);
+            $notErrors = $q->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $notErrors;
     }
 }

@@ -6,6 +6,7 @@ class User {
             baseDefense: 0
         }
 
+        this.arenaObj = null;
         this.getUserFeatures();
     }
 
@@ -50,6 +51,11 @@ class User {
             missingXp += 100 * Math.pow(actualLvl + 2, 2);
         }
 
+        if (this.arenaObj !== null) {
+            // if the user lvl up we reload the players in the arena
+            if (actualLvl > this.lvl) this.arenaObj.displayAllPlayers();
+        }
+
         this.lvl = actualLvl;
         this.missingXp = missingXp;
         this.totalXpNeededForThisLvl = 100 * Math.pow(actualLvl + 2, 2);
@@ -64,17 +70,17 @@ class User {
         this.inventoryObj = new Inventory(inventory, this);
     }
 
-    set attack(attack) {
+    set naturalAttack(attack) {
         this.stats.baseAttack = attack;
     }
 
-    set defense(defense) {
+    set naturalDefense(defense) {
         this.stats.baseDefense = defense;
     }
 
     set battles(nb) {
         this.remainingBattles = nb;
-        new Arena('players');
+        this.arenaObj = new Arena('players', 'remaining-fights', 'battles-timer', this, 5);
     }
 
     /**

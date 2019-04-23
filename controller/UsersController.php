@@ -45,6 +45,8 @@ class UsersController extends AppController {
                     } else {
                         $loginErrors = true;
                     }
+                } else {
+                    $loginErrors = true;
                 }
             }
 
@@ -260,7 +262,7 @@ class UsersController extends AppController {
         } else {
             echo json_encode([
                 'status' => 'error',
-                'message' => 'You\'re not connected or you\'re not an admin'
+                'message' => 'You\'re not connected'
             ]);
         }
     }
@@ -358,6 +360,122 @@ class UsersController extends AppController {
             echo json_encode([
                 'status' => 'error',
                 'message' => 'You\'re not connected or you\'re not an admin'
+            ]);
+        }
+    }
+
+    /**
+     * @param null $lvl the lvl to convert to xp
+     * @return int
+     */
+    public function getTotalXpNeededToNextLvl($lvl = null) {
+        if ($lvl != null) {
+            return 100 * pow($lvl + 1, 2);
+        } else {
+            header('HTTP/1.0 404 Not Found');
+            exit();
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function fightUser() {
+        if (isset($_SESSION['user'])) {
+            if (isset($_POST['userId'])) {
+                $errors = [];
+
+                try {
+                    $userManager = new UserManager();
+                    $user = $userManager->getUserById($_POST['userId']);
+                } catch (\Exception $e) {
+                    throw new \Exception($e->getMessage());
+                }
+
+                // if the user doesn't exist
+                if ($user == false) {
+                    echo json_encode([
+                        'status' => 'error',
+                        'messages' => 'This user doesn\'t exist'
+                    ]);
+                    exit();
+                }
+
+                if ($_SESSION['user']->getRemainingBattles() <= 0) {
+                    $errors[] = 'No more attempts available';
+                }
+
+                $lvlDiff = 2;
+                $enemyTooStrong = $_SESSION['user']->getLvl() + $lvlDiff < $user->getLvl();
+                $enemyTooWeak = $_SESSION['user']->getLvl() - $lvlDiff > $user->getLvl();
+
+                if ($enemyTooStrong || $enemyTooWeak) {
+                    $errors[] = 'You don\'t have the lvl to fight this user';
+                }
+
+                if ($_POST['userId'] == $_SESSION['user']->getId()) {
+                    $errors[] = 'You can\'t fight against yourself';
+                }
+
+                if ($user->getBanned()) {
+                    $errors[] = 'This user is banned';
+                }
+
+                // if there are no errors
+                if (empty($errors)) {
+                    $results = $_SESSION['user']->fight($user);
+                    $logs = $results['logs'];
+
+                    try {
+                        $userManager = new UserManager();
+                        $userManager->updateUserRemainingBattles($_SESSION['user']->getId(), $_SESSION['user']->getRemainingBattles());
+                    } catch (\Exception $e) {
+                        throw new \Exception($e->getMessage());
+                    }
+
+                    if ($results['win']) {
+                        $myLvl = $_SESSION['user']->getLvl();
+                        $percentageMultiplier = ($user->getLvl() - $myLvl) * 25 / 100;
+                        $xpNeededForThisLvl = $this->getTotalXpNeededToNextLvl($myLvl);
+                        $percentageMalusLvl = (101 - $myLvl) / 30 / ($myLvl + 8); // we need more fights when we have an higher lvl
+                        $xpGained = round($xpNeededForThisLvl * $percentageMalusLvl);
+                        $xpGained += round($xpGained * $percentageMultiplier);
+
+                        $totalXp = $_SESSION['user']->getXp() + $xpGained;
+                        $_SESSION['user']->setXp($totalXp);
+
+                        $userManager->updateUser($_SESSION['user']->getId(), $_SESSION['user']->getDollar(), $totalXp);
+
+                        echo json_encode([
+                            'status' => 'success',
+                            'win' => true,
+                            'logs' => $logs,
+                            'xpGained' => $xpGained,
+                            'xp' => $totalXp
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'status' => 'success',
+                            'win' => false,
+                            'logs' => $logs,
+                        ]);
+                    }
+                } else {
+                    echo json_encode([
+                        'status' => 'error',
+                        'messages' => $errors
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'userId is undefined'
+                ]);
+            }
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'You\'re not connected'
             ]);
         }
     }

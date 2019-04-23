@@ -6,6 +6,7 @@ class Modal {
     constructor(content, modalClasses = []) {
         this.modalClasses = modalClasses;
         this.content = content;
+        this.status = 'close';
         this.showModal();
     }
 
@@ -23,10 +24,13 @@ class Modal {
 
         $(content).append(this.content);
 
+        this.status = 'open';
         this.modal = modal;
     }
 
     closeModal(e = null) {
+        this.status = 'close';
+
         if (e !== null) {
             if (e.target === e.currentTarget) {
                 $(this.modal).remove();

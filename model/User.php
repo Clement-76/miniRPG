@@ -15,8 +15,8 @@ class User implements \JsonSerializable {
     private $_registrationDate;
     private $_tutorial;
     private $_life;
-    private $_attack;
-    private $_defense;
+    private $_naturalAttack;
+    private $_naturalDefense;
     private $_dollar;
     private $_T;
     private $_xp;
@@ -52,8 +52,8 @@ class User implements \JsonSerializable {
             'pseudo' => $this->_pseudo,
             'xp' => $this->_xp,
             'life' => $this->_life,
-            'attack' => $this->_attack,
-            'defense' => $this->_defense,
+            'naturalAttack' => $this->_naturalAttack,
+            'naturalDefense' => $this->_naturalDefense,
             'dollars' => $this->_dollar,
             'T' => $this->_T,
             'role' => $this->_role,
@@ -103,6 +103,55 @@ class User implements \JsonSerializable {
      */
     public function addStuff(Stuff $stuff) {
         $this->_inventory[] = $stuff;
+    }
+
+    /**
+     * @param User $target
+     * @return array contains the logs of the fight and a boolean
+     * (true if the user won, false if he lost)
+     */
+    public function fight(User $target) {
+        $this->_remainingBattles--;
+        $logs = [];
+        $win = null;
+        $targetLife = $target->getLife();
+        $myLife = $this->_life;
+
+        $logs[] = $target->getPseudo() . ' possède ' . $targetLife . ' points de vitalité';
+
+        while ($targetLife > 0 && $myLife > 0) {
+            $damage =  round(($this->getTotalAttack() * (mt_rand(80, 120) / 100)) - $target->getTotalDefense());
+            $damage = $damage >= 0 ? $damage : 0;
+            $targetLife -= $damage;
+            $logs[] = 'Vous attaquez ' . $target->getPseudo();
+            $logs[] = $target->getPseudo() . ' perd ' . $damage . ' points de vie';
+
+            if ($targetLife > 0) {
+                $logs[] = $target->getPseudo() . ' a encore ' . $targetLife . ' points de vie';
+            } else {
+                $logs[] = $target->getPseudo() . ' est mort.';
+                $win = true;
+                break;
+            }
+
+            $damage = round(($target->getTotalAttack() * (mt_rand(80, 120) / 100)) - $this->getTotalDefense());
+            $damage = $damage >= 0 ? $damage : 0;
+            $myLife -= $damage;
+            $logs[] = 'Votre adversaire riposte et vous occasionne ' . $damage . ' dommages';
+
+            if ($myLife > 0) {
+                $logs[] = 'Il vous reste ' . $myLife . ' points de vie';
+            } else {
+                $logs[] = 'Vous êtes mort.';
+                $win = false;
+                break;
+            }
+        }
+
+        return [
+            'win' => $win,
+            'logs' => $logs
+        ];
     }
 
     /**
@@ -212,15 +261,15 @@ class User implements \JsonSerializable {
     /**
      * @param int $attack
      */
-    public function setAttack($attack) {
-        $this->_attack = (int)$attack;
+    public function setNaturalAttack($attack) {
+        $this->_naturalAttack = (int)$attack;
     }
 
     /**
      * @param int $defense
      */
-    public function setDefense($defense) {
-        $this->_defense = (int)$defense;
+    public function setNaturalDefense($defense) {
+        $this->_naturalDefense = (int)$defense;
     }
 
     /**
@@ -260,7 +309,7 @@ class User implements \JsonSerializable {
                 $actualLvl = $lvl - 1;
                 break;
             } else if ($xpTotal == $actualXp) {
-                $actualLvl = $lvl - 1;
+                $actualLvl = $lvl;
                 break;
             }
         }
@@ -404,15 +453,15 @@ class User implements \JsonSerializable {
     /**
      * @return int
      */
-    public function getAttack() {
-        return $this->_attack;
+    public function getNaturalAttack() {
+        return $this->_naturalAttack;
     }
 
     /**
      * @return int
      */
-    public function getDefense() {
-        return $this->_defense;
+    public function getNaturalDefense() {
+        return $this->_naturalDefense;
     }
 
     /**
@@ -476,5 +525,31 @@ class User implements \JsonSerializable {
      */
     public function getInventory() {
         return $this->_inventory;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalAttack(): int {
+        $stuff = $this->hasStuffEquipped('sword');
+
+        if ($stuff != false) {
+            return $this->_naturalAttack + $stuff->getStat();
+        } else {
+            return $this->_naturalAttack;
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalDefense(): int {
+        $stuff = $this->hasStuffEquipped('shield');
+
+        if ($stuff != false) {
+            return $this->_naturalDefense + $stuff->getStat();
+        } else {
+            return $this->_naturalDefense;
+        }
     }
 }
