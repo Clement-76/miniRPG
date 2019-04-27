@@ -46,6 +46,7 @@ class UserManager extends Manager {
                     'xp' => $user['xp'],
                     'remainingBattles' => $user['remaining_battles'],
                     'lastBattle' => $user['last_battle'],
+                    'newAttemptTimerStartTime' => $user['new_attempt_timer_start_time'],
                     'adventureBeginning' => $user['adventure_beginning'],
                     'currentAdventureId' => $user['current_adventure_id'],
                     'inventory' => $stuff
@@ -95,6 +96,7 @@ class UserManager extends Manager {
                     'xp' => $user['xp'],
                     'remainingBattles' => $user['remaining_battles'],
                     'lastBattle' => $user['last_battle'],
+                    'newAttemptTimerStartTime' => $user['new_attempt_timer_start_time'],
                     'adventureBeginning' => $user['adventure_beginning'],
                     'currentAdventureId' => $user['current_adventure_id'],
                     'inventory' => $stuff
@@ -286,6 +288,7 @@ class UserManager extends Manager {
                 'xp' => $user['xp'],
                 'remainingBattles' => $user['remaining_battles'],
                 'lastBattle' => $user['last_battle'],
+                'newAttemptTimerStartTime' => $user['new_attempt_timer_start_time'],
                 'adventureBeginning' => $user['adventure_beginning'],
                 'currentAdventureId' => $user['current_adventure_id']
             ];
@@ -386,6 +389,7 @@ class UserManager extends Manager {
                 'xp' => $user['xp'],
                 'remainingBattles' => $user['remaining_battles'],
                 'lastBattle' => $user['last_battle'],
+                'newAttemptTimerStartTime' => $user['new_attempt_timer_start_time'],
                 'adventureBeginning' => $user['adventure_beginning'],
                 'currentAdventureId' => $user['current_adventure_id']
             ];
@@ -414,6 +418,31 @@ class UserManager extends Manager {
 
             $q->bindValue(':userId', $userId, \PDO::PARAM_INT);
             $q->bindValue(':remainingBattles', $remainingBattles, \PDO::PARAM_INT);
+            $notErrors = $q->execute();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $notErrors;
+    }
+
+    /**
+     * @param $userId
+     * @param $date
+     * @return bool
+     * @throws \Exception
+     */
+    public function updateUserAttemptTimerStartTime($userId, $date) {
+        try {
+            $db = $this->getDb();
+            $q = $db->prepare(
+                'UPDATE minirpg_users 
+                 SET new_attempt_timer_start_time = :date
+                 WHERE id = :userId'
+            );
+
+            $q->bindValue(':userId', $userId, \PDO::PARAM_INT);
+            $q->bindValue(':date', $date, \PDO::PARAM_STR);
             $notErrors = $q->execute();
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());

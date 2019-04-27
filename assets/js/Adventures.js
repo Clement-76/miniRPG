@@ -62,7 +62,7 @@ class Adventures {
     displayAdventure(adventure) {
         let adventureDiv = create('div', {class: 'adventure'}, this.adventuresContainer[0]);
         create('p', {text: `Nom: ${adventure.name}`}, adventureDiv);
-        create('p', {text: `Durée: ${toHHMMSS(adventure.duration)}`}, adventureDiv);
+        create('p', {text: `Durée: ${secondsFormat(adventure.duration)}`}, adventureDiv);
         create('p', {text: `Récompenses: équipements/argent($)/points d'expérience`}, adventureDiv);
 
         let startDiv = create('div', {class: 'start-adventure'}, adventureDiv);
@@ -191,12 +191,12 @@ class Adventures {
         $(startBtn).siblings('p').hide();
         $(startBtn).hide();
 
-        let timeP = create('p', {class: 'time', text: toHHMMSS(remainingSeconds)}, $(startBtn).parent()[0]);
+        let timeP = create('p', {class: 'time', text: secondsFormat(remainingSeconds)}, $(startBtn).parent()[0]);
 
         let timer = setInterval(() => {
             if (remainingSeconds > 1) {
                 remainingSeconds--;
-                $(timeP).text(toHHMMSS(remainingSeconds));
+                $(timeP).text(secondsFormat(remainingSeconds));
             } else {
                 $(timeP).remove();
                 $(startBtn).siblings('p').show();

@@ -80,7 +80,7 @@ class User {
 
     set battles(nb) {
         this.remainingBattles = nb;
-        this.arenaObj = new Arena('players', 'remaining-fights', 'battles-timer', this, 5);
+        this.arenaObj = new Arena('players', 'remaining-fights', 'battles-timer', this);
     }
 
     /**

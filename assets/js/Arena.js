@@ -2,15 +2,17 @@ class Arena {
     /**
      * @param {string} playersContainerId
      */
-    constructor(playersContainerId, remainingBattlesContainerId, timerId, userObj, maxBattles) {
+    constructor(playersContainerId, remainingBattlesContainerId, timerId, userObj) {
         this.playersContainer = $('#' + playersContainerId);
         this.remainingBattlesContainer = $('#' + remainingBattlesContainerId);
         this.timer = $('#' + timerId);
         this.userObj = userObj;
-        this.maxBattles = maxBattles;
+        this.playersInArena;
+        this.attemptTimerInProgress = false;
 
         this.displayRemainingBattles();
         this.displayAllPlayers();
+        this.updateAttempts();
     }
 
     /**
@@ -22,9 +24,11 @@ class Arena {
 
             // if there is players to fight
             if (data.players !== false) {
+                this.playersInArena = data.players.length;
                 data.players.forEach(player => this.displayPlayer(player));
             } else {
                 this.playersContainer.append(`<p class="empty">Aucun combattant dans l'arène</p>`);
+                this.playersInArena = 0;
             }
         });
     }
@@ -65,7 +69,8 @@ class Arena {
             $.post(baseUrl + 'Users/fightUser', {userId: player.id}, (data) => {
                 if (data.status === 'success') {
                     this.userObj.remainingBattles--;
-                    this.displayRemainingBattles();
+                    this.updateAttempts(data, false);
+                    // this.displayRemainingBattles();
 
                     let logs = create('div', {class: 'logs'});
                     create('p', {class: 'text', text: 'Le combat commence'}, logs)
@@ -78,6 +83,11 @@ class Arena {
                         this.userObj.xp = data.xp;
                         this.userObj.displayUserStats();
                         player.playerDivElt.remove();
+                        this.playersInArena--;
+
+                        if (this.playersInArena === 0) {
+                            this.displayAllPlayers();
+                        }
                     }
 
                     let logsInterval = setInterval(() => {
@@ -87,8 +97,7 @@ class Arena {
                             clearInterval(logsInterval);
 
                             if (data.win) {
-                                text = create('p', {
-                                    class: 'status',
+                                text = create('p', {class: 'status',
                                     innerHTML: `Victoire ! Vous avez gagné <b class="underline">${data.xpGained}</b> points d'xp`
                                 });
                             } else {
@@ -123,7 +132,7 @@ class Arena {
     displayRemainingBattles() {
         this.remainingBattlesContainer.html('');
 
-        for (let i = 1; i <= this.maxBattles; i++) {
+        for (let i = 1; i <= this.userObj.maxRemainingBattles; i++) {
             if (i > this.userObj.remainingBattles) {
                 create('div', {class: 'square'}, this.remainingBattlesContainer[0]);
             } else {
@@ -132,15 +141,69 @@ class Arena {
             }
         }
 
-        this.setBattlesTimer();
+        // this.setBattlesTimer();
     }
 
     setBattlesTimer() {
-        // determiner l'avancement du timer
-        if (this.userObj.remainingBattles < this.maxBattles) {
-            this.timer.text('(+1 dans 38:12)');
+        if (!this.attemptTimerInProgress) {
+            let userHasMaxRemainingBattles = this.userObj.remainingBattles === this.userObj.maxRemainingBattles;
+
+            if (!userHasMaxRemainingBattles && this.userObj.newAttemptTimerStartTime !== null) {
+                let timeElapsed = Math.floor((Date.now() - this.userObj.newAttemptTimerStartTime) / 1000);
+                let remainingSeconds = this.userObj.timeToRecoverAnAttempt - timeElapsed;
+                this.attemptTimerInProgress = true;
+                this.timer.text(`(+1 dans ${secondsFormat(remainingSeconds, 'm:s')})`);
+
+                let timer = setInterval(() => {
+                    if (remainingSeconds > 1) {
+                        remainingSeconds--;
+                        this.timer.text(`(+1 dans ${secondsFormat(remainingSeconds, 'm:s')})`);
+                    } else {
+                        clearInterval(timer);
+                        this.updateAttempts();
+                        this.attemptTimerInProgress = false;
+                        let userHasMaxRemainingBattles = this.userObj.remainingBattles === this.userObj.maxRemainingBattles;
+
+                        if (!userHasMaxRemainingBattles) this.timer.text('Tentatives restaurées');
+                    }
+                }, 1000);
+            } else {
+                this.timer.text('Tentatives restaurées');
+            }
+        }
+    }
+
+    updateAttempts(data = null, doAjaxRequest = true) {
+        let updateAttemptsData = (data) => {
+            if (typeof data.newAttemptTimerStartTime !== 'undefined') {
+                if (data.newAttemptTimerStartTime !== null) {
+                    this.userObj.newAttemptTimerStartTime = new Date(data.newAttemptTimerStartTime);
+                } else {
+                    this.userObj.newAttemptTimerStartTime = null;
+                }
+            }
+
+            if (data.remainingBattles !== this.maxRemainingBattles) this.setBattlesTimer();
+
+            if (typeof data.remainingBattles !== 'undefined') {
+                this.userObj.remainingBattles = data.remainingBattles;
+            }
+
+            this.displayRemainingBattles();
+        }
+
+        if (data !== null && doAjaxRequest === false) {
+            updateAttemptsData(data);
+        } else if (data === null && doAjaxRequest === true) {
+            $.post(baseUrl + 'Users/updateUserAttempts', (data) => {
+                if (data.status === 'success') {
+                    updateAttemptsData(data);
+                } else {
+                    console.error(data.message);
+                }
+            }, 'json');
         } else {
-            this.timer.text('Tentatives restaurées');
+            throw new Error('Incorrect parameters value value(s)');
         }
     }
 }

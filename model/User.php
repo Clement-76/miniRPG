@@ -3,6 +3,8 @@
 namespace ClementPatigny\Model;
 
 class User implements \JsonSerializable {
+    private $_maxRemainingBattles = 5;
+    private $_timeToRecoverAnAttempt = 1 * 10; // in seconds
     private $_id;
     private $_pseudo;
     private $_email;
@@ -23,6 +25,7 @@ class User implements \JsonSerializable {
     private $_lvl;
     private $_remainingBattles;
     private $_lastBattle;
+    private $_newAttemptTimerStartTime;
     private $_adventureBeginning;
     private $_currentAdventureId;
     private $_inventory;
@@ -64,8 +67,95 @@ class User implements \JsonSerializable {
             'registrationDate' => $this->_registrationDate->format('d/m/Y'),
             'warnings' => $this->_warnings,
             'banned' => $this->_banned,
-            'battles' => $this->_remainingBattles
+            'newAttemptTimerStartTime' => $this->_newAttemptTimerStartTime,
+            'maxRemainingBattles' => $this->_maxRemainingBattles,
+            'timeToRecoverAnAttempt' => $this->_timeToRecoverAnAttempt,
+            'battles' => $this->_remainingBattles,
         ];
+    }
+
+    /**
+     * @return bool true if the user has one or more extra attempt
+     */
+    public function hasOneOrMoreExtraAttempt() {
+        if (!$this->hasMaxRemainingBattles()) {
+            if ($this->_newAttemptTimerStartTime == null) {
+                $this->_newAttemptTimerStartTime = new \DateTime();
+            }
+
+            $now = new \DateTime();
+            $now = $now->getTimestamp();
+            $timerStart = $this->_newAttemptTimerStartTime->getTimestamp();
+
+            return $now >= $this->_timeToRecoverAnAttempt + $timerStart;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @return int
+     * @throws \Exception
+     */
+    public function getNumberAdditionalAttempts(): int {
+        $now = new \DateTime();
+        $now = $now->getTimestamp();
+        $oldTimerValue = $this->_newAttemptTimerStartTime;
+        $timeSpent = $now - $oldTimerValue->getTimestamp();
+
+        return floor($timeSpent / $this->_timeToRecoverAnAttempt);
+    }
+
+    /**
+     * @return int|string
+     */
+    public function getNewAttemptTimerValue() {
+        if (!$this->hasMaxRemainingBattles()) {
+            if (!$this->hasOneOrMoreExtraAttempt()) {
+                $now = new \DateTime();
+                $now = $now->getTimestamp();
+                $oldTimerValue = $this->_newAttemptTimerStartTime;
+                $timeSpent = $now - $oldTimerValue->getTimestamp();
+                $remainingTimeOldTimer = $timeSpent % $this->_timeToRecoverAnAttempt;
+                $newTimerTimestamp = $now - $remainingTimeOldTimer;
+                $newTimerValue = new \DateTime();
+                $newTimerValue->setTimestamp($newTimerTimestamp);
+
+                return $newTimerValue->format('Y-m-d H:i:s');
+            } else {
+                $now = new \DateTime();
+                return $now->format('Y-m-d H:i:s');
+            }
+        } else {
+            return null;
+        }
+
+//        if ($this->_newAttemptTimerStartTime != null) {
+//            if (!$this->hasOneOrMoreExtraAttempt()) {
+//                $now = new \DateTime();
+//                $now = $now->getTimestamp();
+//                $oldTimerValue = $this->_newAttemptTimerStartTime;
+//                $timeSpent = $now - $oldTimerValue->getTimestamp();
+//                $remainingTimeOldTimer = $timeSpent % $this->_timeToRecoverAnAttempt;
+//                $newTimerTimestamp = $now - $remainingTimeOldTimer;
+//                $newTimerValue = new \DateTime();
+//                $newTimerValue->setTimestamp($newTimerTimestamp);
+//
+//                return $newTimerValue->format('Y-m-d H:i:s');
+//            } else {
+//                return null;
+//            }
+//        } else {
+//            $now = new \DateTime();
+//            return $now->format('Y-m-d H:i:s');
+//        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasMaxRemainingBattles() {
+        return $this->_remainingBattles == $this->_maxRemainingBattles;
     }
 
     /**
@@ -325,7 +415,18 @@ class User implements \JsonSerializable {
      * @param int $remainingBattles
      */
     public function setRemainingBattles($remainingBattles) {
-        $this->_remainingBattles = (int)$remainingBattles;
+        if ($remainingBattles > $this->_maxRemainingBattles) {
+            $this->_remainingBattles = $this->_maxRemainingBattles;
+        } else {
+            $this->_remainingBattles = $remainingBattles;
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxRemainingBattles(): int {
+        return $this->_maxRemainingBattles;
     }
 
     /**
@@ -551,5 +652,33 @@ class User implements \JsonSerializable {
         } else {
             return $this->_naturalDefense;
         }
+    }
+
+    /**
+     * @param mixed $newAttemptTimerStartTime string or null
+     * @throws \Exception
+     */
+    public function setNewAttemptTimerStartTime($newAttemptTimerStartTime): void {
+        if ($newAttemptTimerStartTime == null) {
+            $this->_newAttemptTimerStartTime = null;
+        } elseif (is_string($newAttemptTimerStartTime)) {
+            $this->_newAttemptTimerStartTime = new \DateTime($newAttemptTimerStartTime);
+        } else {
+            throw new \Exception('TypeError : $newAttemptTimerStartTime must be string or null');
+        }
+    }
+
+    /**
+     * @return \DateTime or null
+     */
+    public function getNewAttemptTimerStartTime() {
+        return $this->_newAttemptTimerStartTime;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimeToRecoverAnAttempt(): int {
+        return $this->_timeToRecoverAnAttempt;
     }
 }

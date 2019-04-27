@@ -429,6 +429,7 @@ class UsersController extends AppController {
                     try {
                         $userManager = new UserManager();
                         $userManager->updateUserRemainingBattles($_SESSION['user']->getId(), $_SESSION['user']->getRemainingBattles());
+                        $jsonInfos = $this->updateUserAttempts(false);
                     } catch (\Exception $e) {
                         throw new \Exception($e->getMessage());
                     }
@@ -446,19 +447,17 @@ class UsersController extends AppController {
 
                         $userManager->updateUser($_SESSION['user']->getId(), $_SESSION['user']->getDollar(), $totalXp);
 
-                        echo json_encode([
-                            'status' => 'success',
+                        echo json_encode(array_merge([
                             'win' => true,
                             'logs' => $logs,
                             'xpGained' => $xpGained,
                             'xp' => $totalXp
-                        ]);
+                        ], $jsonInfos));
                     } else {
-                        echo json_encode([
-                            'status' => 'success',
+                        echo json_encode(array_merge([
                             'win' => false,
                             'logs' => $logs,
-                        ]);
+                        ], $jsonInfos));
                     }
                 } else {
                     echo json_encode([
@@ -478,5 +477,60 @@ class UsersController extends AppController {
                 'message' => 'You\'re not connected'
             ]);
         }
+    }
+
+    public function updateUserAttempts($json = true, $return = true) {
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
+            $jsonInfos;
+
+            try {
+                $userManager = new UserManager();
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
+
+            if ($user->hasMaxRemainingBattles()) {
+                if ($user->getNewAttemptTimerStartTime() != null) {
+                    $user->setNewAttemptTimerStartTime(null);
+                    $userManager->updateUserAttemptTimerStartTime($user->getId(), null);
+
+                    $jsonInfos = [
+                        'status' => 'success',
+                        'remainingBattles' => $user->getMaxRemainingBattles(),
+                        'newAttemptTimerStartTime' => $user->getNewAttemptTimerStartTime()
+                    ];
+                } else {
+                    $jsonInfos = [
+                        'status' => 'success',
+                        'remainingBattles' => $user->getMaxRemainingBattles()
+                    ];
+                }
+            } else {
+                if ($user->hasOneOrMoreExtraAttempt()) {
+                    $newNumberRemainingBattles = $user->getRemainingBattles() + $user->getNumberAdditionalAttempts();
+                    $user->setRemainingBattles($newNumberRemainingBattles);
+                    $userManager->updateUserRemainingBattles($user->getId(), $user->getRemainingBattles());
+                }
+
+                $newTimer = $user->getNewAttemptTimerValue();
+                $user->setNewAttemptTimerStartTime($newTimer);
+                $userManager->updateUserAttemptTimerStartTime($user->getId(), $newTimer);
+
+                $jsonInfos = [
+                    'status' => 'success',
+                    'remainingBattles' => $user->getRemainingBattles(),
+                    'newAttemptTimerStartTime' => $newTimer
+                ];
+            }
+        } else {
+            $jsonInfos = [
+                'status' => 'error',
+                'message' => 'You\'re not connected'
+            ];
+        }
+
+        if ($json) echo json_encode($jsonInfos);
+        if ($return) return $jsonInfos;
     }
 }
