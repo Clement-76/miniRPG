@@ -61,7 +61,7 @@
 }
 
 @media all and (max-width: 900px) {
-  body .window {
+  body .window:not(.login-register) {
     left: 50%;
     top: 50%;
     bottom: auto;
