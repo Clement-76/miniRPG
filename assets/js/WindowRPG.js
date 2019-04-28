@@ -15,13 +15,19 @@ class WindowRPG {
 
     bringForward() {
         $('.window').each((i, elt) => {
+            let opacityValue = '0.6';
             let windowClass = elt.className.replace('window', '');
             $('#' + windowClass).removeClass('active');
 
             if ($(elt).css('z-index') > 0) {
                 $(elt).css('z-index', parseFloat($(elt).css('z-index')) - 1);
             }
+
+            $(`.${windowClass} .window-title`).css('opacity', opacityValue);
+            $(`.${windowClass} .window-content`).css('opacity', opacityValue);
         });
+
+        this.window.children('.window-title, .window-content').css('opacity', '1');
 
         this.window.css('z-index', '100');
         this.openBtn.addClass('active');
@@ -48,6 +54,10 @@ class WindowRPG {
             this.pageY = e.pageY;
 
             this.content.on('mousemove', this.move.bind(this));
+
+            $(document).on('mouseup', () => {
+                this.content.off('mousemove');
+            });
         }
     }
 
@@ -62,9 +72,5 @@ class WindowRPG {
 
         this.pageX = e.pageX;
         this.pageY = e.pageY;
-
-        $(document).on('mouseup', () => {
-            this.content.off('mousemove');
-        });
     }
 }
