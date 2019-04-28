@@ -79,8 +79,6 @@ class AdventuresController extends AppController {
                             break;
                     }
 
-                    var_dump($rarity);
-
                     $stuffManager = new StuffManager();
                     $stuffIds = $stuffManager->getStuffIdsWhereMaxRequiredLvlAndRarity($adventure->getRequiredLvl(), $rarity);
                     $randomStuffIndex = array_rand($stuffIds);
