@@ -4,7 +4,7 @@ namespace ClementPatigny\Model;
 
 class User implements \JsonSerializable {
     private $_maxRemainingBattles = 5;
-    private $_timeToRecoverAnAttempt = 1 * 10; // in seconds
+    private $_timeToRecoverAnAttempt = 30 * 60; // in seconds
     private $_id;
     private $_pseudo;
     private $_email;
@@ -17,6 +17,7 @@ class User implements \JsonSerializable {
     private $_registrationDate;
     private $_tutorial;
     private $_life;
+    private $_baseLife;
     private $_naturalAttack;
     private $_naturalDefense;
     private $_dollar;
@@ -129,26 +130,6 @@ class User implements \JsonSerializable {
         } else {
             return null;
         }
-
-//        if ($this->_newAttemptTimerStartTime != null) {
-//            if (!$this->hasOneOrMoreExtraAttempt()) {
-//                $now = new \DateTime();
-//                $now = $now->getTimestamp();
-//                $oldTimerValue = $this->_newAttemptTimerStartTime;
-//                $timeSpent = $now - $oldTimerValue->getTimestamp();
-//                $remainingTimeOldTimer = $timeSpent % $this->_timeToRecoverAnAttempt;
-//                $newTimerTimestamp = $now - $remainingTimeOldTimer;
-//                $newTimerValue = new \DateTime();
-//                $newTimerValue->setTimestamp($newTimerTimestamp);
-//
-//                return $newTimerValue->format('Y-m-d H:i:s');
-//            } else {
-//                return null;
-//            }
-//        } else {
-//            $now = new \DateTime();
-//            return $now->format('Y-m-d H:i:s');
-//        }
     }
 
     /**
@@ -341,11 +322,8 @@ class User implements \JsonSerializable {
         }
     }
 
-    /**
-     * @param int $life
-     */
-    public function setLife($life) {
-        $this->_life = (int)$life;
+    public function setLife() {
+        $this->_life = $this->_baseLife + (($this->_lvl - 1) * 10);
     }
 
     /**
@@ -409,6 +387,7 @@ class User implements \JsonSerializable {
         }
 
         $this->_lvl = $actualLvl;
+        $this->setLife();
     }
 
     /**
@@ -680,5 +659,19 @@ class User implements \JsonSerializable {
      */
     public function getTimeToRecoverAnAttempt(): int {
         return $this->_timeToRecoverAnAttempt;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBaseLife(): int {
+        return $this->_baseLife;
+    }
+
+    /**
+     * @param int $baseLife
+     */
+    public function setBaseLife(int $baseLife): void {
+        $this->_baseLife = $baseLife;
     }
 }

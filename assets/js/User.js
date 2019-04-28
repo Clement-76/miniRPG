@@ -56,6 +56,11 @@ class User {
             if (actualLvl > this.lvl) this.arenaObj.displayAllPlayers();
         }
 
+        // if the user lvl up
+        if (actualLvl > this.lvl) {
+            this.life += 10;
+        }
+
         this.lvl = actualLvl;
         this.missingXp = missingXp;
         this.totalXpNeededForThisLvl = 100 * Math.pow(actualLvl + 2, 2);
