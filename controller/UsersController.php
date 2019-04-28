@@ -146,7 +146,7 @@ class UsersController extends AppController {
                     try {
                         $userId = $userManager->createUser($userData);
                         $stuffManager = new StuffManager();
-                        $stuffIds = $stuffManager->getStuffIdsWhereMaxRequiredLvl(1);
+                        $stuffIds = $stuffManager->getStuffIdsWhereMaxRequiredLvlAndRarity(1, 0);
                         $randomStuffIndex = array_rand($stuffIds);
                         $stuffId = $stuffIds[$randomStuffIndex];
                         $stuffManager->createPossessionStuff($userId, $stuffId);

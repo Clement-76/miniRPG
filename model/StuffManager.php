@@ -80,14 +80,20 @@ class StuffManager extends Manager {
 
     /**
      * @param $maxRequiredLvl
+     * @param $rarity
      * @return mixed
      * @throws \Exception
      */
-    public function getStuffIdsWhereMaxRequiredLvl($maxRequiredLvl) {
+    public function getStuffIdsWhereMaxRequiredLvlAndRarity($maxRequiredLvl, $rarity) {
         try {
             $db = $this->getDb();
-            $q = $db->prepare('SELECT stuff.id FROM minirpg_stuff AS stuff WHERE required_lvl <= ?');
-            $q->execute([$maxRequiredLvl]);
+            $q = $db->prepare(
+                'SELECT stuff.id 
+                 FROM minirpg_stuff AS stuff 
+                 WHERE required_lvl <= ?
+                 AND rarity = ?'
+            );
+            $q->execute([$maxRequiredLvl, $rarity]);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }

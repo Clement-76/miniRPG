@@ -61,8 +61,28 @@ class AdventuresController extends AppController {
                     $dollarsGained = ceil($randomPercentageDollars * $adventure->getDollars());
                     $totalDollars = ceil($_SESSION['user']->getDollar() + $dollarsGained);
 
+                    $randomNb = mt_rand(1, 100);
+                    $rarity;
+
+                    switch ($randomNb) {
+                        case ($randomNb >= 1 && $randomNb <= 75):
+                            $rarity = 0;
+                            break;
+                        case ($randomNb > 75 && $randomNb <= 90):
+                            $rarity = 1;
+                            break;
+                        case ($randomNb > 90 && $randomNb <= 97):
+                            $rarity = 2;
+                            break;
+                        case ($randomNb > 97 && $randomNb <= 100):
+                            $rarity = 3;
+                            break;
+                    }
+
+                    var_dump($rarity);
+
                     $stuffManager = new StuffManager();
-                    $stuffIds = $stuffManager->getStuffIdsWhereMaxRequiredLvl($adventure->getRequiredLvl());
+                    $stuffIds = $stuffManager->getStuffIdsWhereMaxRequiredLvlAndRarity($adventure->getRequiredLvl(), $rarity);
                     $randomStuffIndex = array_rand($stuffIds);
                     $stuffGainedId = $stuffIds[$randomStuffIndex];
 
